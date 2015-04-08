@@ -1,6 +1,8 @@
 include("items.js");
 include("groceryLists.js")
 include("troubleshoot.js")
+
+
 var currentView = null;	
 var THEME = require('themes/flat/theme');
 var BUTTONS = require('controls/buttons');
@@ -136,13 +138,13 @@ var insideCompartment = Container.template(function($) { return {
 				  new Label({left:0, right:0, height:30, top:45, string:"Compartment Name", style:new Style({font:"20px", color:"black"})}),
 				  new Label({left:0, right:0, height:30, top:85, string:$.compName, style:new Style({font:"16px", color:"black"})}),
 				  new Label({left:0, right:0, height:30, top:120,  string:"Live Capture", style:new Style({font:"20px", color:"black"})}),
-				  new Label({left:0, right:0, height:70, top: 160, string:"X", style:new Style({font:"50px", color:"black"})}),
-				  new Label({left:0, right:0, height:30, top: 240,  string:"Temperature", style:new Style({font:"20px", color:"black"})}),
-				  new Label({left:0, right:0, height:30, top: 275, string:$.currTemp, style:new Style({font:"20px", color:"black"})}),
-				  new Label({left:0, right:0, height:30, top: 320, string:"Items in Compartment", style:new Style({font:"20px", color:"black"})}),
-				  new Label({left:0, width: 100, height:30, top: 355, string:$.foodName, style:new Style({font:"20px", color:"black"})}),
-				  new Label({right:10, width: 60, height:30, top: 355, string:$.quantity, style:new Style({font:"20px", color:"black"})}),
-				  new Label({left:0, width: 200, height:30, top: 390, string:"Expires in " + $.expirationDuration, style:new Style({font:"16px", color:"black"})}),
+				  new Label({left:0, right:0, height:90, top: 160, string:"X", style:new Style({font:"50px", color:"black"})}),
+				  new Label({left:0, right:0, height:30, top: 260,  string:"Temperature", style:new Style({font:"20px", color:"black"})}),
+				  new Label({left:0, right:0, height:30, top: 295, string:$.currTemp, style:new Style({font:"20px", color:"black"})}),
+				  new Label({left:0, right:0, height:30, top: 340, string:"Items in Compartment", style:new Style({font:"20px", color:"black"})}),
+				  new Label({left:10, height:30, top: 375, string:$.foodName, style:new Style({font:"20px", color:"black"})}),
+				  new Label({right:25, height:30, top: 385, string:$.quantity, style:new Style({font:"30px", color:"black"})}),
+				  new Label({left:10, height:30, top: 410, string:"Expires in " + $.expirationDuration, style:new Style({font:"16px", color:"black"})}),
 			] 	
 }});
 

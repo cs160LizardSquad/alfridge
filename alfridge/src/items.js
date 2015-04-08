@@ -1,4 +1,6 @@
-
-var itemsMainBody = new Container({top:40, bottom:0, skin:new Skin({fill:"white"}), contents: [
-					new Label({left:0, right:0, top:100, string: "ITEMS", style: new Style({font:"20px", color:"black"}), name:"items"}),
-					]});
+var whiteSkin = new Skin({fill:"white"});
+var titleStyle = new Style({font:"20px", color:"black"}); 
+var itemsMainBody =  new Container({top:40, bottom:0, right: 0, left:0, skin:whiteSkin, 
+			contents:[
+				new Label({left:0, right:0, top:10,  string: "Items", style: titleStyle }),	], 	
+		});
