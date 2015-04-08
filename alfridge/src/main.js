@@ -12,8 +12,8 @@ var buttonSkin = new Skin({
 	borders:{left:3, right:3, top:3, bottom:3}, 
 	stroke:"black"});
 var titleStyle = new Style({font:"20px", color:"black"});
-
 var sideBarPopped = false;
+
 var sideMenuButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height: 30, width:30, left:10, 
 	skin: greySkin,
@@ -32,6 +32,8 @@ var sideMenuButtonTemplate = BUTTONS.Button.template(function($){ return{
 		}}
 	})
 }});
+
+
 
 var subviewButtonTemplate = BUTTONS.Button.template(function($){ return{
 	left: 10, height: 30, width:140,  top: $.myTop,
@@ -58,16 +60,19 @@ var sideBar = new Container({left:0, width:160 , top:40, bottom:0,  skin:darkgre
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						topBar.currentView.string = "Alfridge"
+						application.remove(currentView);
+						currentView = mainBody;
 						application.remove(sideBar);
 						sideBarPopped = false;
+						application.add(currentView);
 						}}
 					})}),
 				new subviewButtonTemplate({textForLabel:"Items", myTop:50, 
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						topBar.currentView.string = "Items"
+						application.remove(currentView);
 						currentView = itemsMainBody;
-						trace(currentView.items.string);
 						application.remove(sideBar);
 						sideBarPopped = false;
 						application.add(currentView);
@@ -78,16 +83,22 @@ var sideBar = new Container({left:0, width:160 , top:40, bottom:0,  skin:darkgre
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						topBar.currentView.string = "Grocery Lists"
+						application.remove(currentView);
+						currentView = groceryListsMainBody;
 						application.remove(sideBar);
 						sideBarPopped = false;
+						application.add(currentView);
 						}}
 					})}),
 				new subviewButtonTemplate({textForLabel:"Troubleshoot", myTop:130, 
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						topBar.currentView.string = "Troubleshoot"
+						application.remove(currentView);
+						currentView = troubleshootMainBody;
 						application.remove(sideBar);
 						sideBarPopped = false;
+						application.add(currentView);
 						}}
 					})}),
 				
@@ -105,14 +116,46 @@ var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 	skin: buttonSkin
 }});
 
+var backButtonTemplate = BUTTONS.Button.template(function($){ return{
+	height: 30, width:100, left:0, top: 5, 
+	skin: greySkin,
+	contents:[
+		new Label({left:10, height:30,  string:"<", style:new Style({font:"40px", color:"black"})})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(content){
+						application.remove($.myView)
+						}}
+					})
+}});
+
+var insideCompartment = Container.template(function($) { return {
+  top:0, bottom:0, skin:whiteSkin,
+			contents:[
+				  new Container({left:0, width:320, top:0, height:40, skin:greySkin }),
+				  new Label({left:0, right:0, height:30, top:45, string:"Compartment Name", style:new Style({font:"20px", color:"black"})}),
+				  new Label({left:0, right:0, height:30, top:85, string:$.compName, style:new Style({font:"16px", color:"black"})}),
+				  new Label({left:0, right:0, height:30, top:120,  string:"Live Capture", style:new Style({font:"20px", color:"black"})}),
+				  new Label({left:0, right:0, height:70, top: 160, string:"X", style:new Style({font:"50px", color:"black"})}),
+				  new Label({left:0, right:0, height:30, top: 240,  string:"Temperature", style:new Style({font:"20px", color:"black"})}),
+				  new Label({left:0, right:0, height:30, top: 275, string:$.currTemp, style:new Style({font:"20px", color:"black"})}),
+				  new Label({left:0, right:0, height:30, top: 320, string:"Items in Compartment", style:new Style({font:"20px", color:"black"})}),
+				  new Label({left:0, width: 100, height:30, top: 355, string:$.foodName, style:new Style({font:"20px", color:"black"})}),
+				  new Label({right:10, width: 60, height:30, top: 355, string:$.quantity, style:new Style({font:"20px", color:"black"})}),
+				  new Label({left:0, width: 200, height:30, top: 390, string:"Expires in " + $.expirationDuration, style:new Style({font:"16px", color:"black"})}),
+			] 	
+}});
+
 var mainBody = new Container({top:40, bottom:0, skin:whiteSkin, 
 			contents:[
 				new Label({left:0, right:0, top:10,  string: "Brian's Fridge", style: titleStyle }),
 				new compartmentButtonTemplate({myBottom: 20, myHeight: 100, myTop: 40, myLeft: 10, myRight: 10, myWidth: 300, textForLabel: "Soymilk", subtextForLabel: "Expires: 2 months", 
 				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(button){
-			
-				}}
+						topCompartment = new insideCompartment({compName: "Soymilk", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "2 months"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
 				})}), 
 				
 				new compartmentButtonTemplate({myBottom: 12, myHeight: 80, myTop: 150, myLeft: 10, myRight: 165, myWidth: 130, textForLabel: "Beef", subtextForLabel: "Expires: 2 months", 
