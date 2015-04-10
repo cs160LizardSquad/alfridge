@@ -1,26 +1,22 @@
 include("items.js");
 include("groceryLists.js")
 include("troubleshoot.js")
-
-
+include("settings.js")
 var currentView = null;	
 var THEME = require('themes/flat/theme');
 var BUTTONS = require('controls/buttons');
-var greySkin = new Skin({fill:"#C0C0C0"});
-var darkgreySkin = new Skin({fill:"#808080"});
+var greySkin = new Skin({fill:"#117384"});
+var darkgreySkin = new Skin({fill:"#5A6060"});
 var whiteSkin = new Skin({fill:"white"});
-var buttonSkin = new Skin({
-	fill:"white", 
-	borders:{left:3, right:3, top:3, bottom:3}, 
-	stroke:"black"});
-var titleStyle = new Style({font:"20px", color:"black"});
+var titleStyle = new Style({font:"20px", color:"white"});
+
 var sideBarPopped = false;
 
 var sideMenuButtonTemplate = BUTTONS.Button.template(function($){ return{
-	height: 30, width:30, left:10, 
+	height: 30, width:40, left:10, 
 	skin: greySkin,
 	contents:[
-		new Label({left:0, right:0, height:30,  string:$.textForLabel, style:new Style({font:"40px", color:"black"})})
+		new Picture({left:0, width:40, height: 30, url: "assets/menu-icon.png"}),
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value:  function(content){
@@ -35,7 +31,19 @@ var sideMenuButtonTemplate = BUTTONS.Button.template(function($){ return{
 	})
 }});
 
-
+var notificationButtonTemplate = BUTTONS.Button.template(function($){ return{
+	right: 10, width: 30, top: 5,
+	skin: greySkin,
+	contents:[
+		new Picture({right:0, width:30, height: 30, url: "assets/bell-icon.png"}),
+	],
+	behavior:Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(content){
+						trace("notification button tapped")
+						
+						}}
+					}),
+}});
 
 var subviewButtonTemplate = BUTTONS.Button.template(function($){ return{
 	left: 10, height: 30, width:140,  top: $.myTop,
@@ -48,9 +56,9 @@ var subviewButtonTemplate = BUTTONS.Button.template(function($){ return{
 
 var topBar = new Container({left:0, width:320, top:0, height:40, skin:greySkin, 
 			contents:[
-				new sideMenuButtonTemplate({textForLabel:"="}),
-				new Label({left:45, top:10, string: "Alfridge", style: titleStyle, name: "currentView" }),
-				new Label({left:250, right:0, top:10, string: "TShoot", style: titleStyle }),
+				new sideMenuButtonTemplate,
+				new Label({left:60, top:10, string: "Alfridge", style: titleStyle, name: "currentView" }),
+				new notificationButtonTemplate
 			], 	
 		
 		});
@@ -67,6 +75,7 @@ var sideBar = new Container({left:0, width:160 , top:40, bottom:0,  skin:darkgre
 						application.remove(sideBar);
 						sideBarPopped = false;
 						application.add(currentView);
+						
 						}}
 					})}),
 				new subviewButtonTemplate({textForLabel:"Items", myTop:50, 
@@ -78,6 +87,7 @@ var sideBar = new Container({left:0, width:160 , top:40, bottom:0,  skin:darkgre
 						application.remove(sideBar);
 						sideBarPopped = false;
 						application.add(currentView);
+
 						
 						}}
 					})}),
@@ -90,6 +100,7 @@ var sideBar = new Container({left:0, width:160 , top:40, bottom:0,  skin:darkgre
 						application.remove(sideBar);
 						sideBarPopped = false;
 						application.add(currentView);
+
 						}}
 					})}),
 				new subviewButtonTemplate({textForLabel:"Troubleshoot", myTop:130, 
@@ -101,6 +112,20 @@ var sideBar = new Container({left:0, width:160 , top:40, bottom:0,  skin:darkgre
 						application.remove(sideBar);
 						sideBarPopped = false;
 						application.add(currentView);
+				
+						}}
+					})}),
+					
+				new subviewButtonTemplate({textForLabel:"Settings", myTop:360, 
+				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(content){
+						topBar.currentView.string = "Settings"
+						application.remove(currentView);
+						currentView = settingstMainBody;
+						application.remove(sideBar);
+						sideBarPopped = false;
+						application.add(currentView);
+						
 						}}
 					})}),
 				
@@ -111,18 +136,18 @@ var sideBar = new Container({left:0, width:160 , top:40, bottom:0,  skin:darkgre
 var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 	 width:$.myWidth, top: $.myTop, left: $.myLeft, right: $.myRight, height:$.myHeight,
 	contents:[
-		new Label({left:0, right:0, height:30, string:$.textForLabel, style:new Style({font:"20px", color:"black"})}),
-		new Label({left:0, right:0, bottom: $.myBottom, height:20,  string:$.subtextForLabel, style:new Style({font:"10px", color:"black"})})
+		new Label({left:0, right:0, height:30, string:$.textForLabel, style:new Style({font:"20px", color:"white"})}),
+		new Label({left:0, right:0, bottom: $.myBottom, height:20,  string:$.subtextForLabel, style:new Style({font:"10px", color:"white"})})
 	],
 	behavior: $.myButtonBehaviour,
-	skin: buttonSkin
+	skin: $.mySkin
 }});
 
 var backButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height: 30, width:100, left:0, top: 5, 
 	skin: greySkin,
 	contents:[
-		new Label({left:10, height:30,  string:"<", style:new Style({font:"40px", color:"black"})})
+		new Label({left:10, height:30,  string:"<", style:new Style({font:"40px", color:"white"})})
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
@@ -150,8 +175,9 @@ var insideCompartment = Container.template(function($) { return {
 
 var mainBody = new Container({top:40, bottom:0, skin:whiteSkin, 
 			contents:[
-				new Label({left:0, right:0, top:10,  string: "Brian's Fridge", style: titleStyle }),
-				new compartmentButtonTemplate({myBottom: 20, myHeight: 100, myTop: 40, myLeft: 10, myRight: 10, myWidth: 300, textForLabel: "Soymilk", subtextForLabel: "Expires: 2 months", 
+				new Label({left:0, right:0, top:10,  string: "Brian's Fridge", style:new Style({font:"20px", color:"#5A6060"}) }),
+				new compartmentButtonTemplate({mySkin: new Skin({fill:"#B4C9CC", borders:{left:2, right:2, top:2, bottom:2}, 
+	stroke:"#F0FFFF"}) ,myBottom: 20, myHeight: 100, myTop: 40, myLeft: 10, myRight: 10, myWidth: 300, textForLabel: "Soymilk", subtextForLabel: "Expires: 2 months", 
 				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(button){
 						topCompartment = new insideCompartment({compName: "Soymilk", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "2 months"});
@@ -160,35 +186,40 @@ var mainBody = new Container({top:40, bottom:0, skin:whiteSkin,
 					}}
 				})}), 
 				
-				new compartmentButtonTemplate({myBottom: 12, myHeight: 80, myTop: 150, myLeft: 10, myRight: 165, myWidth: 130, textForLabel: "Beef", subtextForLabel: "Expires: 2 months", 
+				new compartmentButtonTemplate({mySkin: new Skin({fill:"#B4C9CC",borders:{left:2, right:2, top:2, bottom:2}, 
+	stroke:"#F0FFFF"}) ,myBottom: 12, myHeight: 80, myTop: 145, myLeft: 10, myRight: 162, myWidth: 130, textForLabel: "Beef", subtextForLabel: "Expires: 2 months", 
 				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(button){
 		
 				}}
 				})}), 
 				
-				new compartmentButtonTemplate({myBottom: 12,myHeight: 80, myTop: 150, myLeft: 165, myRight: 10, myWidth: 130, textForLabel: "Pork", subtextForLabel: "Expires: 2 months", 
+				new compartmentButtonTemplate({mySkin: new Skin({fill:"#B4C9CC",borders:{left:2, right:2, top:2, bottom:2}, 
+	stroke:"#F0FFFF"}) ,myBottom: 12,myHeight: 80, myTop: 145, myLeft: 162, myRight: 10, myWidth: 130, textForLabel: "Pork", subtextForLabel: "Expires: 2 months", 
 				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(button){
 		
 				}}
 				})}), 
 				
-				new compartmentButtonTemplate({myBottom: 7,myHeight: 70, myTop: 240, myLeft: 10, myRight: 10, myWidth: 300, textForLabel: "Chicken", subtextForLabel: "Expires: 2 months", 
+				new compartmentButtonTemplate({mySkin: new Skin({fill:"#B4C9CC",borders:{left:2, right:2, top:2, bottom:2}, 
+	stroke:"#F0FFFF"}) ,myBottom: 7,myHeight: 90, myTop: 230, myLeft: 10, myRight: 10, myWidth: 300, textForLabel: "Chicken", subtextForLabel: "Expires: 2 months", 
 				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(button){
 				
 				}}
 				})}), 
 				
-				new compartmentButtonTemplate({myBottom: 12,myHeight: 80, myTop: 320, myLeft: 10, myRight: 165, myWidth: 130, textForLabel: "Soymilk", subtextForLabel: "Expires: 2 months", 
+				new compartmentButtonTemplate({mySkin: new Skin({fill:"#B4C9CC",borders:{left:2, right:2, top:2, bottom:2}, 
+	stroke:"#F0FFFF"}) ,myBottom: 12,myHeight: 80, myTop: 325, myLeft: 10, myRight: 162, myWidth: 130, textForLabel: "Soymilk", subtextForLabel: "Expires: 2 months", 
 				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(button){
 				
 				}}
 				})}), 
 				
-				new compartmentButtonTemplate({myBottom: 12,myHeight: 80, myTop: 320, myLeft: 165, myRight: 10, myWidth: 130, textForLabel: "Soymilk", subtextForLabel: "Expires: 2 months", 
+				new compartmentButtonTemplate({mySkin: new Skin({fill:"#B4C9CC",borders:{left:2, right:2, top:2, bottom:2}, 
+	stroke:"#F0FFFF"}) ,myBottom: 12,myHeight: 80, myTop: 325, myLeft: 162, myRight: 10, myWidth: 130, textForLabel: "Soymilk", subtextForLabel: "Expires: 2 months", 
 				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(button){
 				
