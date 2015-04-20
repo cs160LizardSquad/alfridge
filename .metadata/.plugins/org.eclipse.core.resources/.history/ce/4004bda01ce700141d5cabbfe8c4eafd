@@ -42,7 +42,7 @@ function updateGroceryLists(){
 function updateGroceryListList(listName){
 	groceryListsColumn.empty();
 	for(item in groceryLists[listName]["items"]){
-		groceryListsItemsColumn.add(new Label({string: groceryLists[listName]["items"][item]}));
+		groceryListsItemsColumn.add(new Label({string: item}));
 	}
 }
 

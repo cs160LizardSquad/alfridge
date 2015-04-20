@@ -1717,3 +1717,322 @@ java.net.SocketException: Can't assign requested address
 
 !ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:22:16.539
 !MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:25:36.824
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:25:51.279
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:25:55.905
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:27:13.062
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:27:20.986
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:27:30.742
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:31:35.472
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:31:43.170
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:32:01.082
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:32:15.805
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:33:40.740
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:34:18.070
+!MESSAGE Debug listener stopped...
+!SESSION 2015-04-19 21:34:37.070 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_55
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -keyring /Users/peuanthinsan/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -keyring /Users/peuanthinsan/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-04-19 21:34:41.943
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.core.net 1 0 2015-04-19 21:34:45.333
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:35:01.891
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:36:08.008
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:36:12.206
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:37:18.054
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:39:01.518
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:40:30.941
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:41:55.262
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:42:00.087
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:43:18.893
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:43:32.142
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:43:33.928
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:45:22.039
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:45:24.794
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:45:29.614
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:46:45.038
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:46:53.527
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:47:20.334
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:48:22.953
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:49:53.112
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:50:06.156
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:50:08.236
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:50:18.792
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:50:31.721
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:50:49.877
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:50:53.649
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:51:02.026
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:52:54.347
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:53:02.076
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:53:05.160
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:53:33.995
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:53:38.202
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:53:51.846
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:53:55.512
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:54:20.818
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:54:23.219
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:54:34.068
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:54:36.235
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:54:52.723
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:55:08.506
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:55:55.727
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:56:03.750
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:57:31.272
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:57:34.374
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:57:43.156
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:57:45.004
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:57:57.940
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:58:00.946
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:58:33.061
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:58:39.609
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:59:25.167
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:59:27.559
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:59:36.150
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:59:38.269
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:00:10.105
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:00:26.844
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:00:34.101
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:00:35.645
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:03:14.842
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:03:23.226
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:03:30.362
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:03:32.170
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:04:10.781
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:04:19.469
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:04:27.169
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:04:45.229
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:04:56.152
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:06:53.102
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:07:05.002
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:07:07.041
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:07:15.303
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:07:18.285
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:08:02.109
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:08:04.895
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:08:35.329
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:08:37.550
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:08:46.378
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:08:51.169
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:08:55.847
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:09:45.513
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:09:50.853
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:14:20.515
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:14:50.684
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:17:07.088
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:17:12.087
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:17:15.364
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:17:32.556
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:17:34.937
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:17:41.487
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:18:09.861
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 22:18:18.758
+!MESSAGE Debug listener stopped...

@@ -229,7 +229,6 @@ var backButtonTemplate = BUTTONS.Button.template(function($){ return{
 						}}
 					})
 }});
-
 var statusLabel = new Label({left:0, right:0, height:20, top: 5, string:"status: not defrosting", style:new Style({font:"18px Petala Pro Thin", color:"black"})}),
 var insideCompartment = Column.template(function($) { return {
   top:0, bottom:0, right:0, left:0, skin:whiteSkin,

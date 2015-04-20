@@ -27,7 +27,7 @@ function updateGroceryLists(){
 		groceryListsColumn.add(new Container({top: 0, right: 0, left: 0, height: 60, skin: listSkin, active: true,
 			contents: [
 				new Label({top: 12, right: 0, left: 20, string: listName, style: textStyle }),
-				new Label({top: 36, right: 0, left: 20, string: "Updated " + groceryLists[listName]["updated"], style: subtextStyle}),
+				new Label({top: 36, right: 0, left: 20, string: "Updated " + groceryLists[list]["updated"], style: subtextStyle}),
 			],
 			behavior: {
 				onTouchBegan: function(content, id, x, y, ticks){
@@ -42,7 +42,7 @@ function updateGroceryLists(){
 function updateGroceryListList(listName){
 	groceryListsColumn.empty();
 	for(item in groceryLists[listName]["items"]){
-		groceryListsItemsColumn.add(new Label({string: groceryLists[listName]["items"][item]}));
+		groceryListsListColumn.add(new Label({string: item}));
 	}
 }
 

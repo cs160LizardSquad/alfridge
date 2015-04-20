@@ -14,24 +14,25 @@ var groceryLists = {
 	"Trader ASJoe's": {updated: new Date().getTime(), items: ["Popcorn", "Hotdogs", "Cheese"]},
 };
 
+/////// STEVEN FILL THIS OUT. IN MAIN.JS, on receiveItemReading, also call updateSuggestions and pass in the dict //////
 function updateSuggestions(allItemsDict){
 	var data = {};
 	for(var item in JSON.parse(allItemsDict)){
 	
 	}
 }
+/////// STEVEN FILL THIS OUT. IN MAIN.JS, on receiveItemReading, also call updateSuggestions and pass in the dict //////
 
 function updateGroceryLists(){
 	groceryListsColumn.empty();
-	for(listName in groceryLists){
+	for(list in groceryLists){
 		groceryListsColumn.add(new Container({top: 0, right: 0, left: 0, height: 60, skin: listSkin, active: true,
 			contents: [
-				new Label({top: 12, right: 0, left: 20, string: listName, style: textStyle }),
-				new Label({top: 36, right: 0, left: 20, string: "Updated " + groceryLists[listName]["updated"], style: subtextStyle}),
+				new Label({top: 12, right: 0, left: 20, string: list, style: textStyle }),
+				new Label({top: 36, right: 0, left: 20, string: "Updated " + groceryLists[list]["updated"], style: subtextStyle}),
 			],
 			behavior: {
 				onTouchBegan: function(content, id, x, y, ticks){
-					updateGroceryListList(listName)
 					application.add(groceryListsItemsView);
 				}
 			}
@@ -39,10 +40,11 @@ function updateGroceryLists(){
 	}
 }
 
+/////// STEVEN CALL updateGroceryListList  //////
 function updateGroceryListList(listName){
 	groceryListsColumn.empty();
 	for(item in groceryLists[listName]["items"]){
-		groceryListsItemsColumn.add(new Label({string: groceryLists[listName]["items"][item]}));
+		groceryListsListColumn.add(new Label({string: item}));
 	}
 }
 
@@ -59,24 +61,30 @@ var groceryListsColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin
 		new Label({string: "CORN"})
 	]
 });
-updateGroceryLists();
 
+//////// STEVEN CALL THIS FUNC AGAIN EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List) //////////
+updateGroceryLists();
+//////// STEVEN CALL THIS FUNC AGAIN EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List)//////////
+
+//////// STEVEN FILL THIS OUT. UPDATE var groceryLists. then call updateGroceryLists() on return ////////
 var groceryListsItemsColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin, style: textStyle,
 	contents: [
 		new Label({string: "CHEESE", style: textStyle})
 	]
 });
-//updateGroceryListList(listName)
+//////// STEVEN FILL THIS OUT. UPDATE var groceryLists. then call updateGroceryLists() on return ////////
 
 var searchBar = new Container({left: 0, right: 60, top: 0, height: 50, skin: searchBarSkin,
 	contents: [
 		new Label({string: "Search", style: new Style({font:"20px Petala Pro Thin", color:"#5A6060"}),
 			editable:true, active:true, left: 20,
+			//////// STEVEN FILL THIS OUT //////////
 			behavior: CONTROL.FieldLabelBehavior({
         		onDisplaying: function(container) {
 					//container.focus();
 				}
 			})
+			//////// STEVEN FILL THIS OUT //////////
 		})
 	]
 });
@@ -107,26 +115,31 @@ var addButtonTemplate = BUTTONS.Button.template(function($){ return{
 				})
 }});
 
+//////// STEVEN FILL THIS OUT //////////
 var suggestions = new Container();
+//////// STEVEN FILL THIS OUT //////////
 
 var groceryListsListView = new Container({left: 0, right: 0, top:50, skin: whiteSkin, 
 	contents: [
+	//////// STEVEN PAY ATTENTION TO THIS //////////
 		searchBar,
 		new addButtonTemplate(),
 		suggestions,
 		groceryListsColumn
+	//////// STEVEN PAY ATTENTION TO THIS //////////
 	],
 });
 
 var groceryListsAddView = new Container({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin,
 	contents: [
 		// STEVEN CHANGE THIS
+		
 	]
 });
 
 var groceryListsItemsView = new Container({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin,
 	contents: [
-		new backButtonTemplate({myView: this}),
+		new backButtonTemplate({groceryListsItemsView}),
 		groceryListsItemsColumn
 	]
 });
