@@ -1657,3 +1657,39 @@ java.net.SocketException: Can't assign requested address
 
 !ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 20:47:46.527
 !MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 20:53:21.223
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 20:53:46.378
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 20:53:48.272
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 20:54:10.328
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 20:59:41.404
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:00:25.280
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:00:53.169
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:01:23.293
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:01:25.533
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:01:29.413
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:01:31.884
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:01:36.498
+!MESSAGE Debug listener stopped...

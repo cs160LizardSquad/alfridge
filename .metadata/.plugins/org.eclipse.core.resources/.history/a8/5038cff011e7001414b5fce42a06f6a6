@@ -117,7 +117,7 @@ var groceryListsListView = new Container({left: 0, right: 0, top:50, skin: white
 
 var groceryListsAddView = new Container({left: 0, right: 0, top: 50, skin: whiteSkin,
 	contents: [
-		groceryListsItemsColumn // STEVEN CHANGE THIS
+		groceryListsItemColumn // STEVEN CHANGE THIS
 	]
 });
 

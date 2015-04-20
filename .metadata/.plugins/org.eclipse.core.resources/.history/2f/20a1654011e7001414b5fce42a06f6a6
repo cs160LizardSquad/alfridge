@@ -35,12 +35,12 @@ function updateGroceryLists(){
 	}
 }
 
-/////// STEVEN CALL updateGroceryListList  //////
-function updateGroceryListList(listName){
+/////// STEVEN CALL updateGroceryListList //////
+function updateGroceryListList(){
 	groceryListsColumn.empty();
-	for(item in groceryLists[listName]["items"]){
+	for(list in groceryLists){
 		/////// STEVEN FILL THIS OUT AND MAKE IT LOOK LIKE THE MAIN LIST CONTAINER /////////
-		groceryListsColumn.add(new Label({string: item}));
+		groceryListsColumn.add(new Label({string: groceryLists[list]["items"]}));
 		/////// STEVEN FILL THIS OUT AND MAKE IT LOOK LIKE THE MAIN LIST CONTAINER /////////
 	}
 }
@@ -59,14 +59,14 @@ var groceryListsColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin
 	]
 });
 
-//////// STEVEN CALL THIS FUNC AGAIN EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List) //////////
+//////// STEVEN CALL THIS FUNC EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List) //////////
 updateGroceryLists();
-//////// STEVEN CALL THIS FUNC AGAIN EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List)//////////
+//////// STEVEN CALL THIS FUNC EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List)//////////
 
 //////// STEVEN FILL THIS OUT. UPDATE var groceryLists. then call updateGroceryLists() on return ////////
-var groceryListsItemsColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin, style: textStyle,
+var groceryListsEditColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin, style: textStyle,
 	contents: [
-		new Label({string: "CHEESE", style: textStyle}) // these should be editable on the fly
+		new Label({string: "CHEESE", style: textStyle})
 	]
 });
 //////// STEVEN FILL THIS OUT. UPDATE var groceryLists. then call updateGroceryLists() on return ////////
@@ -103,6 +103,12 @@ var addButtonTemplate = BUTTONS.Button.template(function($){ return{
 var suggestions = new Container();
 //////// STEVEN FILL THIS OUT //////////
 
+var groceryListsAddView = new Container({left: 0, right: 0, top: 50, skin: whiteSkin,
+	contents: [
+		groceryListsEditColumn
+	]
+});
+
 var groceryListsListView = new Container({left: 0, right: 0, top:50, skin: whiteSkin, 
 	contents: [
 	//////// STEVEN PAY ATTENTION TO THIS //////////
@@ -113,16 +119,4 @@ var groceryListsListView = new Container({left: 0, right: 0, top:50, skin: white
 	//////// STEVEN PAY ATTENTION TO THIS //////////
 		
 	], 	
-});
-
-var groceryListsAddView = new Container({left: 0, right: 0, top: 50, skin: whiteSkin,
-	contents: [
-		groceryListsItemsColumn // STEVEN CHANGE THIS
-	]
-});
-
-var groceryListsItemsView = new Container({left: 0, right: 0, top: 50, skin: whiteSkin,
-	contents: [
-		groceryListsItemsColumn
-	]
 });

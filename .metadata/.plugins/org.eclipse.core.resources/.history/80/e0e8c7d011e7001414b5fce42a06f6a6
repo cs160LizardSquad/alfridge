@@ -59,9 +59,9 @@ var groceryListsColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin
 	]
 });
 
-//////// STEVEN CALL THIS FUNC AGAIN EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List) //////////
+//////// STEVEN CALL THIS FUNC EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List) //////////
 updateGroceryLists();
-//////// STEVEN CALL THIS FUNC AGAIN EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List)//////////
+//////// STEVEN CALL THIS FUNC EVERY TIME YOU RETURN TO THE MAIN GROCERYLISTS CONTAINER (i.e. clicking done on Add List)//////////
 
 //////// STEVEN FILL THIS OUT. UPDATE var groceryLists. then call updateGroceryLists() on return ////////
 var groceryListsItemsColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin, style: textStyle,
@@ -117,7 +117,6 @@ var groceryListsListView = new Container({left: 0, right: 0, top:50, skin: white
 
 var groceryListsAddView = new Container({left: 0, right: 0, top: 50, skin: whiteSkin,
 	contents: [
-		groceryListsItemsColumn // STEVEN CHANGE THIS
 	]
 });
 
