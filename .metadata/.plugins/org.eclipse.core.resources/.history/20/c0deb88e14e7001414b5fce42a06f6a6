@@ -111,12 +111,13 @@ var groceryListsListView = new Container({left: 0, right: 0, top:50, skin: white
 		suggestions,
 		groceryListsColumn
 	//////// STEVEN PAY ATTENTION TO THIS //////////
+		
 	], 	
 });
 
 var groceryListsAddView = new Container({left: 0, right: 0, top: 50, skin: whiteSkin,
 	contents: [
-		// STEVEN CHANGE THIS
+		groceryListsItemsColumn // STEVEN CHANGE THIS
 	]
 });
 

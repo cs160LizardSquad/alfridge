@@ -1693,3 +1693,27 @@ java.net.SocketException: Can't assign requested address
 
 !ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:01:36.498
 !MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:18:45.235
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:18:58.236
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:19:15.733
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:20:02.223
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:20:12.355
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:20:21.643
+!MESSAGE Debug listener stopped...
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:20:23.708
+!MESSAGE http://localhost:10000/launch?id=alfridge : OK (200) : /launch?id=alfridge
+
+!ENTRY com.marvell.kinoma.ide 1 0 2015-04-19 21:22:16.539
+!MESSAGE Debug listener stopped...
