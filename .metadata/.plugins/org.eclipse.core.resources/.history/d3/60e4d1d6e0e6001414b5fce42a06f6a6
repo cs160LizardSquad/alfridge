@@ -1,0 +1,96 @@
+function updateItemsBody(allItemsDict){
+	trace("DJSAKLDJLA");
+}
+
+var itemsColumn = new Column({top:100, bottom: 0, skin: 
+
+var itemsMainBody = new Container({top:50, bottom:0, skin:whiteSkin, 
+			contents:[
+
+				
+				new compartmentButtonTemplate2({myBottom: 50, myHeight: 50, myTop: 0, myLeft: 0, myRight: 230, textForLabelB: "     Recent", subtextForLabel: "", righttextForLabel: "", textForLabel: "",
+				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(button){
+						topCompartment = new insideCompartment({compName: "Trader Joe's", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "3 hours ago"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
+				})}),
+				
+				new compartmentButtonTemplate2({myBottom: 50, myHeight: 50, myTop: 0, myLeft: 130, myRight: 120, textForLabelB: "Quantity", subtextForLabel: "", righttextForLabel: "", textForLabel: "",
+				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(button){
+						topCompartment = new insideCompartment({compName: "Trader Joe's", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "3 hours ago"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
+				})}),
+				
+				new compartmentButtonTemplate2({myBottom: 50, myHeight: 50, myTop: 0, myLeft: 235, myRight: 20, textForLabelB: " Expired", subtextForLabel: "", righttextForLabel: "", textForLabel: "",
+				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(button){
+						topCompartment = new insideCompartment({compName: "Trader Joe's", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "3 hours ago"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
+				})}),
+				
+				
+				
+				//new Label({left:0, right:190, top:70,  string: "X  Search...", style: searchStyle }),
+				
+				new compartmentButtonTemplate({myBottom: 50, myHeight: 70, myTop: 107, myLeft: 10, myRight: 10, myWidth: 350, textForLabel: "Costco", subtextForLabel: "Updated 3 hours ago", righttextForLabel: "10", textForLabelB: "",
+				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(button){
+						topCompartment = new insideCompartment({compName: "Costco", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "3 hours ago"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
+				})}), 
+				
+				new compartmentButtonTemplate({myBottom: 50, myHeight: 70, myTop: 159, myLeft: 10, myRight: 10, myWidth: 350, textForLabel: "Walgreens", subtextForLabel: "Updated 3 hours ago", righttextForLabel: "10", textForLabelB: "",
+				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(button){
+						topCompartment = new insideCompartment({compName: "Walgreens", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "3 hours ago"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
+				})}), 
+				
+				new compartmentButtonTemplate({myBottom: 50, myHeight: 70, myTop: 211, myLeft: 10, myRight: 10, myWidth: 350, textForLabel: "Safeway", subtextForLabel: "Updated 3 hours ago", righttextForLabel: "10", textForLabelB: "",
+				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(button){
+						topCompartment = new insideCompartment({compName: "Safeway", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "3 hours ago"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
+				})}), 
+				
+				new compartmentButtonTemplate({myBottom: 50, myHeight: 70, myTop: 263, myLeft: 10, myRight: 10, myWidth: 350, textForLabel: "Trader Joe's", subtextForLabel: "Updated 3 hours ago", righttextForLabel: "10", textForLabelB: "",
+				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(button){
+						topCompartment = new insideCompartment({compName: "Trader Joe's", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "3 hours ago"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
+				})}), 
+				
+				new compartmentButtonTemplate({myBottom: 50, myHeight: 70, myTop: 315, myLeft: 10, myRight: 10, myWidth: 350, textForLabel: "BBQ Party", subtextForLabel: "Updated 3 hours ago", righttextForLabel: "10", textForLabelB: "",
+				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(button){
+						topCompartment = new insideCompartment({compName: "BBQ Party", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "3 hours ago"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
+				})}), 
+				
+				new compartmentButtonTemplate({myBottom: 50, myHeight: 70, myTop: 367, myLeft: 10, myRight: 10, myWidth: 350, textForLabel: "Trader Joe's", subtextForLabel: "Updated 3 hours ago", righttextForLabel: "10", textForLabelB: "",
+				myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(button){
+						topCompartment = new insideCompartment({compName: "Trader Joe's", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "3 hours ago"});
+						topCompartment.add(new backButtonTemplate({myView: topCompartment}));
+						application.add(topCompartment)
+					}}
+				})}), 
+			], 	
+		});

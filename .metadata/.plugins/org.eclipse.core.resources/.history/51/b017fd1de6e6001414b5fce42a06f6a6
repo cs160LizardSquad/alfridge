@@ -1,0 +1,11 @@
+var groceryListsColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin, style: textStyle,
+	contents: [
+		new Label("CHEESE")
+	]
+});
+
+var groceryListsListView = new Container({left: 0, right: 0, top:50, skin:whiteSkin, 
+			contents:[
+				groceryListsColumn
+			], 	
+		});

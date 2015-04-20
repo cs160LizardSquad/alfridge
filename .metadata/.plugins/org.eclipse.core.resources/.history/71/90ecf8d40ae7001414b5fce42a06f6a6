@@ -1,0 +1,82 @@
+/* "backend" */
+var groceryLists = {
+	"Trader Joe's": ["Popcorn", "Hotdogs", "Cheese"],
+	"Safeway": ["dAJSOdj", "Hotsadsadogs", "Cheesdasde"]
+};
+
+function updateSuggestions(allItemsDict){
+	var data = {};
+	for(var item in JSON.parse(allItemsDict)){
+	
+	}
+}
+
+function updateGroceryLists(){
+	groceryListsColumn.empty();
+	for(list in groceryLists){
+		groceryListsColumn.add(new Label({string: groceryLists[list]}));
+	}
+}
+
+
+/* skins and styles for groceryLists */
+var addButtonSkin = new Skin({fill:"#a7a9ac"});
+var searchBarSkin = new Skin({fill:"#ffffff", borders:{left: 1, right: 1, top: 1, bottom: 1}, stroke:"#818285"});
+
+var groceryListsColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin, style: textStyle,
+	contents: [
+		new Label({string: "CORN"})
+	]
+});
+
+updateGroceryLists();
+
+var groceryListsEditColumn = new Column({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin, style: textStyle,
+	contents: [
+		new Label({string: "CHEESE", style: textStyle})
+	]
+});
+
+var searchBar = new Container({left: 45, right: 0, top: 0, height: 35, skin: searchBarSkin,
+	contents: [
+		new Label({string: "Search", style: new Style({font:"20px Petala Pro Thin", color:"#5A6060", horizontal: "left"}),
+			editable:true, active:true,
+			behavior: CONTROL.FieldLabelBehavior({
+        		onDisplaying: function(container) {
+					container.focus();
+				}
+			})
+		})
+	]
+});
+	
+var suggestions = new Container();
+
+var groceryListsAddView = new Container({left: 0, right: 0, top: 50, skin: whiteSkin,
+	contents: [
+		groceryListsEditColumn
+	]
+});
+
+var addButtonTemplate = BUTTONS.Button.template(function($){ return{
+	height: 35, width:45, left:0, top: 0, 
+	skin: addButtonSkin,
+	contents:[
+		new Label({left:10, top:2, height:30,  string:"+", style:new Style({font:"38px Petala Pro", color:"white"})})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(content){
+						application.add(groceryListsAddView);
+						}}
+					})
+}});
+
+var groceryListsListView = new Container({left: 0, right: 0, top:50, skin: whiteSkin, 
+	contents: [
+		searchBar,
+		new addButtonTemplate(),
+		suggestions,
+		groceryListsColumn
+		
+	], 	
+});
