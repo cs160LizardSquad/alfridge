@@ -198,32 +198,32 @@ var setItemsButton = Container.template(function($) { return {
 		}else if ($.preset == "1"){
 		trace('setting items to preset 1 \n');
 			allItemsDict = {
-				"potatoes": {compartment: 1, expiration: 4,quantity:20},
-				"cabbage": {compartment: 2, expiration: 10,quantity:3},
-				"soymilk": {compartment: 3, expiration: 100,quantity:28},	
-				"carrots": {compartment: 2, expiration: 13,quantity:5},
-				"apples": {compartment: 2, expiration: 7,quantity:4},
-				"ice cream": {compartment: 4, expiration: 100,quantity:5},
+				"potatoes": {name: "potatoes", compartment: 1, expiration: 4,quantity:20},
+				"cabbage": {name: "cabbage", compartment: 2, expiration: 10,quantity:3},
+				"soymilk": {name: "soymilk", compartment: 3, expiration: 100,quantity:28},	
+				"carrots": {name: "carrots", compartment: 2, expiration: 13,quantity:5},
+				"apples": {name: "apples", compartment: 2, expiration: 7,quantity:4},
+				"ice cream": {name: "ice cream", compartment: 4, expiration: 100,quantity:5},
 			};
 			comp1ItemsDict = {
-				"potatoes": {compartment: 1, expiration: 4,quantity:20},
+				"potatoes": {name: "potatoes", compartment: 1, expiration: 4,quantity:20},
 			};
 			comp2ItemsDict = {
-				"cabbage": {compartment: 2, expiration: 10,quantity:3},
-				"carrots": {compartment: 2, expiration: 13,quantity:5},
-				"apples": {compartment: 2, expiration: 7,quantity:4},
+				"cabbage": {name: "cabbage", compartment: 2, expiration: 10,quantity:3},
+				"carrots": {name: "carrots", compartment: 2, expiration: 13,quantity:5},
+				"apples": {name: "apples", compartment: 2, expiration: 7,quantity:4},
 			};
 			comp3ItemsDict = {
-				"soymilk": {compartment: 3, expiration: 100,quantity:20},
+				"soymilk": {name: "soymilk", compartment: 3, expiration: 100,quantity:20},
 			};
 			comp4ItemsDict = {
-				"ice cream": {compartment: 4, expiration: 100,quantity:5},
+				"ice cream": {name: "ice cream", compartment: 4, expiration: 100,quantity:5},
 			};
 			comp5ItemsDict = {
-				"soymilk": {compartment: 5, expiration: 100,quantity:2},
+				"soymilk": {name: "soymilk", compartment: 5, expiration: 100,quantity:2},
 			};	
 			comp6ItemsDict = {
-				"soymilk": {compartment: 6, expiration: 100,quantity:6},
+				"soymilk": {name: "soymilk", compartment: 6, expiration: 100,quantity:6},
 			};
 			itemsDictList = [null, comp1ItemsDict, comp2ItemsDict, comp3ItemsDict, comp4ItemsDict, comp5ItemsDict, comp6ItemsDict]
 			refreshCompartments();
@@ -232,55 +232,55 @@ var setItemsButton = Container.template(function($) { return {
 		}else if ($.preset == "2"){
 		trace('setting items to preset 2 \n');
 			allItemsDict = {
-			"lettuce": {compartment: 1, expiration: 10,quantity:1},
-			"tomatoes": {compartment: 1, expiration: 1,quantity:5},
-			"cucumbers": {compartment: 1, expiration: 7,quantity:4},
-			"milk": {compartment: 2, expiration: 14,quantity:3},
-			"chicken thighs": {compartment: 3, expiration: 20,quantity:5},
-			"chicken drumsticks": {compartment: 3, expiration: 5,quantity:4},
-			"steak": {compartment: 4, expiration: 14,quantity:10},
-			"salmon fillets": {compartment: 5, expiration: 20,quantity:5},
-			"tilapia fillets": {compartment: 5, expiration: 4,quantity:6},
-			"shrimp": {compartment: 5, expiration: 20,quantity:12},
-			"clams": {compartment: 5, expiration: 20,quantity:8},
-			"cake": {compartment: 6, expiration: 3,quantity:1},
+			"lettuce": {name: "lettuce", compartment: 1, expiration: 10,quantity:1},
+			"tomatoes": {name: "tomatoes", compartment: 1, expiration: 1,quantity:5},
+			"cucumbers": {name: "cucumbers", compartment: 1, expiration: 7,quantity:4},
+			"milk": {name: "milk", compartment: 2, expiration: 14,quantity:3},
+			"chicken thighs": {name: "chicken thighs", compartment: 3, expiration: 20,quantity:5},
+			"chicken drumsticks": {name: "chicken drumsticks", compartment: 3, expiration: 5,quantity:4},
+			"steak": {name: "steak", compartment: 4, expiration: 14,quantity:10},
+			"salmon fillets": {name: "salmon fillets", compartment: 5, expiration: 20,quantity:5},
+			"tilapia fillets": {name: "tilapia fillets", compartment: 5, expiration: 4,quantity:6},
+			"shrimp": {name: "shrimp", compartment: 5, expiration: 20,quantity:12},
+			"clams": {name: "clams", compartment: 5, expiration: 20,quantity:8},
+			"cake": {name: "cake", compartment: 6, expiration: 3,quantity:1},
 			};
 			comp1ItemsDict = {
-			"lettuce": {compartment: 1, expiration: 10,quantity:1},
-			"tomatoes": {compartment: 1, expiration: 1,quantity:5},
-			"cucumbers": {compartment: 1, expiration: 7,quantity:4},
+			"lettuce": {name: "lettuce", compartment: 1, expiration: 10,quantity:1},
+			"tomatoes": {name: "tomatoes", compartment: 1, expiration: 1,quantity:5},
+			"cucumbers": {name: "cucumbers", compartment: 1, expiration: 7,quantity:4},
 			};
 			comp2ItemsDict = {
-			"milk": {compartment: 2, expiration: 14,quantity:3},
+			"milk": {name: "milk", compartment: 2, expiration: 14,quantity:3},
 			};
 			comp3ItemsDict = {
-			"chicken thighs": {compartment: 3, expiration: 20,quantity:5},
-			"chicken drumsticks": {compartment: 3, expiration: 5,quantity:4},
+			"chicken thighs": {name: "chicken thighs", compartment: 3, expiration: 20,quantity:5},
+			"chicken drumsticks": {name: "chicken drumsticks", compartment: 3, expiration: 5,quantity:4},
 			};
 			comp4ItemsDict = {
-			"steak": {compartment: 4, expiration: 14,quantity:10},
+			"steak": {name: "steak", compartment: 4, expiration: 14,quantity:10},
 			};
 			comp5ItemsDict = {
-			"salmon fillets": {compartment: 5, expiration: 20,quantity:5},
-			"tilapia fillets": {compartment: 5, expiration: 4,quantity:6},
-			"shrimp": {compartment: 5, expiration: 20,quantity:12},
-			"clams": {compartment: 5, expiration: 20,quantity:8},
+			"salmon fillets": {name: "salmon fillets", compartment: 5, expiration: 20,quantity:5},
+			"tilapia fillets": {name: "tilapia fillets", compartment: 5, expiration: 4,quantity:6},
+			"shrimp": {name: "shrimp", compartment: 5, expiration: 20,quantity:12},
+			"clams": {name: "clams", compartment: 5, expiration: 20,quantity:8},
 			};
 			comp6ItemsDict = {
-			"cake": {compartment: 6, expiration: 3,quantity:1},};
+			"cake": {name: "cake", compartment: 6, expiration: 3,quantity:1},};
 			itemsDictList = [null, comp1ItemsDict, comp2ItemsDict, comp3ItemsDict, comp4ItemsDict, comp5ItemsDict, comp6ItemsDict]
 			refreshCompartments();
 			orientationColumn.partContentsContainer.remove(body);
 			orientationColumn.partContentsContainer.add(body);			
 		}else if ($.preset == "3"){
 		trace('setting items to preset 3 \n');
-			allItemsDict = {"soymilk": {compartment: 1, expiration: 100,quantity:24},};
-			comp1ItemsDict = {"soymilk": {compartment: 1, expiration: 100, quantity:4},};
-			comp2ItemsDict = {"soymilk": {compartment: 2, expiration: 100, quantity:4},};
-			comp3ItemsDict = {"soymilk": {compartment: 3, expiration: 100, quantity:4},};
-			comp4ItemsDict = {"soymilk": {compartment: 4, expiration: 100, quantity:4},};
-			comp5ItemsDict = {"soymilk": {compartment: 5, expiration: 100, quantity:4},};
-			comp6ItemsDict = {"soymilk": {compartment: 6, expiration: 100, quantity:4},};
+			allItemsDict = {"soymilk": {name: "soymilk",compartment: 1, expiration: 100,quantity:24},};
+			comp1ItemsDict = {"soymilk": {name: "soymilk",compartment: 1, expiration: 100, quantity:4},};
+			comp2ItemsDict = {"soymilk": {name: "soymilk",compartment: 2, expiration: 100, quantity:4},};
+			comp3ItemsDict = {"soymilk": {name: "soymilk",compartment: 3, expiration: 100, quantity:4},};
+			comp4ItemsDict = {"soymilk": {name: "soymilk",compartment: 4, expiration: 100, quantity:4},};
+			comp5ItemsDict = {"soymilk": {name: "soymilk",compartment: 5, expiration: 100, quantity:4},};
+			comp6ItemsDict = {"soymilk": {name: "soymilk",compartment: 6, expiration: 100, quantity:4},};
 			itemsDictList = [null, comp1ItemsDict, comp2ItemsDict, comp3ItemsDict, comp4ItemsDict, comp5ItemsDict, comp6ItemsDict]
 			refreshCompartments();
 			orientationColumn.partContentsContainer.remove(body);
@@ -378,7 +378,8 @@ var itemScreenButton = Container.template(function($) { return {
  				}else{
  					trace('item is not in dict \n');
  					//trace(Math.min(5,6));
-					currDict[itemName] = {compartment: parseInt(compartmentNum),
+					currDict[itemName] = {	name: itemName,
+											compartment: parseInt(compartmentNum),
 											expiration: parseInt(expiresIn),
 											quantity: parseInt(quantity)};
 					allItemsDict[itemName] = {compartment: parseInt(compartmentNum),

@@ -1,24 +1,27 @@
+include("items.js");
+include("groceryLists.js")
+include("troubleshoot.js")
+include("settings.js")
 var currentView = null;	
-var THEME = require('themes/flat/theme');
 var BUTTONS = require('controls/buttons');
+var THEME = require('themes/flat/theme');
 var MODEL = require('mobile/model');
-var CONTROL = require('mobile/control');
-var KEYBOARD = require('mobile/keyboard');
 var SCREEN = require('mobile/screen');
 var SCROLLER = require('mobile/scroller');
+var THEME = require('themes/sample/theme');
+var KEYBOARD = require('mobile/keyboard');
+var CONTROL = require('mobile/control');
 var tealSkin = new Skin({fill:"#117384"});
 var darkgreySkin = new Skin({fill:"#5A6060"});
-var lightgreySkin = new Skin({fill:"#f3f3f4"});
 var whiteSkin = new Skin({fill:"white"});
-var titleStyle = new Style({font:"24px Petala Pro SemiLight", color:"white"});
-var semilightStyle = new Style({font:"24px Petala Pro SemiLight", color:"black"});
-var textStyle = new Style({font:"20px Petala Pro Thin", color:"#5A6060"});
-include("items.js");
-include("groceryLists.js");
-include("troubleshoot.js");
-include("settings.js");
+var titleStyle = new Style({font:"24px Petala Pro SemiLight", color:"white", horizontal: "center"});
+var semilightStyle = new Style({font:"24px Petala Pro SemiLight", color:"black", horizontal: "center"});
+var textStyle = new Style({font:"20px Petala Pro Thin", color:"#5A6060", horizontal: "center"});
 
 var sideBarPopped = false;
+var notifButtonOn = true;
+var addButtonOn = false;
+var keyBoardOn = false;
 
 var allItemsDict = {};
 var comp1ItemsDict = {};
@@ -27,6 +30,7 @@ var comp3ItemsDict = {};
 var comp4ItemsDict = {};
 var comp5ItemsDict = {};
 var comp6ItemsDict = {};
+//var groceryDict = {};
 var itemsDictList = [null, comp1ItemsDict, comp2ItemsDict, comp3ItemsDict, comp4ItemsDict, comp5ItemsDict, comp6ItemsDict]
 var temp1 = 0;
 var temp2 = 0;
@@ -43,12 +47,14 @@ var sideMenuButtonTemplate = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value:  function(content){
+			KEYBOARD.hide();
+			application.focus();
 			if (sideBarPopped) {
-				application.remove(sideBar)
+				application.remove(sideBar);
 				sideBarPopped = false;
 			} else {
-				application.add(sideBar);
 				sideBarPopped = true;
+				application.add(sideBar);
 				}
 		}}
 	})
@@ -75,7 +81,7 @@ var notificationButtonTemplate = BUTTONS.Button.template(function($){ return{
 	right: 10, width: 30, top: 5,
 	skin: tealSkin,
 	contents:[
-		new Picture({right:0, width:30, height: 30, url: "assets/bell-icon.png"}),
+		new Picture({right:5, width:30, height: 30, url: "assets/bell-icon.png"}),
 	],
 	behavior:Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
@@ -84,16 +90,17 @@ var notificationButtonTemplate = BUTTONS.Button.template(function($){ return{
 						}}
 					}),
 }});
-
+var outlineSkin = new Skin({fill: "white", borders:{left:2, right:2, top:2, bottom:2, stroke:"black"}});
 var subviewButtonTemplate = BUTTONS.Button.template(function($){ return{
-	left: 15, height: 30,top: $.top,
+	left: 0, right:0, height: 45,top: $.top,
 	skin: darkgreySkin,
 	contents:[
-		new Picture({width: 20, left:5, height:20, url: $.url}),
-		new Label({left:40, height:30,  string:$.textForLabel, style:new Style({font:"20px Petala Pro Thin", color:"white"})})
+		new Picture({width: 25, left:22, height:25, url: $.url}),
+		new Label({left:63, height:30,  string:$.textForLabel, style:new Style({font:"20px Petala Pro Thin", color:"white"})})
 	],
 	behavior: $.myBehavior
 }});
+var notificationButton = new notificationButtonTemplate();
 
 var topBar = new Line({left:0, right:0, top:0, height:50, skin:tealSkin, 
 			contents:[
@@ -101,13 +108,12 @@ var topBar = new Line({left:0, right:0, top:0, height:50, skin:tealSkin,
 					new sideMenuButtonTemplate()]}),
 				new Column({name: "headerCol", left:0, right:0, top:7, bottom:0, contents:[
 					new Label({left:10, top:8, string: "Alfridge", style: titleStyle, name: "currentView" }),]}),
-				new Column({left:0, right:0, top:6, bottom:0, contents:[
-					new notificationButtonTemplate()]}),
+				new Column({name: "notifButton",left:0, right:0, top:6, bottom:0, contents:[]}),
 			], 	
 		});
 
-	
-var sideBar = new Column({left:0, width:200 , top:50, bottom:0,  skin:darkgreySkin, 
+topBar.notifButton.add(notificationButton);
+var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySkin, 
 			contents:[
 				new subviewButtonTemplate({textForLabel:"Home",
 				url: "assets/home-icon.png", top:10,
@@ -117,44 +123,83 @@ var sideBar = new Column({left:0, width:200 , top:50, bottom:0,  skin:darkgreySk
 						application.remove(currentView);
 						currentView = mainBody;
 						application.remove(sideBar);
+						if (addButtonOn){
+						topBar.notifButton.remove(newListButton);
+						addButtonOn = false;
+						}
+						if (!notifButtonOn){
+						topBar.notifButton.add(notificationButton);
+						notifButtonOn = true;
+						}
 						sideBarPopped = false;
 						application.add(currentView);
 						
 						}}
 					})}),
 				new subviewButtonTemplate({textForLabel:"Items", 
-				url: "assets/items-icon.png",  top:10,
+				url: "assets/items-icon.png",  top:0,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
-						topBar.headerCol.currentView.string = "Items"
-						application.remove(currentView);
+						topBar.headerCol.currentView.string = "Items";
+						application.remove(topBar);
+						itemsMainBody = new itemsListTemplate();
+						itemsMainBody.add(new itemsTabs());
+						ListBuilder(allItemsDict);
+						application.replace(currentView, itemsMainBody);
+						if (addButtonOn){
+						topBar.notifButton.remove(newListButton);
+						addButtonOn = false;
+						}
+						if (notifButtonOn){
+						topBar.notifButton.remove(notificationButton);
+						notifButtonOn = false;
+						}
+						application.add(topBar);
 						currentView = itemsMainBody;
 						application.remove(sideBar);
 						sideBarPopped = false;
-						application.add(currentView);
 
 						
 						}}
 					})}),
 				new subviewButtonTemplate({textForLabel:"Grocery Lists", 
-				url: "assets/groceries-icon.png", top:10,
+				url: "assets/groceries-icon.png", top:0,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
-						topBar.headerCol.currentView.string = "Grocery Lists"
-						application.remove(currentView);
-						currentView = groceryListsListView;
+						topBar.headerCol.currentView.string = "Grocery Lists";
+						application.remove(topBar);
+						groceryMainBody = new groceryListTemplate();
+						groceryListBuilder(groceryList);
+						application.replace(currentView, groceryMainBody);
+						if (notifButtonOn){
+						topBar.notifButton.remove(notificationButton);
+						notifButtonOn = false;
+						}
+						topBar.notifButton.add(newListButton);
+						addButtonOn = true;
+						notifButtonOn = false;
+						application.add(topBar);
+						currentView = groceryMainBody;
 						application.remove(sideBar);
 						sideBarPopped = false;
-						application.add(currentView);
+
 						}}
 					})}),
 				new subviewButtonTemplate({textForLabel:"Troubleshoot",
-				url: "assets/troubleshoot-icon.png", top:10,
+				url: "assets/troubleshoot-icon.png", top:0,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						topBar.headerCol.currentView.string = "Troubleshoot"
 						application.remove(currentView);
 						currentView = troubleshootMainBody;
+						if (addButtonOn){
+						topBar.notifButton.remove(newListButton);
+						addButtonOn = false;
+						}
+						if (notifButtonOn){
+						topBar.notifButton.remove(notificationButton);
+						notifButtonOn = false;
+						}
 						application.remove(sideBar);
 						sideBarPopped = false;
 						application.add(currentView);
@@ -163,11 +208,19 @@ var sideBar = new Column({left:0, width:200 , top:50, bottom:0,  skin:darkgreySk
 					})}),
 					
 				new subviewButtonTemplate({textForLabel:"Settings",
-				url: "assets/settings-icon.png", top:270,
+				url: "assets/settings-icon.png", top:235,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						topBar.headerCol.currentView.string = "Settings"
 						application.remove(currentView);
+						if (addButtonOn){
+						topBar.notifButton.remove(newListButton);
+						addButtonOn = false;
+						}
+						if (notifButtonOn){
+						topBar.notifButton.remove(notificationButton);
+						notifButtonOn = false;
+						}
 						currentView = settingsMainBody;
 						application.remove(sideBar);
 						sideBarPopped = false;
@@ -178,7 +231,7 @@ var sideBar = new Column({left:0, width:200 , top:50, bottom:0,  skin:darkgreySk
 				
 			], 	
 		});
-
+		
 var defrostButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height: 30, width:80,  
 	skin: tealSkin,
@@ -226,17 +279,22 @@ var backButtonTemplate = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						application.remove($.myView)
+						currentView = mainBody;
 						}}
 					})
 }});
+var statusLabel = Label.template(function($){ return{
+left:0, right:0, height:20, top: 5, string:$.string, style:new Style({horizontal: "center",font:"18px Petala Pro Thin", color:"black"})
+}});
 
-var statusLabel = new Label({left:0, right:0, height:20, top: 5, string:"status: not defrosting", style:new Style({font:"18px Petala Pro Thin", color:"black"})}),
+
+//new Label({left:0, right:0, height:20, top: 5, string:"status: not defrosting", style:new Style({font:"18px Petala Pro Thin", color:"black"})}),
 var insideCompartment = Column.template(function($) { return {
   top:0, bottom:0, right:0, left:0, skin:whiteSkin,
 			contents:[
 				  new Line({left:0, right:0, top:0, height:50, skin:tealSkin, contents:[
 				  	new backButtonTemplate({myView: this}),
-				  	new Label({left:-170, right:0, height:30, top:10, string:"Compartment 1", style: new Style({font:"22px Petala Pro SemiLight", color:"white"})}), 
+				  	new Label({left:-170, right:0, height:30, top:10, string:"Compartment 1", style: new Style({horizontal: "center", font:"22px Petala Pro SemiLight", color:"white"})}), 
 				  ]}),
 				  new Line({top:10,  height:30, right:0, left:0, contents:[
 				  	new Label({left:0, right:0, height:30, top:10, string:"Compartment Name", style: semilightStyle}), 
@@ -250,10 +308,10 @@ var insideCompartment = Column.template(function($) { return {
 				  	new Label({left:0, right:0, height:20, top: 5,  string:"Temperature", style:semilightStyle}),
 				  ]}),
 				  new Line({top:5,  height:40, right:0, left:0, contents:[
-				  	new Label({left:0, right:0, height:50, top: 5, string:$.currTemp + "\xB0" + "F", style:new Style({font:"50px Petala Pro", color:"black"})}),
+				  	new Label({left:0, right:0, height:50, top: 5, string:$.currTemp + "\xB0" + "F", style:new Style({horizontal: "center",font:"50px Petala Pro", color:"black"})}),
 				  ]}),
 				  new Line({top:10,  height:20, right:0, left:0, contents:[
-				  	statusLabel,
+				  	new statusLabel({string: "hello"}),
 				  ]}),
 				  new Line({top:10,  height:30, right:0, left:120, contents:[
 				  	new defrostButtonTemplate(),
@@ -267,21 +325,21 @@ var insideCompartment = Column.template(function($) { return {
 				  	new Label({right:0, left:0, height:30, top: 10, string:$.quantity, horizontal: "right", style:semilightStyle}),
 				  ]}),
 				  new Line({height: 20, top: 5, right:0, left:0, contents:[	
-					new Label({right:133, left: 10, height:20, top: 0, string:"Expires in " + $.expirationDuration, style:new Style({font:"14px Petala Pro Thin", color:"black"})}),
+					new Label({right:133, left: 10, height:20, top: 0, string:"Expires in " + $.expirationDuration, style:new Style({horizontal: "center", font:"14px Petala Pro Thin", color:"black"})}),
 				  ]}),
 				  new Line({top:0, height: 30, right:0, left:0, contents:[	
 				  	new Label({left:0, right:13, height:30, top: 5, string:"Tomatoes", style:textStyle}),
 				  	new Label({right:0, left:0, height:30, top: 10, string:"5", horizontal: "right", style:semilightStyle}),
 				  ]}),
 				  new Line({height: 20, top: 5, right:0, left:0, contents:[	
-					new Label({right:133, left: 10, height:20, top: 0, string:"Expires in " + "10 days", style:new Style({font:"14px Petala Pro Thin", color:"black"})}),
+					new Label({right:133, left: 10, height:20, top: 0, string:"Expires in " + "10 days", style:new Style({horizontal: "center",font:"14px Petala Pro Thin", color:"black"})}),
 				  ]}),
 				  new Line({top:0, height: 30, right:0, left:0, contents:[	
 				  	new Label({left:0, right:43, height:30, top: 5, string:"Lettuce", style:textStyle}),
 				  	new Label({right:10, left:0, height:30, top: 10, string:"1", horizontal: "right", style:semilightStyle}),
 				  ]}),
 				  new Line({height: 20, top: 5, right:0, left:0, contents:[	
-					new Label({right:133, left: 10, height:20, top: 0, string:"Expires in " + "12 days", style:new Style({font:"14px Petala Pro Thin", color:"black"})}),
+					new Label({right:133, left: 10, height:20, top: 0, string:"Expires in " + "12 days", style:new Style({horizontal: "center",font:"14px Petala Pro Thin", color:"black"})}),
 				  ]}),				
 			] 	
 }});
@@ -294,8 +352,8 @@ var testSkin = new Skin({fill:"white",
 var mainBody = new Column({top:50, bottom:0, left:0, right:0, skin: testSkin, 
 			contents:[
 				new Line({height: 35, right:7, left:7, top: 10,skin: testSkin, contents: [
-					new Label({left:0, right:0, top:0, bottom:0,  string: "Brian's Fridge", style:
-					new Style({font:"22px Petala Pro Thin", color:"#5A6060"})}),	
+					new Label({left:0, right:0, top:0, bottom:0,  string: "Brian's Refrigerator ", style:
+					new Style({horizontal: "center",font:"22px Petala Pro Thin", color:"#5A6060"})}),	
 				]}),
 				new Line({name: "line1", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
 				//COMPARTMENT 1
@@ -304,6 +362,7 @@ var mainBody = new Column({top:50, bottom:0, left:0, right:0, skin: testSkin,
 					myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
 						onTap: { value:  function(button){
 							topCompartment = new insideCompartment({compName: "Vegetables", quantity: "4", currTemp: "30", foodName: "Cucumbers", expirationDuration: "7 days"});
+							currentView = topCompartment;
 							application.add(topCompartment)
 						}}
 					})}), 
@@ -379,7 +438,7 @@ Handler.bind("/getResponse", {
     	itemDict4 = json.itemDict4,
     	itemDict5 = json.itemDict5,
     	itemDict6 = json.itemDict6,
-    	//trace(JSON.stringify(allItemsDict));
+    	trace(JSON.stringify(allItemsDict));
         handler.invoke( new Message("/getTempResponse"));
         application.distribute( "receiveItemReading", json );
     }
@@ -433,17 +492,16 @@ Handler.bind("/delay", {
 var ApplicationBehavior = Behavior.template({
 	onDisplayed: function(application) {
 		application.discover("alfridgedevice.app");
+		//menuItems.forEach(ListBuilder);
+		//application.add(screen);
 	},
 	onQuit: function(application) {
 		application.forget("alfridgedevice.app");
 	},
-	receiveItemReading: function(application, json){
-		var data = JSON.stringify(json.allItemsDict);
-		updateSuggestions(data);
-	}
 })
 
 application.behavior = new ApplicationBehavior();
-application.add(topBar);
+
 currentView = mainBody
 application.add(currentView);
+application.add(topBar);
