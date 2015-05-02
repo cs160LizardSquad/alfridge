@@ -1,7 +1,5 @@
-
 var BUTTONS = require('controls/buttons');
 var KEYBOARD = require('mobile/keyboard');
-
 var THEME = require('themes/sample/theme');
 var SCROLLER = require('mobile/scroller');
 var SCREEN = require('mobile/screen')
@@ -13,16 +11,16 @@ var CONTROL = require('mobile/control');
 var blackSkin = new Skin({ fill: 'black',});
 var whiteSkin = new Skin({ fill: 'white',});
 var lightGraySkin = new Skin({fill: "#f1f1f2"});
-var graySkin	= new Skin({ fill: '#a7a9ab'});
-var darkGraySkin = new Skin({ fill: '#7f7f7f'});
+//var graySkin	= new Skin({ fill: '#a7a9ab'});
+//var darkGraySkin = new Skin({ fill: '#7f7f7f'});
 var blueSkin = new Skin({fill: 'blue'})
 var separatorSkin = new Skin({ fill: 'silver',});
 var addButtonSkin = new Skin({fill:"#117384", borders:{top: 1, right: 1}, stroke: "#7f7f7f"});
 
 /* STYLES */
-var tabStyle = new Style({  font: '18px Petala Pro Thin', horizontal: 'center', color: "#545454",vertical: 'middle', lines: 1, });
-var productNameStyle = new Style({  font: '24px Petala Pro SemiLight', horizontal: 'left', top: -10, lines: 1, });
-var expirationStyle = new Style({ font: '14px Petala Pro Thin', horizontal: 'left', top: 20, lines: 1, });
+var tabStyle = new Style({  font: '16px Petala Pro Thin', horizontal: 'center', color: "#545454",vertical: 'middle', lines: 1, });
+//var productNameStyle = new Style({  font: '24px Petala Pro SemiLight', horizontal: 'left', top: -10, lines: 1, });
+//var expirationStyle = new Style({ font: '14px Petala Pro Thin', horizontal: 'left', top: 20, lines: 1, });
 var quantityStyle = new Style({ font: '36px Petala Pro Thin', horizontal: 'center', lines: 1, });
 var productDescriptionStyle = new Style({  font: '18px', horizontal: 'left', vertical: 'middle', left: 1, color: 'white' });
 var fieldStyle = new Style({ color: 'black', font: '22px Petala Pro SemiLight', horizontal: 'left', vertical: 'middle', left: 22, right: 5, top: 5, bottom: 5, });
@@ -116,7 +114,7 @@ var suggestionsScreen = null;
 var newListButton = new newListButtonTemplate();
 
 var groceryScreenContainer = Container.template(function($) { return {
-	name: "list", left:0, right:0, top:0, bottom:0, skin: new Skin({fill: "#f1f1f2"}),
+	name: "list", left:0, right:0, top:0, bottom:0, skin: new Skin({fill: "white"}),
 	contents: [
 	   		/* Note that the scroller is declared as having only an empty
 	   		 * Column and a scrollbar.  All the entries will be added 
@@ -134,13 +132,13 @@ var groceryScreenContainer = Container.template(function($) { return {
 var groceryData = new Object();
 
 var grocerySearchBar = Line.template(function($) { return { 
- left: 0, right: 0, height: 40, active: true, skin: lightGraySkin, 
+ left: 0, right: 0, height: 40, active: true, skin: whiteSkin, 
  	contents: [
     Scroller($, { 
       left: 4, right: 4, top: 4, bottom: 4, active: true, 
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
         Label($, { 
-          left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          left: 25, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
     		onTouchEnded: { value: function() {	
@@ -154,8 +152,9 @@ var grocerySearchBar = Line.template(function($) { return {
          		}}
          	}),
          }),
+         Picture($, {left:12, top:4, width:25, height: 25, url: "assets/search-icon.png"}),
          Label($, {
-   			 	left:0, right:0, top:0, bottom:0, style: hintStyle, string:"Search...", name:"hint"
+   			 	left:22, right:0, top:0, bottom:0, style: hintStyle, string:"Search...", name:"hint"
          })
       ]
     }),
@@ -248,6 +247,7 @@ var doneButtonTemplate = BUTTONS.Button.template(function($){ return{
 						//refresh lists????
 						application.add(groceryMainBody);
 						topBar.notifButton.add(newListButton);
+						addButtonOn = true;
 						currentView = groceryMainBody;
 						//currentView 
 						//KEYBOARD.hide();
@@ -271,6 +271,7 @@ var cancelButtonTemplate = BUTTONS.Button.template(function($){ return{
 						application.remove(currentView);
 						application.add(groceryMainBody);
 						topBar.notifButton.add(newListButton);
+						addButtonOn = true;
 						currentView = groceryMainBody;
 						//KEYBOARD.hide();
 						//clearAllFields();
@@ -354,18 +355,6 @@ function newListBuilder(list) {
 	}
 }
 
-<<<<<<< HEAD
-var groceryListsItemsView = new Container({left: 0, right: 0, top: 50, bottom: 0, skin: whiteSkin,
-	contents: [
-		new backButtonTemplate({myView: this}),
-		groceryListsItemsColumn
-	],
-	behavior: Object.create(Container.prototype, {
-	    onTouchEnded: { value: function(content){
-	      KEYBOARD.hide();
-	      content.focus();
-	    }}})
-});
  
 function suggestionsBuilder(list) {
 	for (i = 6; i >=0; i--){
@@ -379,6 +368,7 @@ function suggestionsBuilder(list) {
  * ProcessorLine() object to the Column named "menu" in the
  * screen object's SCROLLER */
 function groceryListBuilder(dict) {
+	groceryMainBody.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
 	groceryMainBody.list.first.menu.add(new grocerySearchBar({name: ""}));
 	groceryMainBody.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
 	for (i = dict.length -1; i >=0; i--){

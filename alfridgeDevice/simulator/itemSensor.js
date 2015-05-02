@@ -242,6 +242,9 @@ var setItemsButton = Container.template(function($) { return {
 			"salmon fillets": {name: "salmon fillets", compartment: 5, expiration: 20,quantity:5},
 			"tilapia fillets": {name: "tilapia fillets", compartment: 5, expiration: 4,quantity:6},
 			"shrimp": {name: "shrimp", compartment: 5, expiration: 20,quantity:12},
+			"crab": {name: "crab", compartment: 5, expiration: 18,quantity:1},
+			"scallops": {name: "scallops", compartment: 5, expiration: 19,quantity:24},
+			"tuna steaks": {name: "tuna steaks", compartment: 5, expiration:11,quantity:3},
 			"clams": {name: "clams", compartment: 5, expiration: 20,quantity:8},
 			"cake": {name: "cake", compartment: 6, expiration: 3,quantity:1},
 			};
@@ -264,6 +267,9 @@ var setItemsButton = Container.template(function($) { return {
 			"salmon fillets": {name: "salmon fillets", compartment: 5, expiration: 20,quantity:5},
 			"tilapia fillets": {name: "tilapia fillets", compartment: 5, expiration: 4,quantity:6},
 			"shrimp": {name: "shrimp", compartment: 5, expiration: 20,quantity:12},
+			"crab": {name: "crab", compartment: 5, expiration: 18,quantity:1},
+			"scallops": {name: "scallops", compartment: 5, expiration: 19,quantity:24},
+			"tuna steaks": {name: "tuna steaks", compartment: 5, expiration:11,quantity:3},
 			"clams": {name: "clams", compartment: 5, expiration: 20,quantity:8},
 			};
 			comp6ItemsDict = {
@@ -382,7 +388,8 @@ var itemScreenButton = Container.template(function($) { return {
 											compartment: parseInt(compartmentNum),
 											expiration: parseInt(expiresIn),
 											quantity: parseInt(quantity)};
-					allItemsDict[itemName] = {compartment: parseInt(compartmentNum),
+					allItemsDict[itemName] = { name: itemName,
+											compartment: parseInt(compartmentNum),
 											expiration: parseInt(expiresIn),
 											quantity: parseInt(quantity)};					
 					trace('new item: \n' + 

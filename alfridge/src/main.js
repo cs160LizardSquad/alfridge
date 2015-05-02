@@ -2,6 +2,7 @@ include("items.js");
 include("groceryLists.js")
 include("troubleshoot.js")
 include("settings.js")
+include("compartmentView.js")
 var currentView = null;	
 var BUTTONS = require('controls/buttons');
 var THEME = require('themes/flat/theme');
@@ -14,8 +15,10 @@ var CONTROL = require('mobile/control');
 var tealSkin = new Skin({fill:"#117384"});
 var darkgreySkin = new Skin({fill:"#5A6060"});
 var whiteSkin = new Skin({fill:"white"});
+var separatorSkin = new Skin({ fill: 'silver',});
 var titleStyle = new Style({font:"24px Petala Pro SemiLight", color:"white", horizontal: "center"});
-var semilightStyle = new Style({font:"24px Petala Pro SemiLight", color:"black", horizontal: "center"});
+var headerStyle = new Style({font:"18px Petala Pro Thin", color:"black",  horizontal: "center"});
+var semilightStyle = new Style({font:"18px Petala Pro Thin", color:"black",  horizontal: "center"});
 var textStyle = new Style({font:"20px Petala Pro Thin", color:"#5A6060", horizontal: "center"});
 
 var sideBarPopped = false;
@@ -38,6 +41,24 @@ var temp3 = 0;
 var temp4 = 0;
 var temp5 = 0;
 var temp6 = 0;
+
+var compartmentStatuses = [null, 0, 0, 0, 0, 0, 0];
+
+/**var upButton = BUTTONS.Button.template(function($){ return{
+	top: 5, left: 0, right: 0, height:20,
+	contents: [
+		new Label({left:0, right:0, height:20, skin: upSkin})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			content.invoke(new Message(deviceURL + "feedAtUp"), Message.JSON);
+		}},
+		onComplete: { value: function(content, message, json){
+			trace(json.count);
+		}}  
+	})
+}});
+**/
 
 var sideMenuButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height: 30, width:40, left:10, 
@@ -178,8 +199,8 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 						topBar.notifButton.add(newListButton);
 						addButtonOn = true;
 						notifButtonOn = false;
-						application.add(topBar);
 						currentView = groceryMainBody;
+						application.add(topBar);
 						application.remove(sideBar);
 						sideBarPopped = false;
 
@@ -232,28 +253,7 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 			], 	
 		});
 		
-var defrostButtonTemplate = BUTTONS.Button.template(function($){ return{
-	height: 30, width:80,  
-	skin: tealSkin,
-	contents:[
-		new Label({name: "defrostLabel", height:30, width:70, string: "defrost", style: new Style({font:"20px Petala Pro SemiLight", color:"white"})}),
-	],
-	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
-		onTap: { value:  function(content){
-		content.defrostLabel.string = "stop";
-		statusLabel.string = "status: defrosting";
-		//send message
-		/*
-			if (sideBarPopped) {
-				application.remove(sideBar)
-				sideBarPopped = false;
-			} else {
-				application.add(sideBar);
-				sideBarPopped = true;
-				} */
-		}} 
-	})
-}});
+
 
 var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 	name: $.name, width:$.width, top: 4, left: 4, right: 4, bottom: 4, height:100,
@@ -266,76 +266,43 @@ var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 			new Label({top: 0, left:0, right:0, height:20,  string:$.subtextForLabel, style:new Style({font:"14px Petala Pro Thin", color:"white"})}) ]}),
 	]}),
 	],
-	behavior: $.myButtonBehaviour,
-	skin: $.mySkin
-}});
-
-var backButtonTemplate = BUTTONS.Button.template(function($){ return{
-	height: 30, width:100, left:0, top: 5, 
-	skin: tealSkin,
-	contents:[
-		new Label({left:10, top:2, height:30,  string:"<", style:new Style({font:"38px Petala Pro", color:"white"})})
-	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
-					onTap: { value:  function(content){
-						application.remove($.myView)
-						currentView = mainBody;
+						onTap: { value:  function(button){
+							application.remove(currentView);
+							compartmentView = new compartmentListTemplate();
+							switch($.compNumber) {
+							    case 1:
+       								compartmentListBuilder(comp1ItemsDict);
+       								temp = temp1;
+       								break;
+       							case 2:
+       								compartmentListBuilder(comp2ItemsDict);
+       								temp = temp2;
+       								break;    
+       							case 3:
+       								compartmentListBuilder(comp3ItemsDict);
+       								temp = temp3;
+       								break;  
+       							case 4:
+       								compartmentListBuilder(comp4ItemsDict);
+       								temp = temp4;
+       								break;   
+       							case 5:
+       								compartmentListBuilder(comp5ItemsDict);
+       								temp = temp5;
+       								break;    
+       							case 6:
+       								compartmentListBuilder(comp6ItemsDict);
+       								temp = temp6;
+       								break;           								       								      								       								   							 
+							}
+							topCompartment = new insideCompartment({compNumber: $.compNumber, compName: $.textForLabel, currTemp: temp});
+							currentView = compartmentView;
+							application.add(compartmentView);
+							application.add(topCompartment);
 						}}
-					})
-}});
-var insideCompartment = Column.template(function($) { return {
-  top:0, bottom:0, right:0, left:0, skin:whiteSkin,
-			contents:[
-				  new Line({left:0, right:0, top:0, height:50, skin:tealSkin, contents:[
-				  	new backButtonTemplate({myView: this}),
-				  	new Label({left:-170, right:0, height:30, top:10, string:"Compartment 1", style: new Style({horizontal: "center", font:"22px Petala Pro SemiLight", color:"white"})}), 
-				  ]}),
-				  new Line({top:10,  height:30, right:0, left:0, contents:[
-				  	new Label({left:0, right:0, height:30, top:10, string:"Compartment Name", style: semilightStyle}), 
-				  	]}),
-				  new Line({top:20,  height:40, right:0, left:0, contents:[
-				  	new Label({left:0, right:0, height:30, top:5, string:$.compName, style:textStyle}),
-				  ]}),
-				  	//new Label({left:0, right:0, height:30, top:5,  string:"Live Capture", style:new Style({font:"20px", color:"black"})}),
-				  	//new Label({left:0, right:0, height:90, top: 5, string:"X", style:new Style({font:"50px", color:"black"})}),
-				  new Line({top:10,  height:20, right:0, left:0, contents:[	
-				  	new Label({left:0, right:0, height:20, top: 5,  string:"Temperature", style:semilightStyle}),
-				  ]}),
-				  new Line({top:5,  height:40, right:0, left:0, contents:[
-				  	new Label({left:0, right:0, height:50, top: 5, string:$.currTemp + "\xB0" + "F", style:new Style({horizontal: "center",font:"50px Petala Pro", color:"black"})}),
-				  ]}),
-				  new Line({top:10,  height:20, right:0, left:0, contents:[
-				  	new statusLabel({string: "hello"}),
-				  ]}),
-				  new Line({top:10,  height:30, right:0, left:120, contents:[
-				  	new defrostButtonTemplate(),
-				  	//new Label({left:0, right:0, height:20, top: 5, string:"status: not defrosting", style:new Style({font:"18px Petala Pro Thin", color:"black"})}),
-				  ]}),
-				  new Line({top:15, height:30, right:0, left:0, contents:[	
-				  	new Label({left:0, right:0, height:30, top: 5, string:"Items in Compartment", style: semilightStyle}),
-				  ]}),
-				  new Line({top:10, height: 30, right:0, left:0, contents:[	
-				  	new Label({left:0, right:0, height:30, top: 5, string:$.foodName, style:textStyle}),
-				  	new Label({right:0, left:0, height:30, top: 10, string:$.quantity, horizontal: "right", style:semilightStyle}),
-				  ]}),
-				  new Line({height: 20, top: 5, right:0, left:0, contents:[	
-					new Label({right:133, left: 10, height:20, top: 0, string:"Expires in " + $.expirationDuration, style:new Style({horizontal: "center", font:"14px Petala Pro Thin", color:"black"})}),
-				  ]}),
-				  new Line({top:0, height: 30, right:0, left:0, contents:[	
-				  	new Label({left:0, right:13, height:30, top: 5, string:"Tomatoes", style:textStyle}),
-				  	new Label({right:0, left:0, height:30, top: 10, string:"5", horizontal: "right", style:semilightStyle}),
-				  ]}),
-				  new Line({height: 20, top: 5, right:0, left:0, contents:[	
-					new Label({right:133, left: 10, height:20, top: 0, string:"Expires in " + "10 days", style:new Style({horizontal: "center",font:"14px Petala Pro Thin", color:"black"})}),
-				  ]}),
-				  new Line({top:0, height: 30, right:0, left:0, contents:[	
-				  	new Label({left:0, right:43, height:30, top: 5, string:"Lettuce", style:textStyle}),
-				  	new Label({right:10, left:0, height:30, top: 10, string:"1", horizontal: "right", style:semilightStyle}),
-				  ]}),
-				  new Line({height: 20, top: 5, right:0, left:0, contents:[	
-					new Label({right:133, left: 10, height:20, top: 0, string:"Expires in " + "12 days", style:new Style({horizontal: "center",font:"14px Petala Pro Thin", color:"black"})}),
-				  ]}),				
-			] 	
+					}),
+	skin: $.mySkin
 }});
 
 var compartmentSkin = new Skin({fill:"#B4C9CC", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}});
@@ -352,62 +319,29 @@ var mainBody = new Column({top:50, bottom:0, left:0, right:0, skin: testSkin,
 				new Line({name: "line1", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
 				//COMPARTMENT 1
 					new compartmentButtonTemplate({name: "compartment1", mySkin: compartmentSkin, 
-						width: 300, textForLabel: "Vegetables", subtextForLabel: "Expires: 2 months", 
-					myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
-						onTap: { value:  function(button){
-							topCompartment = new insideCompartment({compName: "Vegetables", quantity: "4", currTemp: "30", foodName: "Cucumbers", expirationDuration: "7 days"});
-							currentView = topCompartment;
-							application.add(topCompartment)
-						}}
-					})}), 
+						width: 300, textForLabel: "Vegetables", subtextForLabel: "Expires: 2 months", compNumber: 1,}), 
 				]}),
 				//COMPARTMENT 2
 				new Line({name: "line2", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
-					new compartmentButtonTemplate({name: "compartment2", mySkin: compartmentSkin, width: 130, textForLabel: "Milk", subtextForLabel: "Expires: 2 months", 
-					myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
-						onTap: { value:  function(button){
-			
-					}}
-					})}), 
+					new compartmentButtonTemplate({name: "compartment2", mySkin: compartmentSkin, 
+						width: 130, textForLabel: "Milk", subtextForLabel: "Expires: 2 months", compNumber: 2, }), 
 				//COMPARTMENT 3
-					new compartmentButtonTemplate({name: "compartment3", mySkin: compartmentSkin, width: 130, textForLabel: "Meat", subtextForLabel: "Expires: 2 months", 
-					myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
-						onTap: { value:  function(button){
-	
-					}}
-					})}), 
+					new compartmentButtonTemplate({name: "compartment3", mySkin: compartmentSkin, 
+						width: 130, textForLabel: "Meat", subtextForLabel: "Expires: 2 months", compNumber: 3,}), 
 				]}), 
 				new Line({name: "line3", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
 				//COMPARTMENT 4
 					new compartmentButtonTemplate({name: "compartment4", mySkin: compartmentSkin, 
-						width: 300, textForLabel: "Steak", subtextForLabel: "Expires: 2 months", 
-					myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
-						onTap: { value:  function(button){
-							topCompartment = new insideCompartment({compName: "Soymilk", quantity: "10", currTemp: "0", foodName: "Soymilk", expirationDuration: "2 months"});
-							topCompartment.add(new backButtonTemplate({myView: topCompartment}));
-							application.add(topCompartment)
-						}}
-					})}), 
+						width: 300, textForLabel: "Steak", subtextForLabel: "Expires: 2 months", compNumber: 4,}), 
 				]}),
 				new Line({name: "line4", height: 100, right:7, left:7, bottom: 10, skin: testSkin, contents: [
 				//COMPARTMENT 5
-					new compartmentButtonTemplate({name: "compartment5", mySkin: compartmentSkin, width: 130, textForLabel: "Fish", subtextForLabel: "Expires: 2 months", 
-					myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
-						onTap: { value:  function(button){
-			
-					}}
-					})}), 
+					new compartmentButtonTemplate({name: "compartment5", mySkin: compartmentSkin, 
+						width: 130, textForLabel: "Fish", subtextForLabel: "Expires: 2 months", compNumber: 5,}), 
 				//COMPARTMENT 6
-					new compartmentButtonTemplate({name: "compartment6", mySkin: compartmentSkin, width: 130, textForLabel: "Cake", subtextForLabel: "Expires: 2 months", 
-					myButtonBehaviour: Object.create(BUTTONS.ButtonBehavior.prototype, {
-						onTap: { value:  function(button){
-	
-					}}
-					})}), 
-				]}), 
-				
-
-			], 	
+					new compartmentButtonTemplate({name: "compartment6", mySkin: compartmentSkin, 
+						width: 130, textForLabel: "Cake", subtextForLabel: "Expires: 2 months", compNumber: 6,}), 
+				]}),], 	
 		});
 		
 var deviceURL = "";
@@ -424,15 +358,15 @@ Handler.bind("/getResponse", {
         handler.invoke(new Message(deviceURL + "getUpdate"), Message.JSON);
     },
     onComplete: function(handler, message, json){
-    	trace('response was ' + json.compartment1.items + '\n');
+    	trace('item response was ' + JSON.stringify(comp1ItemsDict) + '\n');
     	allItemsDict = json.allItemsDict,
-    	itemDict1 = json.itemDict1,
-    	itemDict2 = json.itemDict2,
-    	itemDict3 = json.itemDict3,
-    	itemDict4 = json.itemDict4,
-    	itemDict5 = json.itemDict5,
-    	itemDict6 = json.itemDict6,
-    	trace(JSON.stringify(allItemsDict));
+    	comp1ItemsDict = json.itemDict1,
+    	comp2ItemsDict = json.itemDict2,
+    	comp3ItemsDict = json.itemDict3,
+    	comp4ItemsDict = json.itemDict4,
+    	comp5ItemsDict = json.itemDict5,
+    	comp6ItemsDict = json.itemDict6,
+    	trace(JSON.stringify(allItemsDict) + '\n');
         handler.invoke( new Message("/getTempResponse"));
         application.distribute( "receiveItemReading", json );
     }
@@ -444,12 +378,12 @@ Handler.bind("/getTempResponse", {
     },
     onComplete: function(handler, message, json){
     	trace('response was ' + temp1 + '\n');
-    	temp1 = json.temp1,
-    	temp2 = json.temp2,
-    	temp3 = json.temp3,
-    	temp4 = json.temp4,
-    	temp5 = json.temp5,
-    	temp6 = json.temp6,
+    	temp1 = convert(json.temp1),
+    	temp2 = convert(json.temp2),
+    	temp3 = convert(json.temp3),
+    	temp4 = convert(json.temp4),
+    	temp5 = convert(json.temp5),
+    	temp6 = convert(json.temp6),
     	trace(JSON.stringify(json));
     	var comp1temp = mainBody.line1.compartment1.col1.line1.nameTempLabel.string;
     	mainBody.line1.compartment1.col1.line1.nameTempLabel.string = comp1temp.substring(0, comp1temp.length - 4) + convert(temp1) + "\xB0" + "F";

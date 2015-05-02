@@ -13,7 +13,20 @@ Handler.bind("/tempResult", Object.create(Behavior.prototype, {
 				application.distribute( "receiveTempReading", message.requestObject );
 			}}
 }));
-
+/**
+Handler.bind("/feedAtUp", Behavior({
+	onInvoke: function(handler, message){
+	
+		count = parseInt(feedAtFullness.string);
+		count = (count + 1).toString();
+		feedAtString = count;
+		feedAtFullness.string = count;
+		//application.invoke( new MessageWithObject( "pins:/analogSensor/write" ) );
+		message.responseText = JSON.stringify( { count: count } );
+		message.status = 200;
+	}
+}));
+**/
 var numContainer = Column.template(function($) { return { width: 35, top: 5, bottom: 5, 
 	skin: new Skin({ fill: 'white',}), 
 	contents: [
