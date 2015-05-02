@@ -242,9 +242,12 @@ var setItemsButton = Container.template(function($) { return {
 			"salmon fillets": {name: "salmon fillets", compartment: 5, expiration: 20,quantity:5},
 			"tilapia fillets": {name: "tilapia fillets", compartment: 5, expiration: 4,quantity:6},
 			"shrimp": {name: "shrimp", compartment: 5, expiration: 20,quantity:12},
+<<<<<<< HEAD
 			"crab": {name: "crab", compartment: 5, expiration: 18,quantity:1},
 			"scallops": {name: "scallops", compartment: 5, expiration: 19,quantity:24},
 			"tuna steaks": {name: "tuna steaks", compartment: 5, expiration:11,quantity:3},
+=======
+>>>>>>> 912eaf1cea3693300ce27d88fc593777d164a09e
 			"clams": {name: "clams", compartment: 5, expiration: 20,quantity:8},
 			"cake": {name: "cake", compartment: 6, expiration: 3,quantity:1},
 			};
@@ -267,9 +270,12 @@ var setItemsButton = Container.template(function($) { return {
 			"salmon fillets": {name: "salmon fillets", compartment: 5, expiration: 20,quantity:5},
 			"tilapia fillets": {name: "tilapia fillets", compartment: 5, expiration: 4,quantity:6},
 			"shrimp": {name: "shrimp", compartment: 5, expiration: 20,quantity:12},
+<<<<<<< HEAD
 			"crab": {name: "crab", compartment: 5, expiration: 18,quantity:1},
 			"scallops": {name: "scallops", compartment: 5, expiration: 19,quantity:24},
 			"tuna steaks": {name: "tuna steaks", compartment: 5, expiration:11,quantity:3},
+=======
+>>>>>>> 912eaf1cea3693300ce27d88fc593777d164a09e
 			"clams": {name: "clams", compartment: 5, expiration: 20,quantity:8},
 			};
 			comp6ItemsDict = {

@@ -254,7 +254,6 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 		});
 		
 
-
 var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 	name: $.name, width:$.width, top: 4, left: 4, right: 4, bottom: 4, height:100,
 	contents:[ 
@@ -265,6 +264,7 @@ var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 		new Line({height:30, left:0, right:0, contents: [
 			new Label({top: 0, left:0, right:0, height:20,  string:$.subtextForLabel, style:new Style({font:"14px Petala Pro Thin", color:"white"})}) ]}),
 	]}),
+
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 						onTap: { value:  function(button){
@@ -303,6 +303,7 @@ var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 						}}
 					}),
 	skin: $.mySkin
+
 }});
 
 var compartmentSkin = new Skin({fill:"#B4C9CC", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}});
@@ -341,7 +342,6 @@ var mainBody = new Column({top:50, bottom:0, left:0, right:0, skin: testSkin,
 				//COMPARTMENT 6
 					new compartmentButtonTemplate({name: "compartment6", mySkin: compartmentSkin, 
 						width: 130, textForLabel: "Cake", subtextForLabel: "Expires: 2 months", compNumber: 6,}), 
-				]}),], 	
 		});
 		
 var deviceURL = "";

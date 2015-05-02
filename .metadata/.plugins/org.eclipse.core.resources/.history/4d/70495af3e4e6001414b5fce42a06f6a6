@@ -1,0 +1,10 @@
+var groceryListsColumn = new Column({left: 0, right: 0, top: 100, bottom: 0, width: application.width, height: application.height, skin: lightgreySkin, style: textStyle,
+	contents: [
+	]
+});
+
+var itemsMainBody = new Container({top:50, bottom:0, skin:whiteSkin, 
+			contents:[
+				itemsColumn
+			], 	
+		});

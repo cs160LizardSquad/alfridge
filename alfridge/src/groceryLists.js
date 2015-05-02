@@ -12,7 +12,6 @@ var blackSkin = new Skin({ fill: 'black',});
 var whiteSkin = new Skin({ fill: 'white',});
 var lightGraySkin = new Skin({fill: "#f1f1f2"});
 //var graySkin	= new Skin({ fill: '#a7a9ab'});
-//var darkGraySkin = new Skin({ fill: '#7f7f7f'});
 var blueSkin = new Skin({fill: 'blue'})
 var separatorSkin = new Skin({ fill: 'silver',});
 var addButtonSkin = new Skin({fill:"#117384", borders:{top: 1, right: 1}, stroke: "#7f7f7f"});

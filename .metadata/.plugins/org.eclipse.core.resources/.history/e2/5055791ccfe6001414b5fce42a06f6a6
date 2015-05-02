@@ -1,0 +1,12 @@
+var ItemsDB = {
+	add: function(){
+	},
+	remove: function(){
+	},
+	
+}
+
+Handlers{
+	onComplete on
+	Invoke
+	ItemsDB.method
