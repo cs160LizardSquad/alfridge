@@ -102,10 +102,17 @@ var newListButtonTemplate = BUTTONS.Button.template(function($){ return{
 						addButtonOn = false;
 						topBar.headerCol.currentView.string = "New Grocery List";
 						currGroceryList = [];
+						application.remove(topBar);
 						suggestionsScreen = new suggestionsTemplate(groceryData);
 						suggestionsBuilder(suggestionsList);
 						//suggestionsScreen.first.first.add(new suggestionLine({name: "HELLO"}));
 						application.add(suggestionsScreen);
+						application.add(topBar);
+						suggestionsHeader = new suggestionsHeaderTemplate();
+						suggestionsFooter = new suggestionsFooterTemplate();
+						application.add(suggestionsHeader);
+						application.add(suggestionsFooter);
+						suggestionsOn = true;
 						currentView = suggestionsScreen;
 						}}
 					}),
@@ -170,7 +177,7 @@ var groceryListTemplate = Container.template(function($) { return {
 }});
 
 var newGroceryListTemplate = Container.template(function($) { return {
-	name: "list", left:0, right:0, top:50, bottom:0, skin: new Skin({fill: "#f1f1f2"}),
+	name: "list", left:0, right:0, top:50, bottom:0, skin: lightGraySkin,
 	contents: [
 	   		SCROLLER.VerticalScroller($, { 
 	   			contents: [
@@ -180,36 +187,48 @@ var newGroceryListTemplate = Container.template(function($) { return {
 	   		})
 	   		]
 	}});
-	
-var suggestionsTemplate = Container.template(function($) { return {
-	name: "list", left:0, right:0, top:50, bottom:0, skin: new Skin({fill: "#f1f1f2"}),
-	contents: [
-	   		SCROLLER.VerticalScroller($, { 
-	   			contents: [
-	   					Column($,{top:0, bottom:0, left:0, right:0, contents:[
-	   					Line($, {top:0, height:50, left:0, right:0, contents:[
+
+var suggestionsOn = false;
+var suggestionsHeader = null;
+var suggestionsFooter = null;
+var suggestionsHeaderTemplate = Column.template(function($) {return {top:50, height:51, left:0, right:0, skin: whiteSkin, contents:[
+	   					Line($,{top:0, height:50, left:0, right:0, contents:[
 	   					new Container({top:0, bottom:0, right:0, left:0}),
-	   					new Label({style: new Style({font:"20px Petala Pro", color:"black",  horizontal: 'center'}), string: "Suggestions"}),
+	   					new Label({style: new Style({font:"20px Petala Pro SemiLight", color:"black",  horizontal: 'center'}), string: "Suggestions"}),
 	   					new Container({top:0, bottom:0, right:0, left:0}),
 	   					]}),
-	   					Line($, {top:0, height:30, left:0, right:0, contents:[
+	   					Line($,{ left: 3, right: 3, height: 1, skin: separatorSkin, }),
+	   					/*
+	   					Line($,{top:0, height:30, left:0, right:0, contents:[
 	   					new Label({left: 10, style: new Style({font:"18px Petala Pro Thin", color:"black",  horizontal: 'center'}), string: "Recently Depleted"}),
 	   					]}),
-	   					Line($, { left: 3, right: 3, height: 1, skin: separatorSkin, }),
-              			]}),
-              			SCROLLER.VerticalScrollbar($, {top:50, bottom:0 }),
+	   					Line($,{ left: 3, right: 3, height: 1, skin: separatorSkin, }),*/
+              			]}});
               			
-              			Line($, {bottom:0, height:70, left:0, right:0,contents:[
+var suggestionsDefaultHeader = 	Column.template(function($){return{top:0, height:31, right:0, left:0, skin: lightGraySkin, contents:[
+						new Line({top:0, height:30, left:0, right:0, contents:[
+	   					new Label({left: 10, style: new Style({font:"18px Petala Pro SemiLight", color:"black",  horizontal: 'center'}), string: "Recently Depleted"}),
+	   					]}),
+	   					new Line({ left: 3, right: 3, height: 1, skin: separatorSkin, })]}});
+
+var suggestionsFooterTemplate = new Column.template(function($){return{bottom:0, height:70, left:0, right:0,skin: whiteSkin, contents:[
+              			new Line({ top:0, left: 3, right: 3, height: 1, skin: separatorSkin, }),
+              			new Line({top:0, bottom:0, right:0, left:0, contents:[
               			new Container({top:0, bottom:0, right:0, left:0}),
               			new cancelButtonTemplate(),
-              			new Container({top:0, bottom:0, width:10}),
+              			new Container({top:0, bottom:0, width:30}),
               			new nextButtonTemplate(),
-              			new Container({top:0, bottom:0, right:0, left:0}),
+              			new Container({top:0, bottom:0, right:0, left:0}),]}),
+              			]}});
+	
+var suggestionsTemplate = Container.template(function($) { return {
+	name: "list", left:0, right:0, top:100, bottom:0, skin: lightGraySkin,
+	contents: [
+	   		SCROLLER.VerticalScroller($, { contents: [
+              			Column($, { left: 0, right: 0, top: 0, name: 'menu', }),
+              			SCROLLER.VerticalScrollbar($, {top:0 }),
               			]})
-              			]
-	   		})
-	   		]
-	}});
+	   		]}});
 
 var nextButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height: 30, width:95, top:17, 
@@ -220,6 +239,9 @@ var nextButtonTemplate = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						application.remove(suggestionsScreen);
+						application.remove(suggestionsHeader);
+						application.remove(suggestionsFooter);
+						suggestionsOn = false;
 						newListScreen = new newListScreenTemplate(groceryData);
 						currentView = newListScreen;
 						newListBuilder(currGroceryList);
@@ -245,8 +267,10 @@ var doneButtonTemplate = BUTTONS.Button.template(function($){ return{
 					onTap: { value:  function(content){
 						application.remove(currentView);
 						//refresh lists????
+						application.remove(topBar);
 						application.add(groceryMainBody);
 						topBar.notifButton.add(newListButton);
+						application.add(topBar);
 						addButtonOn = true;
 						currentView = groceryMainBody;
 						//currentView 
@@ -269,7 +293,14 @@ var cancelButtonTemplate = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						application.remove(currentView);
+						application.remove(topBar);
+						if(suggestionsOn){
+						application.remove(suggestionsHeader);
+						application.remove(suggestionsFooter);
+						suggestionsOn = false;
+						}
 						application.add(groceryMainBody);
+						application.add(topBar);
 						topBar.notifButton.add(newListButton);
 						addButtonOn = true;
 						currentView = groceryMainBody;
@@ -358,6 +389,7 @@ function newListBuilder(list) {
 
  
 function suggestionsBuilder(list) {
+	suggestionsScreen.first.first.add(new suggestionsDefaultHeader());
 	for (i = 6; i >=0; i--){
 			suggestionsScreen.first.first.add(new suggestionLine({name: list[i]}));
 	}

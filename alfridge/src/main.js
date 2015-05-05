@@ -152,6 +152,11 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 						topBar.notifButton.add(notificationButton);
 						notifButtonOn = true;
 						}
+						if(suggestionsOn){
+						application.remove(suggestionsHeader);
+						application.remove(suggestionsFooter);
+						suggestionsOn = false;
+						}
 						sideBarPopped = false;
 						application.add(currentView);
 						
@@ -175,6 +180,11 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 						topBar.notifButton.remove(notificationButton);
 						notifButtonOn = false;
 						}
+						if(suggestionsOn){
+						application.remove(suggestionsHeader);
+						application.remove(suggestionsFooter);
+						suggestionsOn = false;
+						}
 						application.add(topBar);
 						currentView = itemsMainBody;
 						application.remove(sideBar);
@@ -195,6 +205,11 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 						if (notifButtonOn){
 						topBar.notifButton.remove(notificationButton);
 						notifButtonOn = false;
+						}
+						if(suggestionsOn){
+						application.remove(suggestionsHeader);
+						application.remove(suggestionsFooter);
+						suggestionsOn = false;
 						}
 						if (!addButtonOn){
 						topBar.notifButton.add(newListButton);
@@ -222,6 +237,11 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 						topBar.notifButton.remove(notificationButton);
 						notifButtonOn = false;
 						}
+						if(suggestionsOn){
+						application.remove(suggestionsHeader);
+						application.remove(suggestionsFooter);
+						suggestionsOn = false;
+						}
 						application.remove(sideBar);
 						sideBarPopped = false;
 						application.add(currentView);
@@ -242,6 +262,11 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 						if (notifButtonOn){
 						topBar.notifButton.remove(notificationButton);
 						notifButtonOn = false;
+						}
+						if(suggestionsOn){
+						application.remove(suggestionsHeader);
+						application.remove(suggestionsFooter);
+						suggestionsOn = false;
 						}
 						currentView = settingsMainBody;
 						application.remove(sideBar);
