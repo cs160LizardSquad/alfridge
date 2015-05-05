@@ -116,6 +116,7 @@ var subviewButtonTemplate = BUTTONS.Button.template(function($){ return{
 	left: 0, right:0, height: 45,top: $.top,
 	skin: darkgreySkin,
 	contents:[
+		
 		new Picture({width: 25, left:22, height:25, url: $.url}),
 		new Label({left:63, height:30,  string:$.textForLabel, style:new Style({font:"20px Petala Pro Thin", color:"white"})})
 	],
@@ -132,14 +133,39 @@ var topBar = new Line({left:0, right:0, top:0, height:50, skin:tealSkin,
 				new Column({name: "notifButton",left:0, right:0, top:6, bottom:0, contents:[]}),
 			], 	
 		});
+		
+
 
 topBar.notifButton.add(notificationButton);
-var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySkin, 
-			contents:[
-				new subviewButtonTemplate({textForLabel:"Home",
+
+highlight = new Column({width: 5, left:0, top:0, bottom:0, skin: new Skin({fill: "#52D017"})})
+highlightedButton = null;
+
+function resetHighlight (butt) {
+	if (highlightedButton == "homeButton") {
+		homeButton.remove(highlight)
+	}
+	if (highlightedButton == "itemsButton") {
+		itemsButton.remove(highlight)
+	}
+	if (highlightedButton == "gListButton") {
+		gListButton.remove(highlight)
+	}
+	if (highlightedButton == "troubleshootButton") {
+		troubleshootButton.remove(highlight)
+	}
+	if (highlightedButton == "settingsButton") {
+		settingsButton.remove(highlight)
+	}
+}
+
+var homeButton = new subviewButtonTemplate({textForLabel:"Home", 
 				url: "assets/home-icon.png", top:10,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
+						resetHighlight(highlightedButton);
+						highlightedButton = "homeButton";
+						content.add(highlight);
 						topBar.headerCol.currentView.string = "Alfridge"
 						application.remove(currentView);
 						currentView = mainBody;
@@ -162,10 +188,14 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 						
 						}}
 					})}),
-				new subviewButtonTemplate({textForLabel:"Items", 
+
+var itemsButton = new subviewButtonTemplate({textForLabel:"Items", name:"itemsButton", 
 				url: "assets/items-icon.png",  top:0,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
+						resetHighlight(highlightedButton);
+						highlightedButton = "itemsButton";
+						content.add(highlight);
 						topBar.headerCol.currentView.string = "Items";
 						application.remove(topBar);
 						itemsMainBody = new itemsListTemplate();
@@ -192,11 +222,15 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 
 						
 						}}
-					})}),
-				new subviewButtonTemplate({textForLabel:"Grocery Lists", 
+					})})
+					
+var gListButton = new subviewButtonTemplate({textForLabel:"Grocery Lists", name:"groceryListsButton",
 				url: "assets/groceries-icon.png", top:0,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
+						resetHighlight(highlightedButton);
+						highlightedButton = "gListButton";
+						content.add(highlight);
 						topBar.headerCol.currentView.string = "Grocery Lists";
 						application.remove(topBar);
 						groceryMainBody = new groceryListTemplate();
@@ -222,10 +256,14 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 
 						}}
 					})}),
-				new subviewButtonTemplate({textForLabel:"Troubleshoot",
+					
+var troubleshootButton = new subviewButtonTemplate({textForLabel:"Troubleshoot", name:"troubleshoot",
 				url: "assets/troubleshoot-icon.png", top:0,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
+						resetHighlight(highlightedButton);
+						highlightedButton = "troubleshootButton";
+						content.add(highlight);
 						topBar.headerCol.currentView.string = "Troubleshoot"
 						application.remove(currentView);
 						currentView = troubleshootMainBody;
@@ -248,11 +286,14 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 				
 						}}
 					})}),
-					
-				new subviewButtonTemplate({textForLabel:"Settings",
+
+var settingsButton = new subviewButtonTemplate({textForLabel:"Settings",
 				url: "assets/settings-icon.png", top:235,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
+						resetHighlight(highlightedButton);
+						highlightedButton = "settingsButton";
+						content.add(highlight);
 						topBar.headerCol.currentView.string = "Settings"
 						application.remove(currentView);
 						if (addButtonOn){
@@ -275,9 +316,17 @@ var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySk
 						
 						}}
 					})}),
-				
+					
+var sideBar = new Column({left:0, width:230 , top:50, bottom:0,  skin:darkgreySkin,  
+			contents:[
 			], 	
 		});
+		
+sideBar.add(homeButton)
+sideBar.add(itemsButton)
+sideBar.add(gListButton)
+sideBar.add(troubleshootButton)
+sideBar.add(settingsButton)
 		
 
 
