@@ -12,6 +12,7 @@ var blackSkin = new Skin({ fill: 'black',});
 var whiteSkin = new Skin({ fill: 'white',});
 var lightGraySkin = new Skin({fill: "#f1f1f2"});
 //var graySkin	= new Skin({ fill: '#a7a9ab'});
+//var darkGraySkin = new Skin({ fill: '#7f7f7f'});
 var blueSkin = new Skin({fill: 'blue'})
 var separatorSkin = new Skin({ fill: 'silver',});
 var addButtonSkin = new Skin({fill:"#117384", borders:{top: 1, right: 1}, stroke: "#7f7f7f"});
@@ -301,7 +302,7 @@ var suggestionLine = Line.template(function($) { return { left: 0, right: 0, act
      ], 
  }});
  
-var newListItemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: lightGraySkin,
+var newListItemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: whiteSkin,
     behavior: Object.create(Behavior.prototype, {	 
     	onTouchBegan: { value: function(container, id, x,  y, ticks) {
     		//container.plusIcon.first.url = "";
@@ -323,26 +324,27 @@ var newListItemLine = Line.template(function($) { return { left: 0, right: 0, ac
      ], 
  }});
 var newListScreenTemplate = Container.template(function($) { return {
-	name: "list", left:0, right:0, top:50, bottom:0, skin: new Skin({fill: "#f1f1f2"}),
+	name: "list", left:0, right:0, top:50, bottom:0, skin: whiteSkin,
 	contents: [
 	   		SCROLLER.VerticalScroller($, { 
 	   			contents: [
 	   					Column($,{top:0, bottom:0, left:0, right:0, contents:[
-	   					Line($, {top:10, height:50, left:20, right:0, contents:[
-	   					new Label({style: new Style({font:"22px Petala Pro SemiLight", color:"black",  horizontal: 'left'}), string: "Title"}),
+	   					Line($, {top:0, height:50, left:0, right:0, skin: new Skin({fill: "#f1f1f2"}),contents:[
+	   					new Label({top:10, left:20, style: new Style({font:"22px Petala Pro SemiLight", color:"black",  horizontal: 'left'}), string: "Untitled"}),
 	   					new Container({top:0, bottom:0, right:0, left:0}),
 	   					]}),
-	   					Line($, { left: 20, right: 20, top:-5, height: 1, skin: separatorSkin, }),
+	   					Line($, { left: 0, right: 0, top:-7, height: 1, skin: separatorSkin, }),
               			]}),
               			SCROLLER.VerticalScrollbar($, {top:50, bottom:0 }),
-              			
               			Line($, {bottom:0, height:70, left:0, right:0,contents:[
               			new Container({top:0, bottom:0, right:0, left:0}),
               			new cancelButtonTemplate(),
               			new Container({top:0, bottom:0, width:10}),
               			new doneButtonTemplate(),
               			new Container({top:0, bottom:0, right:0, left:0}),
-              			]})
+              			]}),
+              			//Line($, { left: 0, right: 0, top:-50, height: 1, skin: separatorSkin, }),
+              			
               			]
 	   		})
 	   		]

@@ -51,7 +51,7 @@ var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, acti
      	Column($, { left: 0, right: 0, contents: [
      		Container($, { left: 4, right: 4, height: 52, 
      			contents: [
-    			           Label($, { left: 27, style: productNameStyle, string: $.name,}),
+     			           Label($, { left: 27, style: productNameStyle, string: $.name,}),
      			           Label($, { left: 27, style: expirationStyle, string: "Expires in " + $.expiration + " days",}),
  			           ]}),
      		Line($, { left: 0, right: 0, height: 1, skin: separatorSkin, }),

@@ -125,7 +125,7 @@ var insideCompartment = Column.template(function($) { return {
 			] 	
 }});
 
-var itemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: whiteSkin,
+var itemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: lightGraySkin,
     behavior: Object.create(Behavior.prototype, {
     	/* Gives the user some visual feedback on which entry they have tapped.
     	 * note that the skin is reverted to white in onTouchEnded() */    	 
