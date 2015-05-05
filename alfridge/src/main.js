@@ -25,6 +25,7 @@ var sideBarPopped = false;
 var notifButtonOn = true;
 var addButtonOn = false;
 var keyBoardOn = false;
+var customisedTitlesOn = false;
 
 var allItemsDict = {};
 var comp1ItemsDict = {};
@@ -302,8 +303,6 @@ sideBar.add(itemsButton)
 sideBar.add(gListButton)
 sideBar.add(troubleshootButton)
 sideBar.add(settingsButton)
-		
-
 
 var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 	name: $.name, width:$.width, top: 4, left: 4, right: 4, bottom: 4, height:100,
@@ -360,6 +359,16 @@ var compartmentSkin = new Skin({fill:"#B4C9CC", borders:{left:2, right:2, top:2,
 var testSkin = new Skin({fill:"white", 
 	//borders:{left:1, right:1, top:1, bottom:1, stroke:"black"}
 	});
+var compartmentNamesArray = new Array(6);
+if (!customisedTitlesOn) {
+	compartmentNamesArray[0] = "Vegetables"
+	compartmentNamesArray[1] = "Pork"
+	compartmentNamesArray[2] = "Soymilk"
+	compartmentNamesArray[3] = "Chicken"
+	compartmentNamesArray[4] = "Steak"
+	compartmentNamesArray[5] = "Cake"
+	}
+
 var mainBody = new Column({top:50, bottom:0, left:0, right:0, skin: testSkin, 
 			contents:[
 				new Line({height: 35, right:7, left:7, top: 10,skin: testSkin, contents: [
@@ -368,29 +377,30 @@ var mainBody = new Column({top:50, bottom:0, left:0, right:0, skin: testSkin,
 				]}),
 				new Line({name: "line1", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
 				//COMPARTMENT 1
+					
 					new compartmentButtonTemplate({name: "compartment1", mySkin: compartmentSkin, 
-						width: 300, textForLabel: "Vegetables", subtextForLabel: "Expires: 2 months", compNumber: 1,}), 
+						width: 300, textForLabel: compartmentNamesArray[0] , subtextForLabel: "Expires: 2 months", compNumber: 1,}), 
 				]}),
 				//COMPARTMENT 2
 				new Line({name: "line2", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
 					new compartmentButtonTemplate({name: "compartment2", mySkin: compartmentSkin, 
-						width: 130, textForLabel: "Milk", subtextForLabel: "Expires: 2 months", compNumber: 2, }), 
+						width: 130, textForLabel: compartmentNamesArray[1], subtextForLabel: "Expires: 2 months", compNumber: 2, }), 
 				//COMPARTMENT 3
 					new compartmentButtonTemplate({name: "compartment3", mySkin: compartmentSkin, 
-						width: 130, textForLabel: "Meat", subtextForLabel: "Expires: 2 months", compNumber: 3,}), 
+						width: 130, textForLabel: compartmentNamesArray[2], subtextForLabel: "Expires: 2 months", compNumber: 3,}), 
 				]}), 
 				new Line({name: "line3", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
 				//COMPARTMENT 4
 					new compartmentButtonTemplate({name: "compartment4", mySkin: compartmentSkin, 
-						width: 300, textForLabel: "Steak", subtextForLabel: "Expires: 2 months", compNumber: 4,}), 
+						width: 300, textForLabel:compartmentNamesArray[3], subtextForLabel: "Expires: 2 months", compNumber: 4,}), 
 				]}),
 				new Line({name: "line4", height: 100, right:7, left:7, bottom: 10, skin: testSkin, contents: [
 				//COMPARTMENT 5
 					new compartmentButtonTemplate({name: "compartment5", mySkin: compartmentSkin, 
-						width: 130, textForLabel: "Fish", subtextForLabel: "Expires: 2 months", compNumber: 5,}), 
+						width: 130, textForLabel: compartmentNamesArray[4], subtextForLabel: "Expires: 2 months", compNumber: 5,}), 
 				//COMPARTMENT 6
 					new compartmentButtonTemplate({name: "compartment6", mySkin: compartmentSkin, 
-						width: 130, textForLabel: "Cake", subtextForLabel: "Expires: 2 months", compNumber: 6,}), 
+						width: 130, textForLabel: compartmentNamesArray[5], subtextForLabel: "Expires: 2 months", compNumber: 6,}), 
 				]}),], 	
 		});
 		

@@ -1,4 +1,5 @@
 var THEME = require('themes/sample/theme');
+//include("main.js");
 var SCROLLER = require('mobile/scroller');
 var SCREEN = require('mobile/screen');
 var KEYBOARD = require('mobile/keyboard');
@@ -12,8 +13,9 @@ var lightGraySkin = new Skin({fill: "#f1f1f2"});
 //var darkGraySkin = new Skin({ fill: '#7f7f7f'});
 var blueSkin = new Skin({fill: 'blue'})
 var separatorSkin = new Skin({ fill: 'silver',});
-
-
+var fieldStyle = new Style({ color: "#5A6060", font: '18px Petala Pro Thin', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var changeStyle = new Style({ color: '#aaa', font: '10px', horizontal: 'center', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var nameInputSkin = new Skin({ borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray', fill:'white'});
 
 var backButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height: 45, width:100, left:0, top: 5, 
@@ -23,6 +25,8 @@ var backButtonTemplate = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
+						KEYBOARD.hide();
+     			 		content.focus();
 						application.remove($.myView)
 						application.remove(compartmentView)
 						application.add(mainBody);
@@ -57,9 +61,6 @@ var defrostButtonTemplate = BUTTONS.Button.template(function($){ return{
 var compartmentScreenContainer = Container.template(function($) { return {
 	name: "list", left:0, right:0, top:0, bottom:0, skin: new Skin({fill: "white"}),
 	contents: [
-	   		/* Note that the scroller is declared as having only an empty
-	   		 * Column and a scrollbar.  All the entries will be added 
-	   		 * programmatically. */ 
 	   		SCROLLER.VerticalScroller($, { 
 	   			contents: [
               			Column($, { left: 0, right: 0, top: 0, name: 'menu', }),
@@ -81,10 +82,81 @@ var statusLabel = Label.template(function($){ return{
 left:0, right:0, height:20, top: 5, string:$.string, style:new Style({horizontal: "center",font:"18px Petala Pro Thin", color:"#5A6060"})
 }});
 
+var compartmentTitleField = Line.template(function($) { return { 
+ left: 0, right: 0, height: 40, top: 100, active: true, skin: nameInputSkin, 
+ 	contents: [
+    Scroller($, { 
+      left: 20, right: 0, top: 4, bottom: 4, active: true, 
+      behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
+        Label($, {
+          left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          editable: true,  string: $.name,
+         	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
+    		onTouchEnded: { value: function() {	
+     			KEYBOARD.show();
+			}},
+         		onEdited: { value: function(label){
+         			var data = this.data;
+              		data.name = label.string;
+              		//label.container.hint.visible = ( data.name.length == 0 );	
+              		if (data.name != "Tap to change title") {
+              			trace(customisedTitlesOn);
+              			customisedTitlesOn = true;
+              			titlebut.label.string= data.name
+              			switch($.compNumber) {
+							    case 1:
+       								mainBody.line1.compartment1.col1.line1.nameTempLabel.string = data.name
+       								compartmentNamesArray[0] = data.name
+       								break;
+       							case 2:
+       								mainBody.line2.compartment2.col1.line1.nameTempLabel.string = data.name
+       								compartmentNamesArray[1] = data.name
+       								break;    
+       							case 3:
+       								mainBody.line2.compartment3.col1.line1.nameTempLabel.string = data.name
+       								compartmentNamesArray[2] = data.name
+       								break;  
+       							case 4:
+       								mainBody.line3.compartment4.col1.line1.nameTempLabel.string = data.name
+       								compartmentNamesArray[3] = data.name
+       								break;   
+       							case 5:
+       								mainBody.line4.compartment5.col1.line1.nameTempLabel.string = data.name
+       								compartmentNamesArray[4] = data.name
+       								break;    
+       							case 6:
+       								mainBody.line4.compartment6.col1.line1.nameTempLabel.string = data.name
+       								compartmentNamesArray[5] = data.name
+       								break; 
+       					}
+              		}
+         		}}
+         	}),
+         }),
+  
+      ]
+    }),
+  ]
+}})
 
-//new Label({left:0, right:0, height:20, top: 5, string:"status: not defrosting", style:new Style({font:"18px Petala Pro Thin", color:"black"})}),
+var newTitleField = null;
+var titlebut; 
+var compTitleButtonTemplate = BUTTONS.Button.template(function($){ return{
+	height: 20, left:0, right:0, top: 5, 
+	skin: whiteSkin,
+	contents:[
+		new Label({left:0, right:0, height:30, top:5, string:$.title, style:new Style({font:"18px Petala Pro Thin", color:"#5A6060", horizontal: "center" }), name:"label"}),
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(content){
+						newTitleField = new compartmentTitleField({name:"Tap to change title", compNumber: $.compNumber,})
+						application.add(newTitleField)
+						}}
+					})
+}});
+
 var insideCompartment = Column.template(function($) { return {
-  top:0, height:310, right:0, left:0, skin:whiteSkin,
+  top:0, height:310, right:0, left:0, skin:whiteSkin, active:true,
 			contents:[
 				  new Line({left:0, right:0, top:0, height:50, skin:tealSkin, contents:[
 				  	new backButtonTemplate({myView: this}),
@@ -92,11 +164,12 @@ var insideCompartment = Column.template(function($) { return {
 				  ]}),
 				  new Line({top:10, height:30, right:0, left:0, contents:[
 				  	new Label({left:0, right:0, height:30, top:10, string:"Compartment Name", style: headerStyle}), 
+				  	
 				  	]}),
 				  new Line({ left: 0, right: 0, top: 6, height: 1, skin: new Skin({fill: "silver"}), }),
 				  new Line({top:2,  height:40, right:0, left:0, contents:[
-				  	new Label({left:0, right:0, height:30, top:5, string:$.compName, style:new Style({font:"18px Petala Pro Thin", color:"#5A6060", horizontal: "center"})}),
-				  ]}),
+				  		 titlebut = new compTitleButtonTemplate({title:compartmentNamesArray[$.compNumber-1], compNumber: $.compNumber})
+					]}),
 				  	//new Label({left:0, right:0, height:30, top:5,  string:"Live Capture", style:new Style({font:"20px", color:"black"})}),
 				  	//new Label({left:0, right:0, height:90, top: 5, string:"X", style:new Style({font:"50px", color:"black"})}),
 				  new Line({top:10,  height:20, right:0, left:0, contents:[	
@@ -122,8 +195,17 @@ var insideCompartment = Column.template(function($) { return {
 				  ]}),
 				  new Line({ left: 0, right: 0, top: 4, height: 1, skin: new Skin({fill: "silver"}), }),
 				  //new itemLine({name: "test1", expiration: "5", quantity: "20"}),			
-			] 	
-}});
+			],
+			behavior: Object.create(Column.prototype, {
+   				 onTouchEnded: { value: function(content){
+     				 	KEYBOARD.hide();
+     			 		content.focus();
+     			 		if (newTitleField) {
+     			 			application.remove(newTitleField)
+     			 			newTitleField = null;
+     			 			}
+    			}}})
+			 }});
 
 var itemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: lightGraySkin,
     behavior: Object.create(Behavior.prototype, {
@@ -162,6 +244,7 @@ var itemLine = Line.template(function($) { return { left: 0, right: 0, active: t
      	
      	
      ], 
+     
  }});
  
 function compartmentListBuilder(dict) {
