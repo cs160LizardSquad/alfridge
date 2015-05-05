@@ -363,7 +363,7 @@ var compartmentNamesArray = new Array(6);
 if (!customisedTitlesOn) {
 	compartmentNamesArray[0] = "Vegetables"
 	compartmentNamesArray[1] = "Pork"
-	compartmentNamesArray[2] = "Soymilk"
+	compartmentNamesArray[2] = "Milk"
 	compartmentNamesArray[3] = "Chicken"
 	compartmentNamesArray[4] = "Steak"
 	compartmentNamesArray[5] = "Cake"
@@ -445,18 +445,24 @@ Handler.bind("/getTempResponse", {
     	temp5 = convert(json.temp5),
     	temp6 = convert(json.temp6),
     	trace(JSON.stringify(json));
-    	var comp1temp = mainBody.line1.compartment1.col1.line1.nameTempLabel.string;
-    	mainBody.line1.compartment1.col1.line1.nameTempLabel.string = comp1temp.substring(0, comp1temp.length - 4) + convert(temp1) + "\xB0" + "F";
-    	var comp2temp = mainBody.line2.compartment2.col1.line1.nameTempLabel.string;
-    	mainBody.line2.compartment2.col1.line1.nameTempLabel.string = comp2temp.substring(0, comp2temp.length - 4) + convert(temp2) + "\xB0" + "F";
-       	var comp3temp = mainBody.line2.compartment3.col1.line1.nameTempLabel.string;
-    	mainBody.line2.compartment3.col1.line1.nameTempLabel.string = comp3temp.substring(0, comp3temp.length - 4) + convert(temp3) + "\xB0" + "F";
-    	var comp4temp = mainBody.line3.compartment4.col1.line1.nameTempLabel.string;
-    	mainBody.line3.compartment4.col1.line1.nameTempLabel.string = comp4temp.substring(0, comp4temp.length - 4) + convert(temp4) + "\xB0" + "F";
-    	var comp5temp = mainBody.line4.compartment5.col1.line1.nameTempLabel.string;
-    	mainBody.line4.compartment5.col1.line1.nameTempLabel.string = comp5temp.substring(0, comp5temp.length - 4) + convert(temp5) + "\xB0" + "F";
-    	var comp6temp = mainBody.line4.compartment6.col1.line1.nameTempLabel.string;
-    	mainBody.line4.compartment6.col1.line1.nameTempLabel.string = comp6temp.substring(0, comp6temp.length - 4) + convert(temp6) + "\xB0" + "F";
+    	//var comp1temp = mainBody.line1.compartment1.col1.line1.nameTempLabel.string;
+    	var comp1temp = compartmentNamesArray[0]
+    	mainBody.line1.compartment1.col1.line1.nameTempLabel.string = comp1temp.substring(0, comp1temp.length ) + convert(temp1) + "\xB0" + "F";
+    	//var comp2temp = mainBody.line2.compartment2.col1.line1.nameTempLabel.string;
+    	var comp2temp = compartmentNamesArray[1]
+    	mainBody.line2.compartment2.col1.line1.nameTempLabel.string = comp2temp.substring(0, comp2temp.length ) + convert(temp2) + "\xB0" + "F";
+       //	var comp3temp = mainBody.line2.compartment3.col1.line1.nameTempLabel.string;
+    	var comp3temp = compartmentNamesArray[2]
+    	mainBody.line2.compartment3.col1.line1.nameTempLabel.string = comp3temp.substring(0, comp3temp.length ) + convert(temp3) + "\xB0" + "F";
+    	//var comp4temp = mainBody.line3.compartment4.col1.line1.nameTempLabel.string;
+    	var comp4temp = compartmentNamesArray[3]
+    	mainBody.line3.compartment4.col1.line1.nameTempLabel.string = comp4temp.substring(0, comp4temp.length ) + convert(temp4) + "\xB0" + "F";
+    	//var comp5temp = mainBody.line4.compartment5.col1.line1.nameTempLabel.string;
+    	var comp5temp = compartmentNamesArray[4]
+    	mainBody.line4.compartment5.col1.line1.nameTempLabel.string = comp5temp.substring(0, comp5temp.length ) + convert(temp5) + "\xB0" + "F";
+    	//var comp6temp = mainBody.line4.compartment6.col1.line1.nameTempLabel.string;
+    	var comp6temp = compartmentNamesArray[5]
+    	mainBody.line4.compartment6.col1.line1.nameTempLabel.string = comp6temp.substring(0, comp6temp.length ) + convert(temp6) + "\xB0" + "F";
         handler.invoke( new Message("/delay"));
         //application.distribute( "receiveTempReading", a );
     }
