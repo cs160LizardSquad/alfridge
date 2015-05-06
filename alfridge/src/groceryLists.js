@@ -63,17 +63,27 @@ var groceryListLine = Line.template(function($) { return { left: 0, right: 0, ac
     	/* Gives the user some visual feedback on which entry they have tapped.
     	 * note that the skin is reverted to white in onTouchEnded() */    	 
     	onTouchBegan: { value: function(container, id, x,  y, ticks) {
-    		//container.skin = graySkin;
+    		container.skin = graySkin;
     	}},
     	/* Traces out the value of the first Label's string. The
     	 * silly string of "first" in the trace can be thought of as
     	 * container.Column.Container.Label.string.  This pattern can
     	 * be seen reading down the contents of this object below */
     	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
-			//container.skin = lightGraySkin;
+			container.skin = lightGraySkin;
 			trace(container.first.first.first.string+"\n");
      		KEYBOARD.hide();
-		}}
+		}},
+		onTouchCancelled: { value: function(container, id, x, y, ticks) {
+			if(container.skin == lightGraySkin){
+				container.skin = graySkin;
+			}else{
+				container.skin = lightGraySkin;
+			}
+			trace("WTF");
+			trace(container.first.first.first.string+"\n");
+     		KEYBOARD.hide();
+     	}},
     }),
 	contents: [
      	Column($, { left: 0, right: 0, contents: [
@@ -161,7 +171,7 @@ var grocerySearchBar = Line.template(function($) { return {
          }),
          Picture($, {left:12, top:4, width:25, height: 25, url: "assets/search-icon.png"}),
          Label($, {
-   			 	left:22, right:0, top:0, bottom:0, style: hintStyle, string:"Search...", name:"hint"
+   			 	left:22, right:0, top:2, bottom:0, style: hintStyle, string:"Search...", name:"hint"
          })
       ]
     }),
