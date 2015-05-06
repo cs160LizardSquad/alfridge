@@ -64,8 +64,6 @@ var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, acti
  			           ]}),
      		Line($, { left: 0, right: 0, height: 1, skin: separatorSkin, }),
      	], }),
-     	
-     	
      ], 
  }});
 
@@ -99,6 +97,8 @@ var itemsTabs = Line.template(function($) { return { name: "tabs", top: 0, right
      				itemsMainBody.tabs.alphaTab.skin = graySkin;
      				itemsMainBody.tabs.quantityTab.skin = graySkin;
      				itemsMainBody.tabs.expirationTab.skin = graySkin;
+     				clearitemsScreen();
+     				bubbleSortListBy("recent");
 				}}, 
 			}), contents:[
 				new Label({top:0, bottom:0, right:0, left:0, style: tabStyle, string: "Recent"}),
@@ -111,6 +111,8 @@ var itemsTabs = Line.template(function($) { return { name: "tabs", top: 0, right
      				itemsMainBody.tabs.recentTab.skin = graySkin;
      				itemsMainBody.tabs.quantityTab.skin = graySkin;
      				itemsMainBody.tabs.expirationTab.skin = graySkin;
+     				clearitemsScreen();
+     				bubbleSortListBy("alpha");
 				}}, 
 			}),
 			contents:[
@@ -123,6 +125,8 @@ var itemsTabs = Line.template(function($) { return { name: "tabs", top: 0, right
      				itemsMainBody.tabs.alphaTab.skin = graySkin;
      				itemsMainBody.tabs.recentTab.skin = graySkin;
      				itemsMainBody.tabs.expirationTab.skin = graySkin;
+     				clearitemsScreen();
+     				bubbleSortListBy("quantity");
 				}}, 
 			}),
 				contents:[
@@ -135,6 +139,8 @@ var itemsTabs = Line.template(function($) { return { name: "tabs", top: 0, right
      				itemsMainBody.tabs.alphaTab.skin = graySkin;
      				itemsMainBody.tabs.recentTab.skin = graySkin;
      				itemsMainBody.tabs.quantityTab.skin = graySkin;
+     				clearitemsScreen();
+     				bubbleSortListBy("expiration");
 				}}, 
 			}),
 			contents:[
@@ -181,6 +187,7 @@ var itemsListTemplate = Container.template(function($) { return {
   ]
 }});
 
+var itemsOnScreen = []
 
 /* This simple function exists so we can call "forEach" on
  * our array of list entries (menuItems).  It adds a new 
@@ -192,7 +199,90 @@ function ListBuilder(dict) {
 	itemsMainBody.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
 	for (var key in dict){
 		if (dict.hasOwnProperty(key)) {
-			itemsMainBody.list.first.menu.add(new ProcessorLine(dict[key]));
+			currItem = new ProcessorLine(dict[key]);
+			itemsMainBody.list.first.menu.add(currItem);
+			itemsOnScreen.push(currItem);
 		}
 	}
 }
+
+function clearitemsScreen(){
+	while(itemsOnScreen.length > 0){
+		itemsMainBody.list.first.menu.remove(itemsOnScreen.pop());
+	}
+};
+//easiest sort to implement... bubble sort!
+function bubbleSortListBy(id) {
+	itemsArray = dictToArray(allItemsDict);
+	switch(id) {
+	    case "recent":
+			populateItemsScreen();
+			break;
+		case "alpha":
+			for (var out = Object.keys(allItemsDict).length - 1; out > 0; out--){    
+				for (var inn = 0; inn < out; inn++) {
+					//Are they out of order?
+            		if (itemsArray[inn].name > itemsArray[inn+1].name){
+                		swap(itemsArray, inn, inn+1);   }                             
+				}
+			}       
+			populateItemsScreen();
+			break;    
+		case "quantity":
+			for (var out = Object.keys(allItemsDict).length - 1; out > 0; out--){    
+				for (var inn = 0; inn < out; inn++) {
+					//Are they out of order?
+            		if (itemsArray[inn].quantity > itemsArray[inn+1].quantity){
+                		swap(itemsArray, inn, inn+1);   }                             
+				}
+			}       
+			populateItemsScreen();
+			break;  
+		case "expiration":
+			for (var out = Object.keys(allItemsDict).length - 1; out > 0; out--){    
+				for (var inn = 0; inn < out; inn++) {
+					//Are they out of order?
+            		if (itemsArray[inn].expiration > itemsArray[inn+1].expiration){
+                		swap(itemsArray, inn, inn+1);   }                             
+				}
+			}       
+			populateItemsScreen();
+			break;             								       								      								       								   							 
+		}
+}
+function populateItemsScreen(){
+	for (var i = 0; i < itemsArray.length; i++){
+		currItem = new ProcessorLine(itemsArray[i]);
+		itemsMainBody.list.first.menu.add(currItem);
+		itemsOnScreen.push(currItem);
+	}
+};
+
+function dictToArray(dict){
+	tempArray = []
+	for (var key in dict){
+		if (dict.hasOwnProperty(key)) {
+			tempArray.push(dict[key]);
+		}}
+	return tempArray;
+}
+
+function swap(array, one, two) {
+    var tmp = array[one];
+    array[one] = array[two];
+    array[two] = tmp;                    
+};
+/*
+function bubbleSort(dict, id) {   
+    callback(elements);
+    //Loop over all the elements
+    for (var out = elements.length - 1; out > 0; out--){                            
+        for (var inn = 0; inn < out; inn++) {
+            //Are they out of order?
+            if (elements[inn] > elements[inn+1]){
+                swap(inn, inn+1);                                
+            } 
+        }
+        callback(elements);
+    }                    
+}; */
