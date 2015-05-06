@@ -6,6 +6,34 @@ var SCREEN = require('mobile/screen')
 var CONTROL = require('mobile/control');
 
 
+function timeAgo(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = Math.floor(seconds / 31536000);
+
+    if (interval > 1) {
+        return interval + " years";
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+        return interval + " months";
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+        return interval + " days";
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+        return interval + " hours";
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+        return interval + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
+}
+
 
 /* ASSETS */
 var blackSkin = new Skin({ fill: 'black',});
@@ -41,7 +69,12 @@ var suggestionsList =[ "Potatoes", "Cucumbers", "Rice", "Bread", "Milk",
 						"Soymilk", "Chicken", "Tofu", "Lettuce", "Eggs",
 						"Oreos", "Orange Juice"]
  
-var groceryList = [ {name: "Trader Joe's", lastUpdated: 23},
+var groceryList = [
+					{name: "Whole Foods", lastUpdated: 2},
+					{name: "Safeway", lastUpdated: 2},
+				]
+ 
+/*var groceryList = [ {name: "Trader Joe's", lastUpdated: 23},
 					{name: "Costco", lastUpdated: 21},
 					{name: "Walgreens", lastUpdated: 21},
 					{name: "Whole Foods", lastUpdated: 20},
@@ -54,9 +87,23 @@ var groceryList = [ {name: "Trader Joe's", lastUpdated: 23},
 					{name: "Trader Joe's", lastUpdated: 4},
 					{name: "Whole Foods", lastUpdated: 2},
 					{name: "Safeway", lastUpdated: 2},	
-					]
+					]*/
 					
 var currGroceryList = []
+var currListName = "";
+
+function grocerySearchResults(query){
+	var results = [];
+	for(i = groceryList.length -1; i >=0; i--){
+		if(groceryList[i]["name"].match(new RegExp(query, "i"))){
+			results.push(groceryList[i]);
+		}
+	}
+	return results;
+}
+
+//{"Trader Joe's": ["apple"], "Walgreens": ["ketchup"]}
+var itemsList = {};
 
 var groceryListLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: lightGraySkin,
     behavior: Object.create(Behavior.prototype, {
@@ -73,6 +120,7 @@ var groceryListLine = Line.template(function($) { return { left: 0, right: 0, ac
 			container.skin = lightGraySkin;
 			trace(container.first.first.first.string+"\n");
      		KEYBOARD.hide();
+     		container.focus();
 		}},
 		onTouchCancelled: { value: function(container, id, x, y, ticks) {
 			if(container.skin == lightGraySkin){
@@ -80,9 +128,9 @@ var groceryListLine = Line.template(function($) { return { left: 0, right: 0, ac
 			}else{
 				container.skin = lightGraySkin;
 			}
-			trace("WTF");
 			trace(container.first.first.first.string+"\n");
      		KEYBOARD.hide();
+     		container.focus();
      	}},
     }),
 	contents: [
@@ -90,7 +138,7 @@ var groceryListLine = Line.template(function($) { return { left: 0, right: 0, ac
      		Container($, { left: 4, right: 4, height: 52, 
      			contents: [
      			           Label($, { left: 25, style: productNameStyle, string: $.name,}),
-     			           Label($, { left:25, style: expirationStyle, string: "Updated " + $.lastUpdated + " hours ago",}),
+     			           Label($, { left:25, style: expirationStyle, string: "Updated " + timeAgo($.lastUpdated) + " ago",}),
  			           ]}),
      		Line($, { left: 0, right: 0, height: 1, skin: separatorSkin, }),
      	], }),
@@ -165,7 +213,20 @@ var grocerySearchBar = Line.template(function($) { return {
          			var data = this.data;
               data.name = label.string;
               trace(data.name);
-              label.container.hint.visible = ( data.name.length == 0 );	
+              label.container.hint.visible = ( data.name.length == 0 );
+         		}},
+         		onKeyUp: { value: function(label, key, modifiers, count, ticks){
+         			if(key.match(/\r/)){
+         				KEYBOARD.hide();
+         				content.container.focus();
+         			}
+         			/*groceryMainBody.list.first.menu.empty();
+					groceryListBuilder(grocerySearchResults(label.string));	*/
+					groceryMainBody.list.first.menu.theList.empty();
+					var searchResults = grocerySearchResults(label.string);
+					for (i = searchResults.length -1; i >=0; i--){
+						groceryMainBody.list.first.menu.theList.add(new groceryListLine(searchResults[i]));
+					}
          		}}
          	}),
          }),
@@ -222,7 +283,7 @@ var suggestionsDefaultHeader = 	Column.template(function($){return{top:0, height
 	   					new Line({ left: 3, right: 3, height: 1, skin: separatorSkin, })]}});
 
 var suggestionsFooterTemplate = new Column.template(function($){return{bottom:0, height:70, left:0, right:0,skin: whiteSkin, contents:[
-              			new Line({ top:0, left: 3, right: 3, height: 1, skin: separatorSkin, }),
+              			new Line({ top:0, left: 3, right: 3, height: 1, skin: separatorSkin }),
               			new Line({top:0, bottom:0, right:0, left:0, contents:[
               			new Container({top:0, bottom:0, right:0, left:0}),
               			new cancelButtonTemplate(),
@@ -283,6 +344,19 @@ var doneButtonTemplate = BUTTONS.Button.template(function($){ return{
 						application.add(topBar);
 						addButtonOn = true;
 						currentView = groceryMainBody;
+						currListName = currListName == "" ? "Untitled List":currListName;
+						if(itemsList.hasOwnProperty(currListName)){
+							currListName += "*";
+						}
+						itemsList[currListName] = currGroceryList;
+						groceryList.push({name: currListName, lastUpdated: new Date().getTime()});
+						trace("\n" + JSON.stringify(groceryList) + "\n");
+						trace("\n" + JSON.stringify(itemsList) + "\n");
+						groceryMainBody.list.first.menu.theList.empty();
+						for (i = groceryList.length -1; i >=0; i--){
+							groceryMainBody.list.first.menu.theList.add(new groceryListLine(groceryList[i]));
+						}
+						currListName = "";
 						//currentView 
 						//KEYBOARD.hide();
 						//groceryLists[listName.string]={updated: new Date().getTime(), items: [itemLabel1.string,itemLabel2.string,itemLabel3.string,itemLabel4.string,itemLabel5.string] };
@@ -325,13 +399,22 @@ var suggestionLine = Line.template(function($) { return { left: 0, right: 0, act
     	onTouchBegan: { value: function(container, id, x,  y, ticks) {
     		container.active = false;
     		container.plusIcon.first.url = "assets/check.png";
-    		
+    		container.skin = graySkin;
     		currGroceryList.push($.name);
     		trace(currGroceryList + "\n");
     	}},
     	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
-			//container.skin = lightGraySkin;
-		}}}),	contents: [
+			container.skin = lightGraySkin;
+		}},
+		onTouchCancelled: { value: function(container, id, x, y, ticks) {
+			if(container.skin == lightGraySkin){
+				container.skin = graySkin;
+			}else{
+				container.skin = lightGraySkin;
+			}
+			trace(container.first.first.first.string+"\n");
+     		KEYBOARD.hide();
+     	}}}),	contents: [
      	Column($, { left: 0, right: 0, contents: [
      		Container($, { left: 4, right: 4, height: 47, 
      			contents: [
@@ -342,6 +425,43 @@ var suggestionLine = Line.template(function($) { return { left: 0, right: 0, act
      			contents: [Picture($,{right:20, width:25, height: 25, url: "assets/add-icon-dark.png"}),]}),
      ], 
  }});
+ 
+ 	   		
+var groceryTitleBar = Line.template(function($) { return { 
+ left: 0, right: 0, height: 40, active: true, skin: lightGraySkin, 
+ 	contents: [
+    Scroller($, { 
+      left: 4, right: 4, top: 4, bottom: 4, active: true, 
+      behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
+        Label($, { 
+          left: 25, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          editable: true, string: $.name,
+         	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
+    		onTouchEnded: { value: function() {	
+     			KEYBOARD.show();
+			}},
+         		onEdited: { value: function(label){
+         			var data = this.data;
+              data.name = label.string;
+              currListName = label.string;
+              trace(data.name);
+              label.container.titleList.visible = ( data.name.length == 0 );	
+         		}},
+         		onKeyUp: { value: function(content, key, modifiers, count, ticks){
+         			if(key.match(/\r/)){
+         				KEYBOARD.hide();
+         				content.container.focus();
+         			}
+         		}}
+         	}),
+         }),
+         Label($, {
+   			 	left:22, right:0, top:2, bottom:0, style: hintStyle, string:"Untitled List", name:"titleList"
+         })
+      ]
+    }),
+  ]
+}});
  
 var newListItemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: whiteSkin,
     behavior: Object.create(Behavior.prototype, {	 
@@ -371,7 +491,8 @@ var newListScreenTemplate = Container.template(function($) { return {
 	   			contents: [
 	   					Column($,{top:0, bottom:0, left:0, right:0, contents:[
 	   					Line($, {top:0, height:50, left:0, right:0, skin: new Skin({fill: "#f1f1f2"}),contents:[
-	   					new Label({top:10, left:20, style: new Style({font:"22px Petala Pro SemiLight", color:"black",  horizontal: 'left'}), string: "Untitled"}),
+	   					//new Label({top:10, left:20, style: new Style({font:"22px Petala Pro SemiLight", color:"black",  horizontal: 'left'}), string: "Untitled",}),
+	   					new groceryTitleBar({"name": ""}),
 	   					new Container({top:0, bottom:0, right:0, left:0}),
 	   					]}),
 	   					Line($, { left: 0, right: 0, top:-7, height: 1, skin: separatorSkin, }),
@@ -414,7 +535,10 @@ function groceryListBuilder(dict) {
 	groceryMainBody.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
 	groceryMainBody.list.first.menu.add(new grocerySearchBar({name: ""}));
 	groceryMainBody.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
+	var theList = new Column({ left: 0, right: 0, top: 0, right: 0, name: "theList" });
+	groceryMainBody.list.first.menu.add(theList);
 	for (i = dict.length -1; i >=0; i--){
-			groceryMainBody.list.first.menu.add(new groceryListLine(dict[i]));
+			groceryMainBody.list.first.menu.theList.add(new groceryListLine(dict[i]));
 	}
+	
 }
