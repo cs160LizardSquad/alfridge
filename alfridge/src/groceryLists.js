@@ -370,7 +370,7 @@ var newListScreenTemplate = Container.template(function($) { return {
               			Line($, {bottom:0, height:70, left:0, right:0,contents:[
               			new Container({top:0, bottom:0, right:0, left:0}),
               			new cancelButtonTemplate(),
-              			new Container({top:0, bottom:0, width:10}),
+              			new Container({top:0, bottom:0, width:30}),
               			new doneButtonTemplate(),
               			new Container({top:0, bottom:0, right:0, left:0}),
               			]}),

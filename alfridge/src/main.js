@@ -42,6 +42,7 @@ var temp4 = 0;
 var temp5 = 0;
 var temp6 = 0;
 
+//these statuses state whether specific compartments are defrosting or not.
 var compartmentStatuses = [null, 0, 0, 0, 0, 0, 0];
 
 /**var upButton = BUTTONS.Button.template(function($){ return{
@@ -141,7 +142,7 @@ topBar.notifButton.add(notificationButton);
 highlight = new Column({width: 5, left:0, top:0, bottom:0, skin: new Skin({fill: "#52D017"})})
 highlightedButton = null;
 
-function resetHighlight (butt) {
+function resetHighlight(button) {
 	if (highlightedButton == "homeButton") {
 		homeButton.remove(highlight)
 	}
