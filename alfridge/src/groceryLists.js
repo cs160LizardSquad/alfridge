@@ -119,6 +119,11 @@ var groceryListLine = Line.template(function($) { return { left: 0, right: 0, ac
     	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
 			container.skin = lightGraySkin;
 			trace(container.first.first.first.string+"\n");
+			trace("DJSAKL" + JSON.stringify(groceryData));
+			newListScreen = new editListScreenTemplate(groceryData);
+			currentView = newListScreen;
+			newListBuilder(currGroceryList);
+			application.add(currentView);
      		KEYBOARD.hide();
      		container.focus();
 		}},
@@ -368,6 +373,46 @@ var doneButtonTemplate = BUTTONS.Button.template(function($){ return{
 				})
 }});
 
+var saveButtonTemplate = BUTTONS.Button.template(function($){ return{
+	height: 30, width:95, top:17, 
+	skin: addButtonSkin,
+	contents:[
+		new Label({top:0, height:30, string:"Save", style:new Style({font:"20px Petala Pro SemiLight", color:"white"})})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(content){
+						application.remove(currentView);
+						//refresh lists????
+						application.remove(topBar);
+						//application.add(groceryMainBody);
+						//topBar.notifButton.add(newListButton);
+						application.add(topBar);
+						addButtonOn = true;
+						currentView = groceryMainBody;
+						currListName = currListName == "" ? "Untitled List":currListName;
+						if(itemsList.hasOwnProperty(currListName)){
+							currListName += "*";
+						}
+						itemsList[currListName] = currGroceryList;
+						groceryList.push({name: currListName, lastUpdated: new Date().getTime()});
+						trace("\n" + JSON.stringify(groceryList) + "\n");
+						trace("\n" + JSON.stringify(itemsList) + "\n");
+						groceryMainBody.list.first.menu.theList.empty();
+						for (i = groceryList.length -1; i >=0; i--){
+							groceryMainBody.list.first.menu.theList.add(new groceryListLine(groceryList[i]));
+						}
+						currListName = "";
+						//currentView 
+						//KEYBOARD.hide();
+						//groceryLists[listName.string]={updated: new Date().getTime(), items: [itemLabel1.string,itemLabel2.string,itemLabel3.string,itemLabel4.string,itemLabel5.string] };
+						//updateGroceryLists();
+						//application.remove(newListScreen)
+						//application.add(suggestionScreen)
+						//application.remove(groceryListsAddView({}));
+					}}
+				})
+}});
+
 var cancelButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height: 30, width:95,top:17,
 	skin: addButtonSkin,
@@ -387,6 +432,24 @@ var cancelButtonTemplate = BUTTONS.Button.template(function($){ return{
 						application.add(topBar);
 						topBar.notifButton.add(newListButton);
 						addButtonOn = true;
+						currentView = groceryMainBody;
+						//KEYBOARD.hide();
+						//clearAllFields();
+					}}
+				})
+}});
+
+var editCancelButtonTemplate = BUTTONS.Button.template(function($){ return{
+	height: 30, width:95,top:17,
+	skin: addButtonSkin,
+	contents:[
+		new Label({top:0, height:30, string:"Back", style:new Style({font:"20px Petala Pro SemiLight", color:"white"})})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(content){
+						application.remove(currentView);
+						//topBar.notifButton.add(newListButton);
+						//addButtonOn = true;
 						currentView = groceryMainBody;
 						//KEYBOARD.hide();
 						//clearAllFields();
@@ -490,7 +553,6 @@ var groceryListItemBar = Line.template(function($) { var tempItemName = ""; retu
 	         				tempItemName = label.string;
 	         			}
 	              }
-	              //trace(data.name);
 	         	}},
 	         	onKeyUp: { value: function(content, key, modifiers, count, ticks){
 	         		if(key.match(/\r/)){
@@ -561,6 +623,33 @@ var newListScreenTemplate = Container.template(function($) { return {
               			new cancelButtonTemplate(),
               			new Container({top:0, bottom:0, width:30}),
               			new doneButtonTemplate(),
+              			new Container({top:0, bottom:0, right:0, left:0}),
+              			]}),
+              			//Line($, { left: 0, right: 0, top:-50, height: 1, skin: separatorSkin, }),
+              			
+              			]
+	   		})
+	   		]
+	}});
+var editListScreenTemplate = Container.template(function($) { return {
+	name: "editlist", left:0, right:0, top:50, bottom:0, skin: whiteSkin,
+	contents: [
+	   		SCROLLER.VerticalScroller($, { 
+	   			contents: [
+	   					Column($,{top:0, bottom:0, left:0, right:0, contents:[
+	   					Line($, {top:0, height:50, left:0, right:0, skin: new Skin({fill: "#f1f1f2"}),contents:[
+	   					//new Label({top:10, left:20, style: new Style({font:"22px Petala Pro SemiLight", color:"black",  horizontal: 'left'}), string: "Untitled",}),
+	   					new groceryTitleBar({"name": ""}),
+	   					new Container({top:0, bottom:0, right:0, left:0}),
+	   					]}),
+	   					Line($, { left: 0, right: 0, top:-7, height: 1, skin: separatorSkin, }),
+              			]}),
+              			SCROLLER.VerticalScrollbar($, {top:50, bottom:0 }),
+              			Line($, {bottom:0, height:70, left:0, right:0,contents:[
+              			new Container({top:0, bottom:0, right:0, left:0}),
+              			new editCancelButtonTemplate(),
+              			new Container({top:0, bottom:0, width:30}),
+              			new saveButtonTemplate(),
               			new Container({top:0, bottom:0, right:0, left:0}),
               			]}),
               			//Line($, { left: 0, right: 0, top:-50, height: 1, skin: separatorSkin, }),
