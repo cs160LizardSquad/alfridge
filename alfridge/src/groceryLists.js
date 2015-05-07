@@ -102,7 +102,7 @@ function grocerySearchResults(query){
 	return results;
 }
 
-//{"Trader Joe's": ["apple", "orange"], "Walgreens": ["ketchup"]}
+//{"Trader Joe's": [("apple", 1), "orange"], "Walgreens": ["ketchup"]}
 var itemsList = {};
 
 var groceryListLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: lightGraySkin,
@@ -463,7 +463,9 @@ var groceryTitleBar = Line.template(function($) { return {
   ]
 }});
 
-var groceryListItemBar = Line.template(function($) { return { 
+
+
+var groceryListItemBar = Line.template(function($) { var tempItemName = ""; return { 
  top: 1, left: 0, right: 0, height: 40, active: true, skin: whiteSkin, 
  	contents: [
     Scroller($, { 
@@ -473,23 +475,31 @@ var groceryListItemBar = Line.template(function($) { return {
           left: 25, top: 0, bottom: 0, skin: whiteSkin, style: fieldStyle, anchor: 'NAME',
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
-    		onTouchEnded: { value: function() {	
-     			KEYBOARD.show();
-			}},
-         		onEdited: { value: function(label){
-         			var data = this.data;
-              data.name = label.string;
-              trace(data.name);
-              //label.container.itemList.visible = ( data.name.length == 0 );	
-         		}},
-         		onKeyUp: { value: function(content, key, modifiers, count, ticks){
-         			if(key.match(/\r/)){
-         				KEYBOARD.hide();
-         				content.container.focus();
-         			}
-         		}}
-         	}),
-         })
+	         	onDisplayed: { value: function(content){
+	         		tempItemName = $.name;
+	         	}},
+	    		onTouchEnded: { value: function(container, id, x,  y, ticks) {
+	     			KEYBOARD.show();
+				}},
+	         	onEdited: { value: function(label){
+	         		var data = this.data;
+	         		data.name = label.string;
+	         		for(i = 0; i < currGroceryList.length; i++){
+	         			if(currGroceryList[i] == tempItemName){
+	         				currGroceryList[i] = label.string;
+	         				tempItemName = label.string;
+	         			}
+	              }
+	              //trace(data.name);
+	         	}},
+	         	onKeyUp: { value: function(content, key, modifiers, count, ticks){
+	         		if(key.match(/\r/)){
+	         			KEYBOARD.hide();
+	         			content.container.focus();
+	         		}
+	         	}}
+	         }),
+	     })
       ]
     }),
   ]
@@ -498,12 +508,12 @@ var groceryListItemBar = Line.template(function($) { return {
 var newListItemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: whiteSkin,
     behavior: Object.create(Behavior.prototype, {	 
     	onTouchBegan: { value: function(container, id, x,  y, ticks) {
-    		container.skin = darkGraySkin;
+    		//container.skin = darkGraySkin;
     	}},
     	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
-			container.skin = lightGraySkin;
+			//container.skin = lightGraySkin;
 			container.plusIcon.first.url = "assets/unchecked.png";
-    		currGroceryList.push($.name);
+    		//currGroceryList.push($.name);
     		//trace(currGroceryList + "\n");
 		}}
 	}),
