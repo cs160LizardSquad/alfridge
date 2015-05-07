@@ -332,7 +332,7 @@ var doneButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height: 30, width:95, top:17, 
 	skin: addButtonSkin,
 	contents:[
-		new Label({top:0, height:30, string:"Done", style:new Style({font:"20px Petala Pro SemiLight", color:"white"})})
+		new Label({top:0, height:30, string:"Save", style:new Style({font:"20px Petala Pro SemiLight", color:"white"})})
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
@@ -462,6 +462,38 @@ var groceryTitleBar = Line.template(function($) { return {
     }),
   ]
 }});
+
+var groceryListItemBar = Line.template(function($) { return { 
+ top: 1, left: 0, right: 0, height: 40, active: true, skin: whiteSkin, 
+ 	contents: [
+    Scroller($, { 
+      left: 4, right: 4, top: 4, bottom: 4, active: true, 
+      behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
+        Label($, { 
+          left: 25, top: 0, bottom: 0, skin: whiteSkin, style: fieldStyle, anchor: 'NAME',
+          editable: true, string: $.name,
+         	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
+    		onTouchEnded: { value: function() {	
+     			KEYBOARD.show();
+			}},
+         		onEdited: { value: function(label){
+         			var data = this.data;
+              data.name = label.string;
+              trace(data.name);
+              //label.container.itemList.visible = ( data.name.length == 0 );	
+         		}},
+         		onKeyUp: { value: function(content, key, modifiers, count, ticks){
+         			if(key.match(/\r/)){
+         				KEYBOARD.hide();
+         				content.container.focus();
+         			}
+         		}}
+         	}),
+         })
+      ]
+    }),
+  ]
+}});
  
 var newListItemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: whiteSkin,
     behavior: Object.create(Behavior.prototype, {	 
@@ -493,7 +525,8 @@ var newListItemLine = Line.template(function($) { return { left: 0, right: 0, ac
      	Column($, { left: 0, right: 0, contents: [
      		Container($, { left: 4, right: 4, height: 37, 
      			contents: [
-     			           Label($, { left: 15, style: new Style({font:"22px Petala Pro Thin", vertical: "middle", color:"black"}), string: $.name,}),
+     			           //Label($, { left: 15, style: new Style({font:"22px Petala Pro Thin", vertical: "middle", color:"black"}), string: $.name,}),
+ 			           			new groceryListItemBar({name: $.name})
  			           ]}),
  			     //new Line({ left: 0, right: -25, height: 1, skin: separatorSkin, })
      	], }),
