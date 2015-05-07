@@ -148,7 +148,24 @@ var itemsTabs = Line.template(function($) { return { name: "tabs", top: 0, right
 			]}),
 
 		]}});
-		
+
+
+/* giving all items are in allItemsDict, and it looks like allItemsDict = [{name: "potato", compartment: 1, expiration: 10,quantity:1},{name: "tomatoes", compartment: 1, expiration: 1,quantity:5}];
+the argument for this function is the name of the items we want to search.
+calling this function, we will get an array of items that are match/superstring of the searched string
+also, call this function in the onEdited function of the searchBar
+
+function searchItem (itemName) {
+    var arrayOfSearchItem=[]
+    for (var i = 0; i < allItemsDict.length; i++) {
+		if (allItemsDict[i].name.indexOf(itemName) > -1){ 
+			arrayOfSearchItem.push(allItemsDict[i])};
+    	}
+    return arrayOfSearchItem;
+};
+*/
+
+	
 var searchBar = Line.template(function($) { return { 
  name: "itemSearchBar", left: 0, right: 0, height: 40, active: true, skin: whiteSkin, 
  	contents: [
@@ -166,6 +183,8 @@ var searchBar = Line.template(function($) { return {
          			var data = this.data;
               data.name = label.string;
               trace(data.name);
+              
+              //call searchItem here with arg=label.string
               label.container.hint.visible = ( data.name.length == 0 );	
          		}}
          	}),
