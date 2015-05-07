@@ -102,7 +102,7 @@ function grocerySearchResults(query){
 	return results;
 }
 
-//{"Trader Joe's": ["apple"], "Walgreens": ["ketchup"]}
+//{"Trader Joe's": ["apple", "orange"], "Walgreens": ["ketchup"]}
 var itemsList = {};
 
 var groceryListLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: lightGraySkin,
@@ -247,7 +247,7 @@ var groceryListTemplate = Container.template(function($) { return {
   ]
 }});
 
-var newGroceryListTemplate = Container.template(function($) { return {
+/*var newGroceryListTemplate = Container.template(function($) { return {
 	name: "list", left:0, right:0, top:50, bottom:0, skin: lightGraySkin,
 	contents: [
 	   		SCROLLER.VerticalScroller($, { 
@@ -257,7 +257,7 @@ var newGroceryListTemplate = Container.template(function($) { return {
               			]
 	   		})
 	   		]
-	}});
+	}});*/
 
 var suggestionsOn = false;
 var suggestionsHeader = null;
@@ -466,15 +466,30 @@ var groceryTitleBar = Line.template(function($) { return {
 var newListItemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: whiteSkin,
     behavior: Object.create(Behavior.prototype, {	 
     	onTouchBegan: { value: function(container, id, x,  y, ticks) {
-    		//container.plusIcon.first.url = "";
-    		//currGroceryList.push($.name);
-    		//trace(currGroceryList + "\n");
+    		container.skin = darkGraySkin;
     	}},
     	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
-			//container.skin = lightGraySkin;
-		}}}),	contents: [
-	 	Column($, { name: "plusIcon", left: 0, width:50, 
-     			contents: [new Picture({left:25, width:25, height: 25, url: "assets/unchecked.png"}), ]}),
+			container.skin = lightGraySkin;
+			container.plusIcon.first.url = "assets/unchecked.png";
+    		currGroceryList.push($.name);
+    		//trace(currGroceryList + "\n");
+		}}
+	}),
+	contents: [
+	 	Column($, { name: "plusIcon", left: 0, width:50, active: true,
+     		contents: [
+     			new Picture({name: "checkbox", left:25, width:25, height: 25, url: "assets/unchecked.png"})
+     		],
+     		behavior: Object.create(Behavior.prototype, {
+     			onTouchEnded: { value: function(container, id, x, y, tickets){
+     				if(container.first.url.match("unchecked")){
+     					container.first.url = "assets/check.png";
+     				}else{
+     					container.first.url = "assets/unchecked.png";
+     				}
+     			}}
+     		})
+     	}),
      	Column($, { left: 0, right: 0, contents: [
      		Container($, { left: 4, right: 4, height: 37, 
      			contents: [
@@ -525,7 +540,6 @@ function suggestionsBuilder(list) {
 			suggestionsScreen.first.first.add(new suggestionLine({name: list[i]}));
 	}
 }
-
 
 /* This simple function exists so we can call "forEach" on
  * our array of list entries (menuItems).  It adds a new 
