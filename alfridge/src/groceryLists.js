@@ -5,107 +5,170 @@ var SCROLLER = require('mobile/scroller');
 var SCREEN = require('mobile/screen')
 var CONTROL = require('mobile/control');
 
-
-
 /* ASSETS */
-var blackSkin = new Skin({ fill: 'black',});
+var blackSkin = new Skin({ fill: '#5A6060',});
 var whiteSkin = new Skin({ fill: 'white',});
 var lightGraySkin = new Skin({fill: "#f1f1f2"});
-//var graySkin	= new Skin({ fill: '#a7a9ab'});
-//var darkGraySkin = new Skin({ fill: '#7f7f7f'});
 var blueSkin = new Skin({fill: 'blue'})
 var separatorSkin = new Skin({ fill: 'silver',});
 var addButtonSkin = new Skin({fill:"#117384", borders:{top: 1, right: 1}, stroke: "#7f7f7f"});
 
 /* STYLES */
 var tabStyle = new Style({  font: '16px Petala Pro Thin', horizontal: 'center', color: "#545454",vertical: 'middle', lines: 1, });
-//var productNameStyle = new Style({  font: '24px Petala Pro SemiLight', horizontal: 'left', top: -10, lines: 1, });
-//var expirationStyle = new Style({ font: '14px Petala Pro Thin', horizontal: 'left', top: 20, lines: 1, });
 var quantityStyle = new Style({ font: '36px Petala Pro Thin', horizontal: 'center', lines: 1, });
 var productDescriptionStyle = new Style({  font: '18px', horizontal: 'left', vertical: 'middle', left: 1, color: 'white' });
-var fieldStyle = new Style({ color: 'black', font: '22px Petala Pro SemiLight', horizontal: 'left', vertical: 'middle', left: 22, right: 5, top: 5, bottom: 5, });
+var fieldStyle = new Style({ color: '#5A6060', font: '22px Petala Pro SemiLight', horizontal: 'left', vertical: 'middle', left: 22, right: 5, top: 5, bottom: 5, });
 var hintStyle  = new Style({  font: '22px Petala Pro SemiLight', horizontal: 'left', vertical: 'middle',color: "#a7a9ab",left: 20, right: 5, top: 5, bottom: 5, lines: 1, })
 
 /* STATIC */
-/* A simple array of objects. Each will be used as a single
- * entry in our scrollable list. */
- /*
- {"lettuce":{"compartment":1,"expiration":10,"quantity":1},"tomatoes":{"compartment":1,"expiration":1,"quantity":5},
- "cucumbers":{"compartment":1,"expiration":7,"quantity":4},"milk":{"compartment":2,"expiration":14,"quantity":3},
- "chicken thighs":{"compartment":3,"expiration":20,"quantity":5},
- "chicken drumsticks":{"compartment":3,"expiration":5,"quantity":4},"steak":{"compartment":4,"expiration":14,"quantity":10},"salmon fillets":{"compartment":5,"expiration":20,"quantity":5},"tilapia fillets":{"compartment":5,"expiration":4,"quantity":6},"shrimp":{"compartment":5,"expiration":20,"quantity":12},"clams":{"compartment":5,"expiration":20,"quantity":8},"cake":{"compartment":6,"expiration":3,"quantity":1}}response was 0
-{"temp1":0,"temp2":30,"temp3":30,"temp4":0,"temp5":15,"temp6":10}response was 3
-*/
+var suggestionsRecentList =[ "Potatoes", "Cucumbers", "Rice", "Bread", "Milk","Soymilk", "Onions"];
+var suggestionsFrequentList =[ "Tofu", "Lettuce", "Eggs","Oreos", "Orange Juice", "Corn", "Pasta"];
+var currTime = parseInt(new Date().getTime() / 1000);
 
-var suggestionsList =[ "Potatoes", "Cucumbers", "Rice", "Bread", "Milk",
-						"Soymilk", "Chicken", "Tofu", "Lettuce", "Eggs",
-						"Oreos", "Orange Juice"]
- 
-var groceryList = [ {name: "Trader Joe's", lastUpdated: 23},
-					{name: "Costco", lastUpdated: 21},
-					{name: "Walgreens", lastUpdated: 21},
-					{name: "Whole Foods", lastUpdated: 20},
-					{name: "BBQ Party", lastUpdated: 16},
-					{name: "Trader Joe's", lastUpdated: 16},
-					{name: "Costco", lastUpdated: 11},
-					{name: "Trader Joe's", lastUpdated: 8},
-					{name: "Whole Foods", lastUpdated: 5},
-					{name: "Safeway", lastUpdated: 4},	
-					{name: "Trader Joe's", lastUpdated: 4},
-					{name: "Whole Foods", lastUpdated: 2},
-					{name: "Safeway", lastUpdated: 2},	
-					]
-					
-var currGroceryList = []
-
+//Canned data for grocery lists!
+var groceryList = [ {name: "Trader Joe's", lastUpdated: currTime - 1, 
+						items: [{name: "apples", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "bananas", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "broccoli", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "hummus", checkbox: "assets/unchecked-icon.png"}], },
+					{name: "Costco", lastUpdated: currTime - 20, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "Walgreens", lastUpdated: currTime - 10384, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "Whole Foods", lastUpdated: currTime - 14956, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "BBQ Party", lastUpdated: currTime - 28374, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "Trader Joe's", lastUpdated: currTime - 30485, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "Costco", lastUpdated: currTime - 49586, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "Trader Joe's", lastUpdated: currTime - 51873, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "Whole Foods", lastUpdated: currTime - 73947, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "Safeway", lastUpdated: currTime - 82937, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},	
+					{name: "Trader Joe's", lastUpdated: currTime - 90376, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "Whole Foods", lastUpdated: currTime - 103944, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},
+					{name: "Safeway", lastUpdated: currTime - 103946, 
+								items: [{name: "coconut water", checkbox: "assets/checked-icon.png"}, 
+								{name: "strawberries", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, 
+								{name: "milk", checkbox: "assets/unchecked-icon.png"},
+								{name: "salmon", checkbox: "assets/unchecked-icon.png"}, ],},	
+					]		
+var currGroceryList = {name: "Untitled", items: [], lastUpdated: parseInt(new Date().getTime() / 1000)};
+var viewListScreen = null;
 var groceryListLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: lightGraySkin,
-    behavior: Object.create(Behavior.prototype, {
-    	/* Gives the user some visual feedback on which entry they have tapped.
-    	 * note that the skin is reverted to white in onTouchEnded() */    	 
-    	onTouchBegan: { value: function(container, id, x,  y, ticks) {
-    		//container.skin = graySkin;
-    	}},
-    	/* Traces out the value of the first Label's string. The
-    	 * silly string of "first" in the trace can be thought of as
-    	 * container.Column.Container.Label.string.  This pattern can
-    	 * be seen reading down the contents of this object below */
-    	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
-			//container.skin = lightGraySkin;
-			trace(container.first.first.first.string+"\n");
-     		KEYBOARD.hide();
-		}}
-    }),
+    behavior: Object.create(Behavior.prototype, { 	 
+    	onTouchEnded: { value: function(container, id, x,  y, ticks) {
+		    KEYBOARD.hide();
+			application.focus();
+			application.remove(groceryMainBody);
+			topBar.notifButton.remove(newListButton);
+			addButtonOn = false;
+			viewListScreen = new viewListScreenTemplate({title: $.name});
+			viewListScreen.add(new viewListHeaderTemplate());
+			viewListBuilder($.items);
+			application.add(viewListScreen);
+			currentView = viewListScreen;
+			}}}),
 	contents: [
      	Column($, { left: 0, right: 0, contents: [
      		Container($, { left: 4, right: 4, height: 52, 
      			contents: [
      			           Label($, { left: 25, style: productNameStyle, string: $.name,}),
-     			           Label($, { left:25, style: expirationStyle, string: "Updated " + $.lastUpdated + " hours ago",}),
+     			           Label($, { left:25, style: expirationStyle, string: "Updated " + timeStringCreator(currTime - $.lastUpdated) + " ago",}),
  			           ]}),
      		Line($, { left: 0, right: 0, height: 1, skin: separatorSkin, }),
-     	], }),
-     ], 
- }});
+     	], }),], }});
 
+function timeStringCreator(diffInSeconds){
+	toReturn = "";
+	if (diffInSeconds < 60){
+	toReturn = diffInSeconds + " seconds";
+	}else if (diffInSeconds < 3600){
+	toReturn = parseInt(diffInSeconds/60) + " minutes";
+	}else if (diffInSeconds < 86400){
+	toReturn = parseInt(diffInSeconds/3600) + " hours";
+	}else if (diffInSeconds < 2592000){
+	toReturn = parseInt(diffInSeconds/86400) + " days";
+	}else if (diffInSeconds < 31536000){
+	toReturn = parseInt(diffInSeconds/60) + " months";
+	}else{
+	toReturn = parseInt(diffInSeconds/31536000) + " years";
+	}
+	//quick grammar check for plurals
+	if (toReturn.indexOf("1 ") === 0){
+		toReturn = toReturn.substring(0, toReturn.length -1);
+	}
+	return toReturn;
+};
 
 var newListButtonTemplate = BUTTONS.Button.template(function($){ return{
 	right: 10, width: 25, top: 7,
-	//skin: tealSkin,
 	contents:[
 		new Picture({right:5, width:25, height: 25, url: "assets/add-icon.png"}),
 	],
 	behavior:Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
-						//trace("notification button tapped")
+					    KEYBOARD.hide();
+						application.focus();
 						application.remove(groceryMainBody);
 						topBar.notifButton.remove(newListButton);
 						addButtonOn = false;
 						topBar.headerCol.currentView.string = "New Grocery List";
-						currGroceryList = [];
+						currGroceryList = {name: "Untitled", items: [], lastUpdated: parseInt(new Date().getTime() / 1000)};
 						application.remove(topBar);
 						suggestionsScreen = new suggestionsTemplate(groceryData);
-						suggestionsBuilder(suggestionsList);
-						//suggestionsScreen.first.first.add(new suggestionLine({name: "HELLO"}));
+						suggestionsBuilder(suggestionsRecentList, suggestionsFrequentList);
 						application.add(suggestionsScreen);
 						application.add(topBar);
 						suggestionsHeader = new suggestionsHeaderTemplate();
@@ -115,26 +178,20 @@ var newListButtonTemplate = BUTTONS.Button.template(function($){ return{
 						suggestionsOn = true;
 						currentView = suggestionsScreen;
 						}}
-					}),
-}});
+					}),}});
+					
 var suggestionsScreen = null;
 var newListButton = new newListButtonTemplate();
 
 var groceryScreenContainer = Container.template(function($) { return {
 	name: "list", left:0, right:0, top:0, bottom:0, skin: new Skin({fill: "white"}),
 	contents: [
-	   		/* Note that the scroller is declared as having only an empty
-	   		 * Column and a scrollbar.  All the entries will be added 
-	   		 * programmatically. */ 
-	   		SCROLLER.VerticalScroller($, { 
+	   		SCROLLER.VerticalScroller($, {
 	   			contents: [
               			Column($, { left: 0, right: 0, top: 0, name: 'menu', }),
               			SCROLLER.VerticalScrollbar($, {top:0 }),
-              			]
-	   		})
-	   		]
-	}});
-
+              			]})
+	   		]}});
 
 var groceryData = new Object();
 
@@ -153,20 +210,22 @@ var grocerySearchBar = Line.template(function($) { return {
 			}},
          		onEdited: { value: function(label){
          			var data = this.data;
-              data.name = label.string;
-              trace(data.name);
-              label.container.hint.visible = ( data.name.length == 0 );	
-         		}}
-         	}),
-         }),
+              		data.name = label.string;
+					if(data.name.length > 0){
+					clearListsScreen();
+					searchedList = searchGrocerylists(data.name);
+					groceryListBuilder(searchedList, false);}
+					else{
+         			clearListsScreen();
+         			groceryListBuilder(groceryList, false);
+         			}
+              		label.container.hint.visible = ( data.name.length == 0 );
+         		
+         		}\}}),}),
          Picture($, {left:12, top:4, width:25, height: 25, url: "assets/search-icon.png"}),
          Label($, {
    			 	left:22, right:0, top:0, bottom:0, style: hintStyle, string:"Search...", name:"hint"
-         })
-      ]
-    }),
-  ]
-}});
+         })] })] }});
 
 var groceryMainBody = null;
 
@@ -183,10 +242,8 @@ var newGroceryListTemplate = Container.template(function($) { return {
 	   			contents: [
               			Column($, { left: 0, right: 0, top: 0, name: 'menu', }),
               			SCROLLER.VerticalScrollbar($, {top:0 }),
-              			]
-	   		})
-	   		]
-	}});
+              			]})
+	   		]}});
 
 var suggestionsOn = false;
 var suggestionsHeader = null;
@@ -194,22 +251,22 @@ var suggestionsFooter = null;
 var suggestionsHeaderTemplate = Column.template(function($) {return {top:50, height:51, left:0, right:0, skin: whiteSkin, contents:[
 	   					Line($,{top:0, height:50, left:0, right:0, contents:[
 	   					new Container({top:0, bottom:0, right:0, left:0}),
-	   					new Label({style: new Style({font:"20px Petala Pro SemiLight", color:"black",  horizontal: 'center'}), string: "Suggestions"}),
+	   					new Label({style: new Style({font:"20px Petala Pro SemiLight", color:"#5A6060",  horizontal: 'center'}), string: "Suggestions"}),
 	   					new Container({top:0, bottom:0, right:0, left:0}),
 	   					]}),
 	   					Line($,{ left: 3, right: 3, height: 1, skin: separatorSkin, }),
-	   					/*
-	   					Line($,{top:0, height:30, left:0, right:0, contents:[
-	   					new Label({left: 10, style: new Style({font:"18px Petala Pro Thin", color:"black",  horizontal: 'center'}), string: "Recently Depleted"}),
-	   					]}),
-	   					Line($,{ left: 3, right: 3, height: 1, skin: separatorSkin, }),*/
               			]}});
               			
-var suggestionsDefaultHeader = 	Column.template(function($){return{top:0, height:31, right:0, left:0, skin: lightGraySkin, contents:[
-						new Line({top:0, height:30, left:0, right:0, contents:[
-	   					new Label({left: 10, style: new Style({font:"18px Petala Pro SemiLight", color:"black",  horizontal: 'center'}), string: "Recently Depleted"}),
+var suggestionsRecentHeader = Column.template(function($){return{top:0, height:36, right:0, left:0, skin: whiteSkin, contents:[
+						new Line({top:0, height:35, left:0, right:0, contents:[
+	   					new Label({left: 10, style: new Style({font:"20px Petala Pro SemiLight", color:"#5A6060",  horizontal: 'center'}), string: "Recently Depleted"}),
 	   					]}),
-	   					new Line({ left: 3, right: 3, height: 1, skin: separatorSkin, })]}});
+	   					new Line({ left: 3, right: 3, height: 1, bottom:0, skin: separatorSkin, })]}});
+var suggestionsFrequentHeader = Column.template(function($){return{top:0, height:36, right:0, left:0, skin: whiteSkin, contents:[
+						new Line({top:0, height:35, left:0, right:0, contents:[
+	   					new Label({left: 10, style: new Style({font:"20px Petala Pro SemiLight", color:"#5A6060",  horizontal: 'center'}), string: "Frequent Items"}),
+	   					]}),
+	   					new Line({ left: 3, right: 3, height: 1, bottom: 0, skin: separatorSkin, })]}});
 
 var suggestionsFooterTemplate = new Column.template(function($){return{bottom:0, height:70, left:0, right:0,skin: whiteSkin, contents:[
               			new Line({ top:0, left: 3, right: 3, height: 1, skin: separatorSkin, }),
@@ -241,18 +298,14 @@ var nextButtonTemplate = BUTTONS.Button.template(function($){ return{
 						application.remove(suggestionsScreen);
 						application.remove(suggestionsHeader);
 						application.remove(suggestionsFooter);
+						application.remove(topBar);
 						suggestionsOn = false;
 						newListScreen = new newListScreenTemplate(groceryData);
+						newListScreen.add(new newListTitleBar({name: "Untitled"}));
 						currentView = newListScreen;
-						newListBuilder(currGroceryList);
+						newListBuilder(currGroceryList.items);
 						application.add(currentView);
-						//currentView 
-						//KEYBOARD.hide();
-						//groceryLists[listName.string]={updated: new Date().getTime(), items: [itemLabel1.string,itemLabel2.string,itemLabel3.string,itemLabel4.string,itemLabel5.string] };
-						//updateGroceryLists();
-						//application.remove(newListScreen)
-						//application.add(suggestionScreen)
-						//application.remove(groceryListsAddView({}));
+						application.add(topBar);
 					}}
 				})
 }});
@@ -265,21 +318,25 @@ var doneButtonTemplate = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
+						KEYBOARD.hide();
+						application.focus();
 						application.remove(currentView);
 						//refresh lists????
 						application.remove(topBar);
+						currGroceryList.lastUpdated = parseInt(new Date().getTime() / 1000);
+						/*
+						if(currGroceryList.name = " "){
+							currGroceryList.name = "Untitled";
+						} */
+						groceryList.push(currGroceryList);
+						clearListsScreen();
+						bubbleSortGroceryLists();
+						groceryListBuilder(groceryList, false);
 						application.add(groceryMainBody);
 						topBar.notifButton.add(newListButton);
 						application.add(topBar);
 						addButtonOn = true;
 						currentView = groceryMainBody;
-						//currentView 
-						//KEYBOARD.hide();
-						//groceryLists[listName.string]={updated: new Date().getTime(), items: [itemLabel1.string,itemLabel2.string,itemLabel3.string,itemLabel4.string,itemLabel5.string] };
-						//updateGroceryLists();
-						//application.remove(newListScreen)
-						//application.add(suggestionScreen)
-						//application.remove(groceryListsAddView({}));
 					}}
 				})
 }});
@@ -292,8 +349,11 @@ var cancelButtonTemplate = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
+						KEYBOARD.hide();
+						application.focus();
 						application.remove(currentView);
 						application.remove(topBar);
+						currGroceryList = {name: "Untitled", items: [], lastUpdated: parseInt(new Date().getTime() / 1000)};
 						if(suggestionsOn){
 						application.remove(suggestionsHeader);
 						application.remove(suggestionsFooter);
@@ -304,8 +364,6 @@ var cancelButtonTemplate = BUTTONS.Button.template(function($){ return{
 						topBar.notifButton.add(newListButton);
 						addButtonOn = true;
 						currentView = groceryMainBody;
-						//KEYBOARD.hide();
-						//clearAllFields();
 					}}
 				})
 }});
@@ -313,19 +371,16 @@ var cancelButtonTemplate = BUTTONS.Button.template(function($){ return{
 var suggestionLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: lightGraySkin,
     behavior: Object.create(Behavior.prototype, {	 
     	onTouchBegan: { value: function(container, id, x,  y, ticks) {
-    		container.active = false;
-    		container.plusIcon.first.url = "assets/check.png";
-    		
-    		currGroceryList.push($.name);
-    		trace(currGroceryList + "\n");
+    			container.active = false;
+    			container.plusIcon.first.url = "assets/check.png";
+    			currGroceryList.items.push({name: $.name, checkbox: "assets/unchecked-icon.png"});
     	}},
     	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
-			//container.skin = lightGraySkin;
 		}}}),	contents: [
      	Column($, { left: 0, right: 0, contents: [
      		Container($, { left: 4, right: 4, height: 47, 
      			contents: [
-     			           Label($, { left: 25, style: new Style({font:"26px Petala Pro Thin", vertical: "middle", color:"black"}), string: $.name,}),
+     			           Label($, { left: 25, style: new Style({font:"26px Petala Pro Thin", vertical: "middle", color:"#5A6060"}), string: $.name,}),
  			           ]}),
  			     new Line({ left: 0, right: -25, height: 1, skin: separatorSkin, })
      	], }), Column($, { name: "plusIcon", left: 0, width:25, 
@@ -341,30 +396,37 @@ var newListItemLine = Line.template(function($) { return { left: 0, right: 0, ac
     		//trace(currGroceryList + "\n");
     	}},
     	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
-			//container.skin = lightGraySkin;
+    		KEYBOARD.hide();
+			application.focus();
 		}}}),	contents: [
 	 	Column($, { name: "plusIcon", left: 0, width:50, 
-     			contents: [new Picture({left:25, width:25, height: 25, url: "assets/unchecked.png"}), ]}),
+     			contents: [new Picture({left:25, width:25, height: 25, url: $.checkbox}), ]}),
      	Column($, { left: 0, right: 0, contents: [
      		Container($, { left: 4, right: 4, height: 37, 
      			contents: [
-     			           Label($, { left: 15, style: new Style({font:"22px Petala Pro Thin", vertical: "middle", color:"black"}), string: $.name,}),
+     			           Label($, { left: 15, style: new Style({font:"22px Petala Pro Thin", vertical: "middle", color:"#5A6060"}), string: $.name,}),
  			           ]}),
- 			     //new Line({ left: 0, right: -25, height: 1, skin: separatorSkin, })
      	], }),
      ], 
  }});
 var newListScreenTemplate = Container.template(function($) { return {
-	name: "list", left:0, right:0, top:50, bottom:0, skin: whiteSkin,
+	name: "list", left:0, right:0, top:40, bottom:0, skin: whiteSkin,
 	contents: [
 	   		SCROLLER.VerticalScroller($, { 
+	   			behavior: Object.create(Behavior.prototype, {	 
+    				onTouchEnded: { value: function(container, id, x,  y, ticks) {	
+    					KEYBOARD.hide();
+						application.focus();}}}),
 	   			contents: [
-	   					Column($,{top:0, bottom:0, left:0, right:0, contents:[
+	   					Column($,{top:50, bottom:0, left:0, right:0, 
+	   					contents:[
+	   					
+	   					/*
 	   					Line($, {top:0, height:50, left:0, right:0, skin: new Skin({fill: "#f1f1f2"}),contents:[
-	   					new Label({top:10, left:20, style: new Style({font:"22px Petala Pro SemiLight", color:"black",  horizontal: 'left'}), string: "Untitled"}),
+	   					new Label({top:10, left:20, style: new Style({font:"22px Petala Pro SemiLight", color:"#5A6060",  horizontal: 'left'}), string: "Untitled"}),
 	   					new Container({top:0, bottom:0, right:0, left:0}),
-	   					]}),
-	   					Line($, { left: 0, right: 0, top:-7, height: 1, skin: separatorSkin, }),
+	   					]}), */
+	   					Line($, { left: 0, right: 0, height: 1, skin: separatorSkin, }),
               			]}),
               			SCROLLER.VerticalScrollbar($, {top:50, bottom:0 }),
               			Line($, {bottom:0, height:70, left:0, right:0,contents:[
@@ -374,37 +436,184 @@ var newListScreenTemplate = Container.template(function($) { return {
               			new doneButtonTemplate(),
               			new Container({top:0, bottom:0, right:0, left:0}),
               			]}),
-              			//Line($, { left: 0, right: 0, top:-50, height: 1, skin: separatorSkin, }),
-              			
               			]
 	   		})
 	   		]
 	}});
 	
-function newListBuilder(list) {
+var newListTitleBar = Line.template(function($) { return { 
+ top:0, left: 0, right: 0, height: 50, active: true, skin: lightGraySkin, 
+ 	contents: [
+    Scroller($, { 
+      left: 4, right: 4, top: 15, height:30, active: true, 
+      behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
+        Label($, { 
+          left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          editable: true, 
+         	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
+    		onTouchEnded: { value: function() {	
+     			KEYBOARD.show();
+			}},
+         		onEdited: { value: function(label){
+         			var data = this.data;
+              		data.name = label.string;
+             		// trace(data.name);
+              		currGroceryList.name = data.name;
+              		label.container.hint.visible = ( data.name.length == 0 );	
+         		}}
+         	}),
+         }),
+         Label($, {left:20, right:0, top:0, bottom:0, style: new Style({font:"22px Petala Pro SemiLight", color:"#5A6060",  horizontal: 'left'}), string:"Untitled", name:"hint"})
+      ]
+    }),
+  ]
+}});	
+
+var viewListBackButtonTemplate = BUTTONS.Button.template(function($){ return{
+	height: 45, width:100, left:0, top: 5, 
+	skin: tealSkin,
+	contents:[
+		new Picture({left:15, top:6, width:25, height: 25, url: "assets/back-icon.png"})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+					onTap: { value:  function(content){
+						//application.remove($.myView)
+						//application.remove(currentView)
+						application.remove(topBar);
+						listsOnScreen = [];
+						groceryMainBody = new groceryListTemplate();
+						currTime = parseInt(new Date().getTime() / 1000);
+						bubbleSortGroceryLists();
+						//add addbutton
+						groceryListBuilder(groceryList, true);
+						application.replace(currentView, groceryMainBody);
+						currentView = groceryMainBody;
+						application.add(topBar);
+						topBar.notifButton.add(newListButton);
+						addButtonOn = true;
+						}}
+					})
+}});
+
+var viewListItemLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: whiteSkin,
+    behavior: Object.create(Behavior.prototype, {	 
+    	onTouchBegan: { value: function(container, id, x,  y, ticks) {
+    		//container.plusIcon.first.url = "";
+    		//currGroceryList.push($.name);
+    		//trace(currGroceryList + "\n");
+    	}},
+    	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
+    		KEYBOARD.hide();
+			application.focus();
+			if($.checkbox = "assets/unchecked-icon.png"){
+				$.checkbox = "assets/checked-icon.png";
+				container.plusIcon.first.url = "assets/checked-icon.png";
+			}else{
+				$.checkbox = "assets/unchecked-icon.png";
+				container.plusIcon.first.url = "assets/unchecked-icon.png";
+			}
+		}}}),	contents: [
+	 	Column($, { name: "plusIcon", left: 0, width:50, 
+     			contents: [new Picture({left:25, width:25, height: 25, url: $.checkbox}), ]}),
+     	Column($, { left: 0, right: 0, contents: [
+     		Container($, { left: 4, right: 4, height: 37, 
+     			contents: [
+     			           Label($, { left: 15, style: new Style({font:"22px Petala Pro Thin", vertical: "middle", color:"#5A6060"}), string: $.name,}),
+ 			           ]}),
+     	], }),
+     ], 
+ }});
+ 
+var viewListHeaderTemplate = Container.template(function($) { return {
+	name: "list", left:0, right:0, top:0, height:50, skin: tealSkin,
+	contents: [
+			new viewListBackButtonTemplate(),
+			new Picture({top:10, right:60, width:30, height: 30, url: "assets/trash-icon.png"}),
+			new Picture({top:10, right:17, width:30, height: 30, url: "assets/edit-icon.png"}),
+	   		]
+	}});
+
+var viewListScreenTemplate = Container.template(function($) { return {
+	name: "list", left:0, right:0, top:0, bottom:0, skin: whiteSkin,
+	contents: [
+			Line($,{top:-50, height:50, right:0, left:0,skin: whiteSkin}),
+	   		SCROLLER.VerticalScroller($, { 
+	   			name: "scroller",
+	   			behavior: Object.create(Behavior.prototype, {	 
+    				onTouchEnded: { value: function(container, id, x,  y, ticks) {	
+    					KEYBOARD.hide();
+						application.focus();}}}),
+	   			contents: [
+	   					Column($,{top:50, bottom:0, left:0, right:0, 
+	   					contents:[
+	   					Line($, {top:0, height:50, left:0, right:0, skin: new Skin({fill: "#f1f1f2"}),contents:[
+	   					new Label({top:15, left:20, style: new Style({font:"22px Petala Pro SemiLight", color:"#5A6060",  horizontal: 'left'}), string: $.title}),
+	   					new Container({top:0, bottom:0, right:0, left:0}),
+	   					]}), 
+	   					Line($, { left: 0, right: 0, height: 1, skin: separatorSkin, }),
+              			]}),
+              			]
+	   		})
+	   		]
+	}});
+	
+function viewListBuilder(list) {
+	viewListScreen.scroller.first.add(new Line({right:0, left:0, top:0, height:10, skin: whiteSkin}));
 	for (i = 0; i < list.length; i++){
-			newListScreen.first.first.add(new newListItemLine({name: list[i]}));
-	}
-}
+			viewListScreen.scroller.first.add(new viewListItemLine(list[i]));}};
+	
+function newListBuilder(list) {
+	newListScreen.first.first.add(new Line({right:0, left:0, top:0, height:10, skin: whiteSkin}));
+	for (i = 0; i < list.length; i++){
+			newListScreen.first.first.add(new newListItemLine(list[i]));}};
 
  
-function suggestionsBuilder(list) {
-	suggestionsScreen.first.first.add(new suggestionsDefaultHeader());
-	for (i = 6; i >=0; i--){
-			suggestionsScreen.first.first.add(new suggestionLine({name: list[i]}));
-	}
-}
+function suggestionsBuilder(recentList, frequentList) {
+	suggestionsScreen.first.first.add(new suggestionsRecentHeader());
+	for (i = 4; i >=0; i--){
+			suggestionsScreen.first.first.add(new suggestionLine({name: recentList[i]}));
+			}
+	suggestionsScreen.first.first.add(new suggestionsFrequentHeader());
+		for (i = 4; i >=0; i--){
+			suggestionsScreen.first.first.add(new suggestionLine({name: frequentList[i]}));
+			}
+	};
+			
 
+var listsOnScreen = []
 
-/* This simple function exists so we can call "forEach" on
- * our array of list entries (menuItems).  It adds a new 
- * ProcessorLine() object to the Column named "menu" in the
- * screen object's SCROLLER */
-function groceryListBuilder(dict) {
+function groceryListBuilder(lists, addSearchBar) {
+	if (addSearchBar == true){
 	groceryMainBody.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
 	groceryMainBody.list.first.menu.add(new grocerySearchBar({name: ""}));
 	groceryMainBody.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
-	for (i = dict.length -1; i >=0; i--){
-			groceryMainBody.list.first.menu.add(new groceryListLine(dict[i]));
+	}
+	currTime = parseInt(new Date().getTime() / 1000);
+	for (i = 0; i <  lists.length; i++){
+		var currList = new groceryListLine(lists[i])
+		groceryMainBody.list.first.menu.add(currList);
+		listsOnScreen.push(currList);
 	}
 }
+function clearListsScreen(){
+	while(listsOnScreen.length > 0){
+		groceryMainBody.list.first.menu.remove(listsOnScreen.pop());
+	}
+};
+//easiest sort to implement... bubble sort!
+function bubbleSortGroceryLists() {
+	for (var out = groceryList.length - 1; out > 0; out--){    
+		for (var inn = 0; inn < out; inn++) {
+			if (groceryList[inn].lastUpdated < groceryList[inn+1].lastUpdated){
+	    		swap(groceryList, inn, inn+1);   }                             
+		}}};
+		
+function searchGrocerylists(keyword) {
+	tempList = []
+	for (var i = 0; i < groceryList.length; i++){    
+		//trace('name: ' + groceryList[i].name.toLowerCase() + ' match? ' + groceryList[i].name.toLowerCase().indexOf(keyword));
+		if(groceryList[i].name.toLowerCase().indexOf(keyword) != -1){
+        	tempList.push(groceryList[i]);
+		}}
+	return tempList;	
+	};

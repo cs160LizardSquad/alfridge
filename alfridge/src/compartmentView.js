@@ -8,8 +8,6 @@ var CONTROL = require('mobile/control');
 var blackSkin = new Skin({ fill: 'black',});
 var whiteSkin = new Skin({ fill: 'white',});
 var lightGraySkin = new Skin({fill: "#f1f1f2"});
-//var graySkin	= new Skin({ fill: '#a7a9ab'});
-//var darkGraySkin = new Skin({ fill: '#7f7f7f'});
 var blueSkin = new Skin({fill: 'blue'})
 var separatorSkin = new Skin({ fill: 'silver',});
 
@@ -35,22 +33,27 @@ var defrostButtonTemplate = BUTTONS.Button.template(function($){ return{
 	top:0, right:60, height: 30, width:80,
 	skin: tealSkin,
 	contents:[
-		new Label({name: "defrostLabel", height:30, width:70, string: "defrost", style: new Style({font:"20px Petala Pro SemiLight", color:"white"})}),
+		new Label({name: "defrostLabel", height:30, width:70, string: $.buttonString, style: new Style({font:"20px Petala Pro SemiLight", color:"white"})}),
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value:  function(content){
-		content.defrostLabel.string = "stop";
-		statusLabel.string = "defrosting";
-		//send message
-		/*
-			if (sideBarPopped) {
-				application.remove(sideBar)
-				sideBarPopped = false;
-			} else {
-				application.add(sideBar);
-				sideBarPopped = true;
-				} */
-		}} 
+			if(content.defrostLabel.string == "defrost"){
+				content.invoke(new Message(deviceURL + "defrost" + $.compNumber), Message.JSON);
+				content.defrostLabel.string = "stop";
+				compartmentStatusStrings[$.compNumber] = "status: defrosting";
+				defrostButtonStrings[$.compNumber] = "stop";
+				topCompartment.statusLine.first.string = "status: defrosting";
+			}else{
+				content.invoke(new Message(deviceURL + "stop_defrost" + $.compNumber), Message.JSON);
+				content.defrostLabel.string = "defrost";
+				compartmentStatusStrings[$.compNumber] = "status: not defrosting";
+				defrostButtonStrings[$.compNumber] = "defrost";
+				topCompartment.statusLine.first.string = "status: not defrosting";
+			}
+		}},
+		onComplete: { value: function(content, message, json){
+		}}   
+		
 	})
 }});
 
@@ -81,8 +84,6 @@ var statusLabel = Label.template(function($){ return{
 left:0, right:0, height:20, top: 5, string:$.string, style:new Style({horizontal: "center",font:"18px Petala Pro Thin", color:"#5A6060"})
 }});
 
-
-//new Label({left:0, right:0, height:20, top: 5, string:"status: not defrosting", style:new Style({font:"18px Petala Pro Thin", color:"black"})}),
 var insideCompartment = Column.template(function($) { return {
   top:0, height:310, right:0, left:0, skin:whiteSkin,
 			contents:[
@@ -97,31 +98,25 @@ var insideCompartment = Column.template(function($) { return {
 				  new Line({top:2,  height:40, right:0, left:0, contents:[
 				  	new Label({left:0, right:0, height:30, top:5, string:$.compName, style:new Style({font:"18px Petala Pro Thin", color:"#5A6060", horizontal: "center"})}),
 				  ]}),
-				  	//new Label({left:0, right:0, height:30, top:5,  string:"Live Capture", style:new Style({font:"20px", color:"black"})}),
-				  	//new Label({left:0, right:0, height:90, top: 5, string:"X", style:new Style({font:"50px", color:"black"})}),
 				  new Line({top:10,  height:20, right:0, left:0, contents:[	
 				  	new Label({left:0, right:0, height:20, top: 5,  string:"Temperature", style: headerStyle}),
 				  ]}),
 				  new Line({ left: 0, right: 0, top: 6, height: 1, skin: new Skin({fill: "silver"}), }),
-				  new Line({ left: 15, right: 15, top: 6, contents:[new statusLabel({string: "status: not defrosting"}),] }),
+				  new Line({ name: "statusLine", left: 15, right: 15, top: 6, contents:[new statusLabel({string: compartmentStatusStrings[$.compNumber]}),
+					] }),
 				  new Line({top:5,  height:50, right:0, left:0, contents:[
 				  	new Column({top:0, bottom:0, right:0, left:0, contents:[
-				  		new Label({right:-30, top:0, bottom:0, string:$.currTemp + "\xB0" + "F", style:new Style({horizontal: "right",font:"50px Petala Pro", color:"black"})}),
+				  		new Label({right:-30, top:0, bottom:0, string:$.currTemp + "\xB0" + "F", style:new Style({horizontal: "right",font:"50px Petala Pro", color:"#5A6060"})}),
 				  	]}),
 				  	new Column({top:0, botttom:0, right:0, left:0, contents:[
-				  	/*
-				  		new Line({height:20, right:0, left:0, contents:[new statusLabel({string: "status:"}),]}),
-				  		new Line({top:0, bottom:0, right:0, left:0, contents:[new Label({left:0, right:0, height:20, top: 5,style: new Style({horizontal: "center",font:"16px Petala Pro Thin", color:"black"}),string: "not defrosting"}),]}),
-				  		*/
 				  			new Container({right:0, left:0, top:0, height:10}),
-				  			new defrostButtonTemplate(),
+				  			new defrostButtonTemplate({compNumber: $.compNumber, buttonString: defrostButtonStrings[$.compNumber]}),
 				  			new Container({right:0, left:0, top:0, bottom:0}), ]}),
 				  ]}),
 				  new Line({top:13, height:30, right:0, left:0, contents:[	
 				  	new Label({left:0, right:0, height:30, top: 5, string:"Items in Compartment", style: headerStyle}),
 				  ]}),
-				  new Line({ left: 0, right: 0, top: 4, height: 1, skin: new Skin({fill: "silver"}), }),
-				  //new itemLine({name: "test1", expiration: "5", quantity: "20"}),			
+				  new Line({ left: 0, right: 0, top: 4, height: 1, skin: new Skin({fill: "silver"}), }),		
 			] 	
 }});
 
@@ -130,16 +125,8 @@ var itemLine = Line.template(function($) { return { left: 0, right: 0, active: t
     	/* Gives the user some visual feedback on which entry they have tapped.
     	 * note that the skin is reverted to white in onTouchEnded() */    	 
     	onTouchBegan: { value: function(container, id, x,  y, ticks) {
-    		//container.skin = graySkin;
     	}},
-    	/* Traces out the value of the first Label's string. The
-    	 * silly string of "first" in the trace can be thought of as
-    	 * container.Column.Container.Label.string.  This pattern can
-    	 * be seen reading down the contents of this object below */
     	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
-			//container.skin = lightGraySkin;
-			//trace(container.first.first.first.string+"\n");
-     		//KEYBOARD.hide();
 		}}
     }),
 	contents: [
@@ -154,8 +141,8 @@ var itemLine = Line.template(function($) { return { left: 0, right: 0, active: t
      	Column($, { width:100, contents: [
      		Container($, { left: -17, right: 0, height: 52, 
      			contents: [
-     			           Label($, {  style: new Style({ font: '34px Petala Pro Thin', horizontal: 'right', lines: 1, }), string: $.quantity}),
-     			           Label($, {  style: new Style({  font: '18px Petala Pro Thin', right:-55, top: 5,lines: 1, }), string: "ct"}),
+     			           Label($, {  style: new Style({ font: '34px Petala Pro Thin',  color: '#5A6060', horizontal: 'right', lines: 1, }), string: $.quantity}),
+     			           Label($, {  style: new Style({  font: '18px Petala Pro Thin',  color: '#5A6060', right:-55, top: 5,lines: 1, }), string: "ct"}),
  			           ]}),
      		Line($, { left: 0, right: 0, height: 1, skin: separatorSkin, }),
      	], }),
@@ -165,9 +152,6 @@ var itemLine = Line.template(function($) { return { left: 0, right: 0, active: t
  }});
  
 function compartmentListBuilder(dict) {
-	//compartmentView.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
-	//compartmentView.list.first.menu.add(new searchBar({name: ""}));
-	//compartmentView.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
 	for (var key in dict){
 		if (dict.hasOwnProperty(key)) {
 			compartmentView.list.first.menu.add(new itemLine(dict[key]));

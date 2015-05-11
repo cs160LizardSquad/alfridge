@@ -13,20 +13,33 @@ Handler.bind("/tempResult", Object.create(Behavior.prototype, {
 				application.distribute( "receiveTempReading", message.requestObject );
 			}}
 }));
-/**
-Handler.bind("/feedAtUp", Behavior({
-	onInvoke: function(handler, message){
-	
-		count = parseInt(feedAtFullness.string);
-		count = (count + 1).toString();
-		feedAtString = count;
-		feedAtFullness.string = count;
-		//application.invoke( new MessageWithObject( "pins:/analogSensor/write" ) );
-		message.responseText = JSON.stringify( { count: count } );
-		message.status = 200;
-	}
-}));
-**/
+
+Handler.bind("/defrost1", Behavior({ onInvoke: function(handler, message){
+		compartment1.statusLine.statusLabel.string = "status: defrosting";}}));
+Handler.bind("/defrost2", Behavior({ onInvoke: function(handler, message){
+		compartment2.statusLine.statusLabel.string = "status: defrosting";}}));
+Handler.bind("/defrost3", Behavior({ onInvoke: function(handler, message){
+		compartment3.statusLine.statusLabel.string = "status: defrosting";}}));
+Handler.bind("/defrost4", Behavior({ onInvoke: function(handler, message){
+		compartment4.statusLine.statusLabel.string = "status: defrosting";}}));
+Handler.bind("/defrost5", Behavior({ onInvoke: function(handler, message){
+		compartment5.statusLine.statusLabel.string = "status: defrosting";}}));
+Handler.bind("/defrost6", Behavior({ onInvoke: function(handler, message){
+		compartment6.statusLine.statusLabel.string = "status: defrosting";}}));
+Handler.bind("/stop_defrost1", Behavior({ onInvoke: function(handler, message){
+		compartment1.statusLine.statusLabel.string = "status: not defrosting";}}));
+Handler.bind("/stop_defrost2", Behavior({ onInvoke: function(handler, message){
+		compartment2.statusLine.statusLabel.string = "status: not defrosting";}}));
+Handler.bind("/stop_defrost3", Behavior({ onInvoke: function(handler, message){
+		compartment3.statusLine.statusLabel.string = "status: not defrosting";}}));
+Handler.bind("/stop_defrost4", Behavior({ onInvoke: function(handler, message){
+		compartment4.statusLine.statusLabel.string = "status: not defrosting";}}));
+Handler.bind("/stop_defrost5", Behavior({ onInvoke: function(handler, message){
+		compartment5.statusLine.statusLabel.string = "status: not defrosting";}}));
+Handler.bind("/stop_defrost6", Behavior({ onInvoke: function(handler, message){
+		compartment6.statusLine.statusLabel.string = "status: not defrosting";}}));
+
+
 var numContainer = Column.template(function($) { return { width: 35, top: 5, bottom: 5, 
 	skin: new Skin({ fill: 'white',}), 
 	contents: [
@@ -181,4 +194,5 @@ var ApplicationBehavior = Behavior.template({
 })
 
 application.behavior = new ApplicationBehavior();
-application.add( new MainContainer() );
+simulatorScreen = new MainContainer()
+application.add(simulatorScreen);

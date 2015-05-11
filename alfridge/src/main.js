@@ -17,49 +17,76 @@ var darkgreySkin = new Skin({fill:"#5A6060"});
 var whiteSkin = new Skin({fill:"white"});
 var separatorSkin = new Skin({ fill: 'silver',});
 var titleStyle = new Style({font:"24px Petala Pro SemiLight", color:"white", horizontal: "center"});
-var headerStyle = new Style({font:"18px Petala Pro Thin", color:"black",  horizontal: "center"});
+var headerStyle = new Style({font:"18px Petala Pro Thin", color:"#5A6060",  horizontal: "center"});
 var semilightStyle = new Style({font:"18px Petala Pro Thin", color:"black",  horizontal: "center"});
 var textStyle = new Style({font:"20px Petala Pro Thin", color:"#5A6060", horizontal: "center"});
 
 var sideBarPopped = false;
 var notifButtonOn = true;
 var addButtonOn = false;
-var keyBoardOn = false;
+var keyboardOn = false;
 
-var allItemsDict = {};
-var comp1ItemsDict = {};
-var comp2ItemsDict = {};
-var comp3ItemsDict = {};
-var comp4ItemsDict = {};
-var comp5ItemsDict = {};
-var comp6ItemsDict = {};
-//var groceryDict = {};
+var allItemsDict = {
+			"lettuce": {name: "lettuce", compartment: 1, expiration: 10,quantity:1},
+			"tomatoes": {name: "tomatoes", compartment: 1, expiration: 1,quantity:5},
+			"cucumbers": {name: "cucumbers", compartment: 1, expiration: 7,quantity:4},
+			"milk": {name: "milk", compartment: 2, expiration: 14,quantity:3},
+			"chicken thighs": {name: "chicken thighs", compartment: 3, expiration: 20,quantity:5},
+			"chicken drumsticks": {name: "chicken drumsticks", compartment: 3, expiration: 5,quantity:4},
+			"steak": {name: "steak", compartment: 4, expiration: 14,quantity:10},
+			"salmon fillets": {name: "salmon fillets", compartment: 5, expiration: 20,quantity:5},
+			"tilapia fillets": {name: "tilapia fillets", compartment: 5, expiration: 4,quantity:6},
+			"shrimp": {name: "shrimp", compartment: 5, expiration: 20,quantity:12},
+			"crab": {name: "crab", compartment: 5, expiration: 18,quantity:1},
+			"scallops": {name: "scallops", compartment: 5, expiration: 19,quantity:24},
+			"tuna steaks": {name: "tuna steaks", compartment: 5, expiration:11,quantity:3},
+			"clams": {name: "clams", compartment: 5, expiration: 20,quantity:8},
+			"cake": {name: "cake", compartment: 6, expiration: 3,quantity:1},
+			"asparagus": {name: "asparagus", compartment: 1, expiration: 34,quantity:13},
+			"carrots": {name: "carrots", compartment: 1, expiration: 23,quantity:3},
+			"onions": {name: "onions", compartment: 1, expiration: 14,quantity:5},
+			};
+var comp1ItemsDict = {
+			"lettuce": {name: "lettuce", compartment: 1, expiration: 10,quantity:1},
+			"tomatoes": {name: "tomatoes", compartment: 1, expiration: 1,quantity:5},
+			"cucumbers": {name: "cucumbers", compartment: 1, expiration: 7,quantity:4},
+			"asparagus": {name: "asparagus", compartment: 1, expiration: 34,quantity:13},
+			"carrots": {name: "carrots", compartment: 1, expiration: 23,quantity:3},
+			"onions": {name: "onions", compartment: 1, expiration: 14,quantity:5},
+			};
+var comp2ItemsDict = {
+			"milk": {name: "milk", compartment: 2, expiration: 14,quantity:3},
+			};
+var comp3ItemsDict = {
+			"chicken thighs": {name: "chicken thighs", compartment: 3, expiration: 20,quantity:5},
+			"chicken drumsticks": {name: "chicken drumsticks", compartment: 3, expiration: 5,quantity:4},
+			};
+var comp4ItemsDict = {
+			"steak": {name: "steak", compartment: 4, expiration: 14,quantity:10},
+			};
+var comp5ItemsDict = {
+			"salmon fillets": {name: "salmon fillets", compartment: 5, expiration: 20,quantity:5},
+			"tilapia fillets": {name: "tilapia fillets", compartment: 5, expiration: 4,quantity:6},
+			"shrimp": {name: "shrimp", compartment: 5, expiration: 20,quantity:12},
+			"crab": {name: "crab", compartment: 5, expiration: 18,quantity:1},
+			"scallops": {name: "scallops", compartment: 5, expiration: 19,quantity:24},
+			"tuna steaks": {name: "tuna steaks", compartment: 5, expiration:11,quantity:3},
+			"clams": {name: "clams", compartment: 5, expiration: 20,quantity:8},
+			};
+var comp6ItemsDict = {
+			"cake": {name: "cake", compartment: 6, expiration: 3,quantity:1},};
+			
 var itemsDictList = [null, comp1ItemsDict, comp2ItemsDict, comp3ItemsDict, comp4ItemsDict, comp5ItemsDict, comp6ItemsDict]
-var temp1 = 0;
-var temp2 = 0;
+var temp1 = 31;
+var temp2 = 24;
 var temp3 = 0;
-var temp4 = 0;
-var temp5 = 0;
-var temp6 = 0;
+var temp4 = 32;
+var temp5 = 27;
+var temp6 = 32;
 
 //these statuses state whether specific compartments are defrosting or not.
-var compartmentStatuses = [null, 0, 0, 0, 0, 0, 0];
-
-/**var upButton = BUTTONS.Button.template(function($){ return{
-	top: 5, left: 0, right: 0, height:20,
-	contents: [
-		new Label({left:0, right:0, height:20, skin: upSkin})
-	],
-	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
-		onTap: { value: function(content){
-			content.invoke(new Message(deviceURL + "feedAtUp"), Message.JSON);
-		}},
-		onComplete: { value: function(content, message, json){
-			trace(json.count);
-		}}  
-	})
-}});
-**/
+var compartmentStatusStrings = [null, "status: not defrosting", "status: not defrosting", "status: not defrosting", "status: not defrosting", "status: not defrosting", "status: not defrosting"];
+var defrostButtonStrings = [null, "defrost", "defrost", "defrost", "defrost", "defrost", "defrost"];
 
 var sideMenuButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height: 30, width:40, left:10, 
@@ -139,7 +166,7 @@ var topBar = new Line({left:0, right:0, top:0, height:50, skin:tealSkin,
 
 topBar.notifButton.add(notificationButton);
 
-highlight = new Column({width: 5, left:0, top:0, bottom:0, skin: new Skin({fill: "#52D017"})})
+highlight = new Column({width: 5, left:0, top:0, bottom:0, skin: tealSkin});
 highlightedButton = null;
 
 function resetHighlight(button) {
@@ -161,7 +188,7 @@ function resetHighlight(button) {
 }
 
 var homeButton = new subviewButtonTemplate({textForLabel:"Home", 
-				url: "assets/home-icon.png", top:10,
+				url: "assets/home-icon.png", top:5,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						resetHighlight(highlightedButton);
@@ -201,7 +228,8 @@ var itemsButton = new subviewButtonTemplate({textForLabel:"Items", name:"itemsBu
 						application.remove(topBar);
 						itemsMainBody = new itemsListTemplate();
 						itemsMainBody.add(new itemsTabs());
-						ListBuilder(allItemsDict);
+						itemsOnScreen = [];
+						ListBuilder(allItemsDict, true);
 						application.replace(currentView, itemsMainBody);
 						if (addButtonOn){
 						topBar.notifButton.remove(newListButton);
@@ -234,8 +262,11 @@ var gListButton = new subviewButtonTemplate({textForLabel:"Grocery Lists", name:
 						content.add(highlight);
 						topBar.headerCol.currentView.string = "Grocery Lists";
 						application.remove(topBar);
+						listsOnScreen = [];
 						groceryMainBody = new groceryListTemplate();
-						groceryListBuilder(groceryList);
+						currTime = parseInt(new Date().getTime() / 1000);
+						bubbleSortGroceryLists();
+						groceryListBuilder(groceryList, true);
 						application.replace(currentView, groceryMainBody);
 						if (notifButtonOn){
 						topBar.notifButton.remove(notificationButton);
@@ -289,7 +320,7 @@ var troubleshootButton = new subviewButtonTemplate({textForLabel:"Troubleshoot",
 					})}),
 
 var settingsButton = new subviewButtonTemplate({textForLabel:"Settings",
-				url: "assets/settings-icon.png", top:235,
+				url: "assets/settings-icon.png", top:245,
 				myBehavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 					onTap: { value:  function(content){
 						resetHighlight(highlightedButton);
@@ -336,7 +367,7 @@ var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 	contents:[ 
 		new Column({name: "col1", height: 80, left:0, right:0, contents:[
 			new Line({name: "line1", height:50, right:0, left:0, contents: [
-				new Label({name: "nameTempLabel", top: 15, left:0, right:0, height:45, string:$.textForLabel + "  10" + "\xB0" + "F", style:new Style({font:"28px Petala Pro Thin", color:"white", horizontal: "center"})}),
+				new Label({name: "nameTempLabel", top: 15, left:0, right:0, height:45, string:$.textForLabel + "  " + $.temp.toString() + "\xB0" + "F", style:new Style({font:"28px Petala Pro Thin", color:"white", horizontal: "center"})}),
 		]}),
 		new Line({height:30, left:0, right:0, contents: [
 			new Label({top: 0, left:0, right:0, height:20,  string:$.subtextForLabel, style:new Style({font:"14px Petala Pro Thin", color:"white"})}) ]}),
@@ -382,9 +413,7 @@ var compartmentButtonTemplate = BUTTONS.Button.template(function($){ return{
 }});
 
 var compartmentSkin = new Skin({fill:"#B4C9CC", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}});
-			//new Skin({fill:"#B4C9CC", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}});
 var testSkin = new Skin({fill:"white", 
-	//borders:{left:1, right:1, top:1, bottom:1, stroke:"black"}
 	});
 var mainBody = new Column({top:50, bottom:0, left:0, right:0, skin: testSkin, 
 			contents:[
@@ -394,29 +423,29 @@ var mainBody = new Column({top:50, bottom:0, left:0, right:0, skin: testSkin,
 				]}),
 				new Line({name: "line1", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
 				//COMPARTMENT 1
-					new compartmentButtonTemplate({name: "compartment1", mySkin: compartmentSkin, 
-						width: 300, textForLabel: "Vegetables", subtextForLabel: "Expires: 2 months", compNumber: 1,}), 
+					new compartmentButtonTemplate({name: "compartment1", mySkin: new Skin({fill:"#c0d5d8", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}}), 
+						width: 300, textForLabel: "Vegetables", subtextForLabel: "Expires: 2 months", compNumber: 1, temp: temp1, }), 
 				]}),
 				//COMPARTMENT 2
 				new Line({name: "line2", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
-					new compartmentButtonTemplate({name: "compartment2", mySkin: compartmentSkin, 
-						width: 130, textForLabel: "Milk", subtextForLabel: "Expires: 2 months", compNumber: 2, }), 
+					new compartmentButtonTemplate({name: "compartment2", mySkin: new Skin({fill:"#bcd0d3", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}}), 
+						width: 130, textForLabel: "Milk", subtextForLabel: "Expires: 2 months", compNumber: 2, temp: temp2, }), 
 				//COMPARTMENT 3
-					new compartmentButtonTemplate({name: "compartment3", mySkin: compartmentSkin, 
-						width: 130, textForLabel: "Meat", subtextForLabel: "Expires: 2 months", compNumber: 3,}), 
+					new compartmentButtonTemplate({name: "compartment3", mySkin: new Skin({fill:"#cce2e5", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}}), 
+						width: 130, textForLabel: "Meat", subtextForLabel: "Expires: 2 months", compNumber: 3, temp: temp3, }), 
 				]}), 
 				new Line({name: "line3", top:0, bottom:0, right:7, left:7, skin: testSkin, contents: [
 				//COMPARTMENT 4
-					new compartmentButtonTemplate({name: "compartment4", mySkin: compartmentSkin, 
-						width: 300, textForLabel: "Steak", subtextForLabel: "Expires: 2 months", compNumber: 4,}), 
+					new compartmentButtonTemplate({name: "compartment4", mySkin: new Skin({fill:"#aabcbf", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}}), 
+						width: 300, textForLabel: "Steak", subtextForLabel: "Expires: 2 months", compNumber: 4, temp: temp4, }), 
 				]}),
 				new Line({name: "line4", height: 100, right:7, left:7, bottom: 10, skin: testSkin, contents: [
 				//COMPARTMENT 5
-					new compartmentButtonTemplate({name: "compartment5", mySkin: compartmentSkin, 
-						width: 130, textForLabel: "Fish", subtextForLabel: "Expires: 2 months", compNumber: 5,}), 
+					new compartmentButtonTemplate({name: "compartment5", mySkin: new Skin({fill:"#cce2e5", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}}), 
+						width: 130, textForLabel: "Fish", subtextForLabel: "Expires: 2 months", compNumber: 5, temp: temp5, }), 
 				//COMPARTMENT 6
-					new compartmentButtonTemplate({name: "compartment6", mySkin: compartmentSkin, 
-						width: 130, textForLabel: "Cake", subtextForLabel: "Expires: 2 months", compNumber: 6,}), 
+					new compartmentButtonTemplate({name: "compartment6", mySkin: new Skin({fill:"#B4C9CC", borders:{left:2, right:2, top:2, bottom:2, stroke:"#F0FFFF"}}), 
+						width: 130, textForLabel: "Cake", subtextForLabel: "Expires: 2 months", compNumber: 6, temp: temp6, }), 
 				]}),], 	
 		});
 		
@@ -424,7 +453,6 @@ var deviceURL = "";
 Handler.bind("/discover", Behavior({
 	onInvoke: function(handler, message){
 		deviceURL = JSON.parse(message.requestText).url;
-		//trace(deviceURL);
 		handler.invoke(new Message("/getResponse"));
 	}
 }));
@@ -434,7 +462,6 @@ Handler.bind("/getResponse", {
         handler.invoke(new Message(deviceURL + "getUpdate"), Message.JSON);
     },
     onComplete: function(handler, message, json){
-    	trace('item response was ' + JSON.stringify(comp1ItemsDict) + '\n');
     	allItemsDict = json.allItemsDict,
     	comp1ItemsDict = json.itemDict1,
     	comp2ItemsDict = json.itemDict2,
@@ -442,7 +469,6 @@ Handler.bind("/getResponse", {
     	comp4ItemsDict = json.itemDict4,
     	comp5ItemsDict = json.itemDict5,
     	comp6ItemsDict = json.itemDict6,
-    	trace(JSON.stringify(allItemsDict) + '\n');
         handler.invoke( new Message("/getTempResponse"));
         application.distribute( "receiveItemReading", json );
     }
@@ -453,7 +479,6 @@ Handler.bind("/getTempResponse", {
         handler.invoke(new Message(deviceURL + "getTempUpdate"), Message.JSON);
     },
     onComplete: function(handler, message, json){
-    	trace('response was ' + temp1 + '\n');
     	temp1 = convert(json.temp1),
     	temp2 = convert(json.temp2),
     	temp3 = convert(json.temp3),
@@ -474,7 +499,6 @@ Handler.bind("/getTempResponse", {
     	var comp6temp = mainBody.line4.compartment6.col1.line1.nameTempLabel.string;
     	mainBody.line4.compartment6.col1.line1.nameTempLabel.string = comp6temp.substring(0, comp6temp.length - 4) + convert(temp6) + "\xB0" + "F";
         handler.invoke( new Message("/delay"));
-        //application.distribute( "receiveTempReading", a );
     }
 });
 
@@ -496,8 +520,6 @@ Handler.bind("/delay", {
 var ApplicationBehavior = Behavior.template({
 	onDisplayed: function(application) {
 		application.discover("alfridgedevice.app");
-		//menuItems.forEach(ListBuilder);
-		//application.add(screen);
 	},
 	onQuit: function(application) {
 		application.forget("alfridgedevice.app");

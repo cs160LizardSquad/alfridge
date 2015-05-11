@@ -5,7 +5,7 @@ var KEYBOARD = require('mobile/keyboard');
 var CONTROL = require('mobile/control');
 
 /* ASSETS */
-var blackSkin = new Skin({ fill: 'black',});
+var blackSkin = new Skin({ fill: '#5A6060',});
 var whiteSkin = new Skin({ fill: 'white',});
 var lightGraySkin = new Skin({fill: "#f1f1f2"});
 var graySkin	= new Skin({ fill: '#bcbcbc'});
@@ -14,37 +14,19 @@ var blueSkin = new Skin({fill: 'blue'})
 var separatorSkin = new Skin({ fill: 'silver',});
 
 /* STYLES */
-//var tabStyle = new Style({  font: '16px Petala Pro Thin', horizontal: 'center', color: "#545454",vertical: 'middle', lines: 1, });
-var productNameStyle = new Style({  font: '24px Petala Pro Light', horizontal: 'left', top: -10, lines: 1, });
-var expirationStyle = new Style({ font: '12px Petala Pro Thin', horizontal: 'left', top: 20, lines: 1, });
+var productNameStyle = new Style({  font: '24px Petala Pro Light', color: '#5A6060', horizontal: 'left', top: -10, lines: 1, });
+var expirationStyle = new Style({ font: '12px Petala Pro Thin',  color: '#5A6060', horizontal: 'left', top: 20, lines: 1, });
 var productDescriptionStyle = new Style({  font: '18px', horizontal: 'left', vertical: 'middle', left: 1, color: 'white' });
-var fieldStyle = new Style({ color: 'black', font: '22px Petala Pro SemiLight', horizontal: 'left', vertical: 'middle', left: 22, right: 5, top: 5, bottom: 5, });
+var fieldStyle = new Style({ color: '#5A6060', font: '22px Petala Pro SemiLight', horizontal: 'left', vertical: 'middle', left: 22, right: 5, top: 5, bottom: 5, });
 var hintStyle  = new Style({  font: '22px Petala Pro SemiLight', horizontal: 'left', vertical: 'middle',color: "#a7a9ab",left: 20, right: 5, top: 5, bottom: 5, lines: 1, })
 
 /* STATIC */
-/* A simple array of objects. Each will be used as a single
- * entry in our scrollable list. */
- /*
- {"lettuce":{"compartment":1,"expiration":10,"quantity":1},"tomatoes":{"compartment":1,"expiration":1,"quantity":5},
- "cucumbers":{"compartment":1,"expiration":7,"quantity":4},"milk":{"compartment":2,"expiration":14,"quantity":3},
- "chicken thighs":{"compartment":3,"expiration":20,"quantity":5},
- "chicken drumsticks":{"compartment":3,"expiration":5,"quantity":4},"steak":{"compartment":4,"expiration":14,"quantity":10},"salmon fillets":{"compartment":5,"expiration":20,"quantity":5},"tilapia fillets":{"compartment":5,"expiration":4,"quantity":6},"shrimp":{"compartment":5,"expiration":20,"quantity":12},"clams":{"compartment":5,"expiration":20,"quantity":8},"cake":{"compartment":6,"expiration":3,"quantity":1}}response was 0
-{"temp1":0,"temp2":30,"temp3":30,"temp4":0,"temp5":15,"temp6":10}response was 3
-*/
 
-/* This is a template that will be used to for each entry populating the list. 
- * Note that it is anticipating an object each time in is instanciated */
 var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: lightGraySkin,
     behavior: Object.create(Behavior.prototype, {
-    	/* Gives the user some visual feedback on which entry they have tapped.
-    	 * note that the skin is reverted to white in onTouchEnded() */    	 
-    	onTouchBegan: { value: function(container, id, x,  y, ticks) {
-    		//container.skin = graySkin;
-    	}},
     	onTouchEnded: { value: function(container, id, x,  y, ticks) {	
-			//container.skin = lightGraySkin;
-			trace(container.first.first.first.string+"\n");
      		KEYBOARD.hide();
+     		application.focus();
 		}}
     }),
 	contents: [
@@ -59,25 +41,17 @@ var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, acti
      	Column($, { width:100, contents: [
      		Container($, { left: -17, right: 0, height: 52, 
      			contents: [
-     			           Label($, {  right:43, style: new Style({ font: '34px Petala Pro Thin', vertical: 'center', lines: 1, }), string: $.quantity}),
-     			           Label($, {  style: new Style({  font: '18px Petala Pro Thin', right:-55, top: 5,lines: 1, }), string: "ct"}),
+     			           Label($, {  right:43, style: new Style({ font: '34px Petala Pro Thin', vertical: 'center',  color: '#5A6060', lines: 1, }), string: $.quantity}),
+     			           Label($, {  style: new Style({  font: '18px Petala Pro Thin',  color: '#5A6060', right:-55, top: 5,lines: 1, }), string: "ct"}),
  			           ]}),
      		Line($, { left: 0, right: 0, height: 1, skin: separatorSkin, }),
      	], }),
      ], 
  }});
 
-/* This is template for a container which takes up the
- * whole screen.  It contains only a single object,
- * the SCROLLER.VerticalScroller.  Although we are not
- * referencing any values from an object passed on creation,
- * an object is still required as the SCROLLER uses it internally. */
 var ScreenContainer = Container.template(function($) { return {
 	name: "list", left:0, right:0, top:50, bottom:0, skin: new Skin({fill: "white"}),
 	contents: [
-	   		/* Note that the scroller is declared as having only an empty
-	   		 * Column and a scrollbar.  All the entries will be added 
-	   		 * programmatically. */ 
 	   		SCROLLER.VerticalScroller($, { 
 	   			contents: [
               			Column($, { left: 0, right: 0, top: 0, name: 'menu', }),
@@ -164,9 +138,16 @@ var searchBar = Line.template(function($) { return {
 			}},
          		onEdited: { value: function(label){
          			var data = this.data;
-              data.name = label.string;
-              trace(data.name);
-              label.container.hint.visible = ( data.name.length == 0 );	
+              		data.name = label.string;
+					if(data.name.length > 0){
+					clearitemsScreen();
+					searchedList = searchItems(data.name);
+					searchListBuilder(searchedList);}
+					else{
+         			clearitemsScreen();
+         			ListBuilder(allItemsDict, false);
+         			}
+              		label.container.hint.visible = ( data.name.length == 0 );
          		}}
          	}),
          }),
@@ -189,20 +170,26 @@ var itemsListTemplate = Container.template(function($) { return {
 
 var itemsOnScreen = []
 
-/* This simple function exists so we can call "forEach" on
- * our array of list entries (menuItems).  It adds a new 
- * ProcessorLine() object to the Column named "menu" in the
- * screen object's SCROLLER */
-function ListBuilder(dict) {
+function ListBuilder(dict, addSearchBar) {
+	if(addSearchBar === true){
 	itemsMainBody.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
 	itemsMainBody.list.first.menu.add(new searchBar({name: ""}));
 	itemsMainBody.list.first.menu.add(new Line({ left: 0, right: 0, height: 1, skin: separatorSkin, }));
+	}
 	for (var key in dict){
 		if (dict.hasOwnProperty(key)) {
 			currItem = new ProcessorLine(dict[key]);
 			itemsMainBody.list.first.menu.add(currItem);
 			itemsOnScreen.push(currItem);
 		}
+	}
+}
+
+function searchListBuilder(list){
+	for (i = 0; i <  list.length; i++){
+		var currItem = new ProcessorLine(list[i])
+		itemsMainBody.list.first.menu.add(currItem);
+		itemsOnScreen.push(currItem);
 	}
 }
 
@@ -272,17 +259,13 @@ function swap(array, one, two) {
     array[one] = array[two];
     array[two] = tmp;                    
 };
-/*
-function bubbleSort(dict, id) {   
-    callback(elements);
-    //Loop over all the elements
-    for (var out = elements.length - 1; out > 0; out--){                            
-        for (var inn = 0; inn < out; inn++) {
-            //Are they out of order?
-            if (elements[inn] > elements[inn+1]){
-                swap(inn, inn+1);                                
-            } 
-        }
-        callback(elements);
-    }                    
-}; */
+
+function searchItems(keyword) {
+	itemsArray = dictToArray(allItemsDict);
+	tempList = []
+	for (var i = 0; i < itemsArray.length; i++){    
+		if(itemsArray[i].name.toLowerCase().indexOf(keyword) != -1){
+        	tempList.push(itemsArray[i]);
+		}}
+	return tempList;	
+	};
