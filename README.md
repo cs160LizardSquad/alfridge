@@ -1,5 +1,5 @@
 # Alfridge
-#### Alfridge received runner-up best design in CS160 Spring 2015!
+#### Alfridge received 2nd place in CS160 Spring 2015!
 Alfridge is a connected device experience between a smart compartmentalized refrigerator and a mobile companion application, created over the course of the Spring 2015 semester by Group L: LIZARD SQUAD of UC Berkeley's CS160 (User Interace Design and Development) course.
 
 ##Description
